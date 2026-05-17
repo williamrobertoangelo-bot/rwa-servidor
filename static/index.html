@@ -364,6 +364,43 @@
   .status-pill.em_execucao { background: #1e3a8a44; color: #60a5fa; }
   .status-pill.erro { background: #7f1d1d44; color: var(--red); }
   .status-pill.pendente { background: #78350f44; color: var(--yellow); }
+  .status-pill.agendado { background: #78350f44; color: var(--yellow); }
+  .status-pill.cancelado { background: #3f3f46; color: #d4d4d8; }
+
+  .acoes-cell {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .btn-mini {
+    border: none;
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 11px;
+    font-family: var(--sans);
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+
+  .btn-iniciar {
+    background: #1d4ed8;
+    color: white;
+  }
+
+  .btn-iniciar:hover {
+    background: #2563eb;
+  }
+
+  .btn-cancelar {
+    background: #7f1d1d;
+    color: white;
+  }
+
+  .btn-cancelar:hover {
+    background: #991b1b;
+  }
   .modulo-tag { font-family: var(--mono); font-size: 11px; background: #4f46e522; color: var(--indigo2); padding: 3px 8px; border-radius: 4px; }
   .vazio { padding: 32px 24px; text-align: center; color: var(--muted); font-size: 13px; }
 
@@ -516,8 +553,19 @@
     <div class="historico-card">
       <div class="historico-header">Execuções recentes <span>últimas 10</span></div>
       <table>
-        <thead><tr><th>Data / Hora</th><th>Módulo</th><th>Status</th></tr></thead>
-        <tbody id="historico-body"><tr><td colspan="3" class="vazio">Carregando...</td></tr></tbody>
+        <thead>
+          <tr>
+            <th>Data / Hora</th>
+            <th>Módulo</th>
+            <th>Status</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody id="historico-body">
+          <tr>
+            <td colspan="4" class="vazio">Carregando...</td>
+          </tr>
+        </tbody>
       </table>
     </div>
   </main>
@@ -669,7 +717,7 @@
                 const tbody = document.getElementById('historico-body');
 
                 if (!data.historico || data.historico.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="3" class="vazio">Nenhuma execução registrada.</td></tr>';
+                    tbody.innerHTML = '<tr><td colspan="4" class="vazio">Nenhuma execução registrada.</td></tr>';
                     return;
                 }
 
@@ -684,6 +732,14 @@
                         <td style="font-family:var(--mono);font-size:12px">${_fmtDH(h.quando)}</td>
                         <td><span class="modulo-tag">${h.modulo}</span></td>
                         <td><span class="status-pill ${h.status}">${labelStatus(h.status)}</span></td>
+                        <td>
+                            <div class="acoes-cell">
+                                <button class="btn-mini btn-iniciar" onclick="executarModulo('${h.modulo}')">Iniciar</button>
+                                ${(h.status === 'pendente' || h.status === 'agendado' || h.status === 'em_execucao') ? `
+                                    <button class="btn-mini btn-cancelar" onclick="cancelarTarefa(${h.id})">Cancelar</button>
+                                ` : ''}
+                            </div>
+                        </td>
                     </tr>
                 `).join('');
 
@@ -693,8 +749,46 @@
             } catch(e) {}
         }
 
+        async function executarModulo(modulo) {
+            try {
+                const resp = await fetch(API + '/portal/executar', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: _sessao.email,
+                        modulo: modulo
+                    })
+                });
+
+                const data = await resp.json();
+
+                if (data.ok) {
+                    carregarHistorico();
+                }
+            } catch(e) {}
+        }
+
+        async function cancelarTarefa(tarefa_id) {
+            try {
+                const resp = await fetch(API + '/portal/cancelar', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: _sessao.email,
+                        tarefa_id: tarefa_id
+                    })
+                });
+
+                const data = await resp.json();
+
+                if (data.ok) {
+                    carregarHistorico();
+                }
+            } catch(e) {}
+        }
+
         function labelStatus(s) {
-            const m = { concluido: '● Concluído', em_execucao: '● Em execução', erro: '● Erro', pendente: '● Pendente' };
+            const m = { concluido: '● Concluído', em_execucao: '● Em execução', erro: '● Erro', pendente: '● Pendente', agendado: '● Agendado', cancelado: '● Cancelado' };
             return m[s] || s;
         }
 

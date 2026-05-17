@@ -222,11 +222,23 @@ def atualizar_status_tarefa(tarefa_id, status, observacao=""):
         con.commit()
 
 
+def cancelar_tarefa(empresa_id, tarefa_id):
+    with _conn() as con:
+        with con.cursor() as cur:
+            cur.execute(
+                "UPDATE tarefas SET status='cancelado', observacao='Cancelado pelo usuário' WHERE id=%s AND empresa_id=%s AND status IN ('pendente','em_execucao','agendado')",
+                (tarefa_id, empresa_id)
+            )
+            linhas = cur.rowcount
+        con.commit()
+    return linhas > 0
+
+
 def buscar_historico(empresa_id, limite=10):
     with _conn() as con:
         with con.cursor() as cur:
             cur.execute("""
-                SELECT modulo, status, criado_em as quando, observacao
+                SELECT id, modulo, status, criado_em as quando, observacao
                 FROM tarefas WHERE empresa_id=%s
                 ORDER BY criado_em DESC LIMIT %s
             """, (empresa_id, limite))

@@ -59,6 +59,10 @@ class AgendarRequest(BaseModel):
     modulo:        str
     agendado_para: str
 
+class CancelarRequest(BaseModel):
+    email:     str
+    tarefa_id: int
+
 
 # ── Portal (web — sem fingerprint) ─────────────────────────────────
 
@@ -128,6 +132,19 @@ def portal_agendar(req: AgendarRequest):
         return {"ok": False, "erro": "Empresa não encontrada."}
 
     database.criar_tarefa_agendada(empresa["id"], req.modulo, req.agendado_para)
+    return {"ok": True}
+
+
+@app.post("/portal/cancelar")
+def portal_cancelar(req: CancelarRequest):
+    empresa = database.buscar_empresa(req.email)
+    if not empresa:
+        return {"ok": False, "erro": "Empresa não encontrada."}
+
+    ok = database.cancelar_tarefa(empresa["id"], req.tarefa_id)
+    if not ok:
+        return {"ok": False, "erro": "Tarefa não localizada ou não cancelável."}
+
     return {"ok": True}
 
 
