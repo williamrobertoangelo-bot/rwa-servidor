@@ -1,28 +1,28 @@
 # =====================================================================
-# RWA TECNOLOGIA OPERACIONAL — SERVIDOR DE AUTENTICAÇÃO
-# FastAPI + SQLite
+# RWA TECNOLOGIA OPERACIONAL — SERVIDOR
 # =====================================================================
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from datetime import datetime
 import database
 import auth
+import os
 
-app = FastAPI(title="RWA Tecnologia Operacional — Servidor")
+app = FastAPI(title="RWA Tecnologia Operacional")
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
+
+# Serve o portal web
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 database.inicializar_banco()
 
 
-# ── Modelos ────────────────────────────────────────────────────────
+# ── Models ─────────────────────────────────────────────────────────
 
 class LoginRequest(BaseModel):
     email:       str
@@ -30,72 +30,10 @@ class LoginRequest(BaseModel):
     fingerprint: str
     versao:      str = "1.0"
 
-class LoginResponse(BaseModel):
-    status:     str
-    mensagem:   str
-    chave_aes:  str = ""
-    cliente:    str = ""
-    vencimento: str = ""
-
-
-# ── Endpoint de login ──────────────────────────────────────────────
-
-@app.post("/auth/login", response_model=LoginResponse)
-def login(req: LoginRequest):
-
-    # 1. Busca empresa
-    empresa = database.buscar_empresa(req.email)
-    if not empresa:
-        return LoginResponse(status="erro", mensagem="Email não cadastrado.")
-
-    # 2. Verifica senha
-    if not auth.verificar_senha(req.senha, empresa["senha_hash"]):
-        return LoginResponse(status="erro", mensagem="Senha incorreta.")
-
-    # 3. Verifica vencimento
-    hoje = datetime.now().date()
-    venc = datetime.strptime(empresa["vencimento"], "%Y-%m-%d").date()
-    if hoje > venc:
-        return LoginResponse(status="erro", mensagem="Licença vencida. Entre em contato com a RWA.")
-
-    # 4. Verifica máquina
-    maquinas = database.listar_maquinas(empresa["id"])
-    fps = [m["fingerprint"] for m in maquinas]
-
-    if req.fingerprint not in fps:
-        if len(fps) == 0:
-            # Primeira máquina — registra automaticamente
-            database.registrar_maquina(empresa["id"], req.fingerprint)
-        else:
-            # Máquina não autorizada — notifica
-            auth.notificar_maquina_nao_autorizada(
-                empresa["nome"], req.email, req.fingerprint
-            )
-            return LoginResponse(
-                status="erro",
-                mensagem="Máquina não autorizada. Entre em contato com a RWA."
-            )
-
-    # 5. Registra acesso
-    database.registrar_acesso(empresa["id"], req.fingerprint, req.versao)
-
-    return LoginResponse(
-        status="ok",
-        mensagem="Acesso autorizado.",
-        chave_aes=empresa["chave_aes"],
-        cliente=empresa["nome"],
-        vencimento=empresa["vencimento"],
-    )
-
-
-# ── Health check ───────────────────────────────────────────────────
-
-@app.get("/")
-def root():
-    return {"status": "online", "sistema": "RWA Tecnologia Operacional"}
-
-
-# ── Modelos agente ─────────────────────────────────────────────────
+class PrimeiroAcessoRequest(BaseModel):
+    email:       str
+    senha:       str
+    fingerprint: str
 
 class TarefaRequest(BaseModel):
     email:       str
@@ -108,8 +46,124 @@ class StatusRequest(BaseModel):
     status:      str
     observacao:  str = ""
 
+class ExecutarRequest(BaseModel):
+    email:       str
+    fingerprint: str
+    modulo:      str
 
-# ── Endpoints do agente ────────────────────────────────────────────
+class AgendarRequest(BaseModel):
+    email:         str
+    fingerprint:   str
+    modulo:        str
+    agendado_para: str
+
+
+# ── Portal ─────────────────────────────────────────────────────────
+
+@app.get("/")
+def root():
+    return FileResponse("static/index.html")
+
+
+# ── Auth ────────────────────────────────────────────────────────────
+
+@app.post("/auth/login")
+def login(req: LoginRequest):
+    empresa = database.buscar_empresa(req.email)
+    if not empresa:
+        return {"status": "erro", "mensagem": "Email não cadastrado."}
+
+    if not auth.verificar_senha(req.senha, empresa["senha_hash"]):
+        return {"status": "erro", "mensagem": "Senha incorreta."}
+
+    hoje = datetime.now().date()
+    venc = datetime.strptime(empresa["vencimento"], "%Y-%m-%d").date()
+    if hoje > venc:
+        return {"status": "erro", "mensagem": "Licença vencida. Entre em contato com a RWA."}
+
+    maquinas = database.listar_maquinas(empresa["id"])
+    fps = [m["fingerprint"] for m in maquinas]
+
+    if req.fingerprint not in fps:
+        if len(fps) == 0:
+            database.registrar_maquina(empresa["id"], req.fingerprint)
+        else:
+            auth.notificar_maquina_nao_autorizada(empresa["nome"], req.email, req.fingerprint)
+            return {"status": "erro", "mensagem": "Estação não autorizada. Entre em contato com a RWA."}
+
+    database.registrar_acesso(empresa["id"], req.fingerprint, req.versao)
+    return {
+        "status":     "ok",
+        "mensagem":   "Acesso autorizado.",
+        "cliente":    empresa["nome"],
+        "vencimento": empresa["vencimento"],
+        "email":      req.email,
+        "fingerprint": req.fingerprint,
+    }
+
+
+@app.post("/auth/primeiro-acesso")
+def primeiro_acesso(req: PrimeiroAcessoRequest):
+    empresa = database.buscar_empresa_sem_senha(req.email)
+    if not empresa:
+        return {"status": "erro", "mensagem": "Email não encontrado. Entre em contato com a RWA."}
+
+    if empresa.get("senha_hash"):
+        return {"status": "erro", "mensagem": "Esse email já possui senha. Use a tela de login."}
+
+    senha_hash = auth.hash_senha(req.senha)
+    database.definir_senha(req.email, senha_hash)
+    database.registrar_maquina(empresa["id"], req.fingerprint)
+    database.registrar_acesso(empresa["id"], req.fingerprint, "1.0")
+
+    return {
+        "status":     "ok",
+        "mensagem":   "Senha criada com sucesso.",
+        "cliente":    empresa["nome"],
+        "vencimento": empresa["vencimento"],
+        "email":      req.email,
+        "fingerprint": req.fingerprint,
+    }
+
+
+# ── Portal endpoints ────────────────────────────────────────────────
+
+@app.post("/portal/executar")
+def portal_executar(req: ExecutarRequest):
+    empresa = database.buscar_empresa(req.email)
+    if not empresa:
+        return {"ok": False, "erro": "Empresa não encontrada."}
+
+    maquinas = database.listar_maquinas(empresa["id"])
+    fps = [m["fingerprint"] for m in maquinas]
+    if req.fingerprint not in fps:
+        return {"ok": False, "erro": "Estação não autorizada."}
+
+    database.criar_tarefa(empresa["id"], req.modulo, {})
+    return {"ok": True}
+
+
+@app.post("/portal/agendar")
+def portal_agendar(req: AgendarRequest):
+    empresa = database.buscar_empresa(req.email)
+    if not empresa:
+        return {"ok": False, "erro": "Empresa não encontrada."}
+
+    database.criar_tarefa_agendada(empresa["id"], req.modulo, req.agendado_para)
+    return {"ok": True}
+
+
+@app.get("/portal/historico")
+def portal_historico(email: str):
+    empresa = database.buscar_empresa(email)
+    if not empresa:
+        return {"historico": []}
+
+    historico = database.buscar_historico(empresa["id"])
+    return {"historico": historico}
+
+
+# ── Agente endpoints ────────────────────────────────────────────────
 
 @app.post("/agente/tarefa")
 def agente_tarefa(req: TarefaRequest):

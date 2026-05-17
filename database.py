@@ -161,3 +161,74 @@ def criar_tabela_tarefas():
                 );
             """)
         con.commit()
+
+
+def buscar_empresa_sem_senha(email):
+    with _conn() as con:
+        with con.cursor() as cur:
+            cur.execute("SELECT * FROM empresas WHERE email=%s AND ativa=1", (email,))
+            row = cur.fetchone()
+    return dict(row) if row else None
+
+
+def definir_senha(email, senha_hash):
+    with _conn() as con:
+        with con.cursor() as cur:
+            cur.execute("UPDATE empresas SET senha_hash=%s WHERE email=%s", (senha_hash, email))
+        con.commit()
+
+
+def criar_tarefa(empresa_id, modulo, parametros):
+    import json
+    with _conn() as con:
+        with con.cursor() as cur:
+            cur.execute(
+                "INSERT INTO tarefas (empresa_id, modulo, parametros, status) VALUES (%s,%s,%s,'pendente')",
+                (empresa_id, modulo, json.dumps(parametros))
+            )
+        con.commit()
+
+
+def criar_tarefa_agendada(empresa_id, modulo, agendado_para):
+    with _conn() as con:
+        with con.cursor() as cur:
+            cur.execute(
+                "INSERT INTO tarefas (empresa_id, modulo, parametros, status, agendado_para) "
+                "VALUES (%s,%s,'{}','agendado',%s)",
+                (empresa_id, modulo, agendado_para)
+            )
+        con.commit()
+
+
+def buscar_proxima_tarefa(empresa_id):
+    with _conn() as con:
+        with con.cursor() as cur:
+            cur.execute("""
+                SELECT * FROM tarefas
+                WHERE empresa_id=%s AND status='pendente'
+                ORDER BY criado_em ASC LIMIT 1
+            """, (empresa_id,))
+            row = cur.fetchone()
+    return dict(row) if row else None
+
+
+def atualizar_status_tarefa(tarefa_id, status, observacao=""):
+    with _conn() as con:
+        with con.cursor() as cur:
+            cur.execute(
+                "UPDATE tarefas SET status=%s, observacao=%s WHERE id=%s",
+                (status, observacao, tarefa_id)
+            )
+        con.commit()
+
+
+def buscar_historico(empresa_id, limite=10):
+    with _conn() as con:
+        with con.cursor() as cur:
+            cur.execute("""
+                SELECT modulo, status, quando, observacao
+                FROM acessos WHERE empresa_id=%s
+                ORDER BY quando DESC LIMIT %s
+            """, (empresa_id, limite))
+            rows = cur.fetchall()
+    return [dict(r) for r in rows]
