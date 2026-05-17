@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RWA Tecnologia Operacional</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap');
+  :root {
+    --bg:      #0d0d1a;
+    --surface: #13131f;
+    --card:    #1a1a2e;
+    --border:  #2a2a45;
+    --indigo:  #4f46e5;
+    --indigo2: #6366f1;
+    --green:   #22c55e;
+    --yellow:  #eab308;
+    --red:     #ef4444;
+    --text:    #e2e8f0;
+    --muted:   #64748b;
+    --mono:    'JetBrains Mono', monospace;
+    --sans:    'Inter', sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: var(--sans); min-height: 100vh; }
+
+  /* ── LOGIN ── */
+  #tela-login {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .login-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 40px;
+    width: 380px;
+  }
+  .login-logo { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+  .logo-icon {
+    width: 38px; height: 38px; background: var(--indigo);
+    border-radius: 50%; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 4px; padding: 9px;
+  }
+  .logo-icon span { display: block; width: 100%; height: 2.5px; background: white; border-radius: 2px; }
+  .logo-text { font-family: var(--mono); font-weight: 700; font-size: 16px; }
+  .logo-sub { font-size: 10px; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 1px; }
+  .tagline { font-size: 11px; color: var(--muted); font-family: var(--mono); margin-bottom: 28px; letter-spacing: 0.06em; }
+  .input-field {
+    width: 100%; background: var(--surface); border: 1px solid var(--border);
+    color: var(--text); padding: 11px 14px; border-radius: 8px;
+    font-size: 14px; font-family: var(--sans); margin-bottom: 12px; outline: none;
+    transition: border-color 0.2s;
+  }
+  .input-field:focus { border-color: var(--indigo); }
+  .btn-primary {
+    width: 100%; background: var(--indigo); color: white; border: none;
+    padding: 12px 16px; border-radius: 8px; font-size: 14px; font-weight: 600;
+    font-family: var(--sans); cursor: pointer; transition: background 0.2s; margin-top: 4px;
+  }
+  .btn-primary:hover { background: var(--indigo2); }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+  .link-acesso { text-align: center; margin-top: 16px; font-size: 12px; color: var(--muted); }
+  .link-acesso a { color: var(--indigo2); text-decoration: none; font-weight: 500; cursor: pointer; }
+  .msg-erro {
+    background: #7f1d1d44; border: 1px solid #ef444444; border-radius: 8px;
+    padding: 10px 14px; font-size: 12px; color: var(--red);
+    font-family: var(--mono); margin-top: 12px; display: none;
+  }
+  .msg-ok {
+    background: #14532d44; border: 1px solid #22c55e44; border-radius: 8px;
+    padding: 10px 14px; font-size: 12px; color: var(--green);
+    font-family: var(--mono); margin-top: 12px; display: none;
+  }
+
+  /* ── PAINEL ── */
+  #tela-painel { display: none; flex-direction: column; min-height: 100vh; }
+  header {
+    background: var(--surface); border-bottom: 1px solid var(--border);
+    padding: 0 32px; height: 60px; display: flex; align-items: center; justify-content: space-between;
+  }
+  .header-logo { display: flex; align-items: center; gap: 12px; }
+  .header-right { display: flex; align-items: center; gap: 16px; }
+  .cliente-nome { font-size: 13px; color: var(--muted); }
+  .cliente-nome strong { color: var(--text); font-weight: 500; }
+  .btn-sair {
+    font-size: 12px; color: var(--muted); background: none;
+    border: 1px solid var(--border); padding: 5px 12px; border-radius: 6px;
+    cursor: pointer; font-family: var(--sans); transition: all 0.2s;
+  }
+  .btn-sair:hover { border-color: var(--indigo); color: var(--text); }
+  main { flex: 1; padding: 32px; max-width: 1100px; margin: 0 auto; width: 100%; }
+  .status-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 28px; }
+  .status-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px 24px; }
+  .s-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; font-family: var(--mono); }
+  .s-valor { font-size: 20px; font-weight: 600; font-family: var(--mono); color: var(--text); }
+  .s-valor.verde { color: var(--green); }
+  .badge { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; padding: 3px 10px; border-radius: 20px; font-family: var(--mono); margin-top: 6px; }
+  .badge.ativa { background: #14532d44; color: var(--green); border: 1px solid #22c55e44; }
+  .badge.vencendo { background: #78350f44; color: var(--yellow); border: 1px solid #eab30844; }
+  .secao-titulo { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; font-family: var(--mono); margin-bottom: 14px; }
+  .acoes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 28px; }
+  .acao-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 24px; transition: border-color 0.2s; }
+  .acao-card:hover { border-color: var(--indigo); }
+  .acao-card h3 { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+  .acao-card p { font-size: 12px; color: var(--muted); margin-bottom: 18px; line-height: 1.5; }
+  .select-modulo {
+    width: 100%; background: var(--surface); border: 1px solid var(--border);
+    color: var(--text); padding: 8px 12px; border-radius: 8px;
+    font-size: 13px; font-family: var(--sans); margin-bottom: 12px; outline: none;
+  }
+  .select-modulo:focus { border-color: var(--indigo); }
+  .btn-executar {
+    width: 100%; background: var(--indigo); color: white; border: none;
+    padding: 10px 16px; border-radius: 8px; font-size: 13px; font-weight: 600;
+    font-family: var(--sans); cursor: pointer; transition: background 0.2s;
+  }
+  .btn-executar:hover { background: var(--indigo2); }
+  .btn-agendar {
+    width: 100%; background: transparent; color: var(--indigo2);
+    border: 1px solid var(--indigo); padding: 10px 16px; border-radius: 8px;
+    font-size: 13px; font-weight: 600; font-family: var(--sans); cursor: pointer;
+    transition: all 0.2s; margin-bottom: 12px;
+  }
+  .btn-agendar:hover { background: #4f46e522; }
+  .historico-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+  .historico-header {
+    padding: 16px 24px; border-bottom: 1px solid var(--border);
+    font-size: 13px; font-weight: 600; display: flex; justify-content: space-between; align-items: center;
+  }
+  .historico-header span { font-size: 11px; color: var(--muted); font-family: var(--mono); }
+  table { width: 100%; border-collapse: collapse; }
+  thead tr { background: var(--surface); }
+  th { padding: 10px 24px; text-align: left; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; font-family: var(--mono); font-weight: 400; }
+  td { padding: 14px 24px; font-size: 13px; border-bottom: 1px solid var(--border); }
+  tr:last-child td { border-bottom: none; }
+  .status-pill { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-family: var(--mono); font-weight: 600; }
+  .status-pill.concluido { background: #14532d44; color: var(--green); }
+  .status-pill.em_execucao { background: #1e3a8a44; color: #60a5fa; }
+  .status-pill.erro { background: #7f1d1d44; color: var(--red); }
+  .status-pill.pendente { background: #78350f44; color: var(--yellow); }
+  .modulo-tag { font-family: var(--mono); font-size: 11px; background: #4f46e522; color: var(--indigo2); padding: 3px 8px; border-radius: 4px; }
+  .vazio { padding: 32px 24px; text-align: center; color: var(--muted); font-size: 13px; }
+
+  /* ── PRIMEIRO ACESSO ── */
+  #tela-primeiro { display: none; min-height: 100vh; align-items: center; justify-content: center; }
+</style>
+</head>
+<body>
+
+<!-- TELA LOGIN -->
+<div id="tela-login">
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="logo-icon"><span></span><span></span><span></span></div>
+      <div><div class="logo-text">RWA</div><div class="logo-sub">Tecnologia Operacional</div></div>
+    </div>
+    <div class="tagline">Estabilidade. Resultado. Conformidade.</div>
+    <input class="input-field" id="login-email" type="email" placeholder="Email de acesso">
+    <input class="input-field" id="login-senha" type="password" placeholder="Senha">
+    <button class="btn-primary" id="btn-login" onclick="fazerLogin()">Entrar</button>
+    <div class="msg-erro" id="login-erro"></div>
+    <div class="link-acesso"><a onclick="mostrarPrimeiroAcesso()">Primeiro acesso? Clique aqui</a></div>
+  </div>
+</div>
+
+<!-- TELA PRIMEIRO ACESSO -->
+<div id="tela-primeiro" style="display:none; min-height:100vh; align-items:center; justify-content:center;">
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="logo-icon"><span></span><span></span><span></span></div>
+      <div><div class="logo-text">RWA</div><div class="logo-sub">Primeiro Acesso</div></div>
+    </div>
+    <div class="tagline">Crie sua senha de acesso.</div>
+    <input class="input-field" id="pa-email" type="email" placeholder="Seu email">
+    <input class="input-field" id="pa-senha" type="password" placeholder="Criar senha">
+    <input class="input-field" id="pa-senha2" type="password" placeholder="Confirmar senha">
+    <button class="btn-primary" onclick="fazerPrimeiroAcesso()">Criar senha e entrar</button>
+    <div class="msg-erro" id="pa-erro"></div>
+    <div class="msg-ok" id="pa-ok"></div>
+    <div class="link-acesso"><a onclick="mostrarLogin()">Já tenho senha</a></div>
+  </div>
+</div>
+
+<!-- TELA PAINEL -->
+<div id="tela-painel" style="display:none; flex-direction:column; min-height:100vh;">
+  <header>
+    <div class="header-logo">
+      <div class="logo-icon"><span></span><span></span><span></span></div>
+      <div><div class="logo-text">RWA</div><div class="logo-sub">Tecnologia Operacional</div></div>
+    </div>
+    <div class="header-right">
+      <div class="cliente-nome">Logado como <strong id="painel-nome"></strong></div>
+      <button class="btn-sair" onclick="sair()">Sair</button>
+    </div>
+  </header>
+  <main>
+    <div class="status-row">
+      <div class="status-card">
+        <div class="s-label">Licença</div>
+        <div class="s-valor verde">ATIVA</div>
+        <div class="badge ativa" id="badge-venc">—</div>
+      </div>
+      <div class="status-card">
+        <div class="s-label">Vencimento</div>
+        <div class="s-valor" id="painel-venc">—</div>
+      </div>
+      <div class="status-card">
+        <div class="s-label">Última execução</div>
+        <div class="s-valor" id="ultima-exec" style="font-size:14px">—</div>
+      </div>
+    </div>
+
+    <div class="secao-titulo">Execução</div>
+    <div class="acoes-grid">
+      <div class="acao-card">
+        <h3>Executar agora</h3>
+        <p>Inicia a automação imediatamente na máquina autorizada.</p>
+        <select class="select-modulo" id="sel-modulo-exec">
+          <option value="sao_luis">São Luís — STM</option>
+          <option value="padrao_nacional">Padrão Nacional — NFS-e</option>
+        </select>
+        <button class="btn-executar" onclick="executarAgora()">▶ Executar agora</button>
+        <div class="msg-ok" id="exec-ok" style="margin-top:10px"></div>
+        <div class="msg-erro" id="exec-erro" style="margin-top:10px"></div>
+      </div>
+      <div class="acao-card">
+        <h3>Agendar execução</h3>
+        <p>Define data e hora para a automação rodar automaticamente.</p>
+        <select class="select-modulo" id="sel-modulo-ag">
+          <option value="sao_luis">São Luís — STM</option>
+          <option value="padrao_nacional">Padrão Nacional — NFS-e</option>
+        </select>
+        <input type="datetime-local" class="input-field" id="ag-datetime" style="margin-bottom:12px">
+        <button class="btn-agendar" onclick="agendar()">⏱ Agendar</button>
+        <div class="msg-ok" id="ag-ok"></div>
+        <div class="msg-erro" id="ag-erro"></div>
+      </div>
+    </div>
+
+    <div class="secao-titulo">Histórico de execuções</div>
+    <div class="historico-card">
+      <div class="historico-header">Execuções recentes <span>últimas 10</span></div>
+      <table>
+        <thead><tr><th>Data / Hora</th><th>Módulo</th><th>Status</th></tr></thead>
+        <tbody id="historico-body"><tr><td colspan="3" class="vazio">Carregando...</td></tr></tbody>
+      </table>
+    </div>
+  </main>
+</div>
+
+<script>
+const API = '';  // mesmo domínio
+let _sessao = null;
+
+// ── Fingerprint ──────────────────────────────────────────────────
+function gerarFingerprint() {
+  const dados = [
+    navigator.userAgent,
+    navigator.language,
+    screen.width + 'x' + screen.height,
+    new Date().getTimezoneOffset(),
+    navigator.hardwareConcurrency || 0,
+    navigator.platform || '',
+  ].join('|');
+  let hash = 0;
+  for (let i = 0; i < dados.length; i++) {
+    hash = ((hash << 5) - hash) + dados.charCodeAt(i);
+    hash |= 0;
+  }
+  return Math.abs(hash).toString(16).padStart(8,'0') + Date.now().toString(16);
+}
+
+const FINGERPRINT = gerarFingerprint();
+
+// ── Navegação ────────────────────────────────────────────────────
+function mostrarLogin() {
+  document.getElementById('tela-login').style.display = 'flex';
+  document.getElementById('tela-primeiro').style.display = 'none';
+  document.getElementById('tela-painel').style.display = 'none';
+}
+
+function mostrarPrimeiroAcesso() {
+  document.getElementById('tela-login').style.display = 'none';
+  document.getElementById('tela-primeiro').style.display = 'flex';
+  document.getElementById('tela-painel').style.display = 'none';
+}
+
+function mostrarPainel(dados) {
+  document.getElementById('tela-login').style.display = 'none';
+  document.getElementById('tela-primeiro').style.display = 'none';
+  document.getElementById('tela-painel').style.display = 'flex';
+  document.getElementById('painel-nome').textContent = dados.cliente;
+  document.getElementById('painel-venc').textContent = dados.vencimento;
+  document.getElementById('badge-venc').textContent = 'Vence em ' + diasRestantes(dados.vencimento) + ' dias';
+  carregarHistorico();
+}
+
+function diasRestantes(venc) {
+  const hoje = new Date();
+  const v = new Date(venc);
+  return Math.max(0, Math.ceil((v - hoje) / 86400000));
+}
+
+function sair() {
+  _sessao = null;
+  localStorage.removeItem('rwa_sessao');
+  mostrarLogin();
+}
+
+// ── Login ────────────────────────────────────────────────────────
+async function fazerLogin() {
+  const email = document.getElementById('login-email').value.trim();
+  const senha = document.getElementById('login-senha').value;
+  const erroEl = document.getElementById('login-erro');
+  erroEl.style.display = 'none';
+
+  if (!email || !senha) { mostrarErro(erroEl, 'Preencha email e senha.'); return; }
+
+  const btn = document.getElementById('btn-login');
+  btn.disabled = true;
+  btn.textContent = 'Aguarde...';
+
+  try {
+    const resp = await fetch(API + '/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, senha, fingerprint: FINGERPRINT, versao: '1.0' })
+    });
+    const data = await resp.json();
+
+    if (data.status === 'ok') {
+      _sessao = { email, fingerprint: FINGERPRINT, ...data };
+      localStorage.setItem('rwa_sessao', JSON.stringify(_sessao));
+      mostrarPainel(data);
+    } else {
+      mostrarErro(erroEl, data.mensagem || 'Erro ao fazer login.');
+    }
+  } catch(e) {
+    mostrarErro(erroEl, 'Erro de conexão com o servidor.');
+  }
+
+  btn.disabled = false;
+  btn.textContent = 'Entrar';
+}
+
+// ── Primeiro acesso ──────────────────────────────────────────────
+async function fazerPrimeiroAcesso() {
+  const email  = document.getElementById('pa-email').value.trim();
+  const senha  = document.getElementById('pa-senha').value;
+  const senha2 = document.getElementById('pa-senha2').value;
+  const erroEl = document.getElementById('pa-erro');
+  const okEl   = document.getElementById('pa-ok');
+  erroEl.style.display = 'none';
+  okEl.style.display = 'none';
+
+  if (!email || !senha) { mostrarErro(erroEl, 'Preencha todos os campos.'); return; }
+  if (senha !== senha2) { mostrarErro(erroEl, 'As senhas não conferem.'); return; }
+  if (senha.length < 6) { mostrarErro(erroEl, 'Senha deve ter no mínimo 6 caracteres.'); return; }
+
+  try {
+    const resp = await fetch(API + '/auth/primeiro-acesso', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, senha, fingerprint: FINGERPRINT })
+    });
+    const data = await resp.json();
+
+    if (data.status === 'ok') {
+      okEl.textContent = 'Senha criada! Redirecionando...';
+      okEl.style.display = 'block';
+      setTimeout(() => {
+        _sessao = { email, fingerprint: FINGERPRINT, ...data };
+        localStorage.setItem('rwa_sessao', JSON.stringify(_sessao));
+        mostrarPainel(data);
+      }, 1500);
+    } else {
+      mostrarErro(erroEl, data.mensagem || 'Erro ao criar senha.');
+    }
+  } catch(e) {
+    mostrarErro(erroEl, 'Erro de conexão com o servidor.');
+  }
+}
+
+// ── Executar agora ───────────────────────────────────────────────
+async function executarAgora() {
+  const modulo = document.getElementById('sel-modulo-exec').value;
+  const okEl   = document.getElementById('exec-ok');
+  const erroEl = document.getElementById('exec-erro');
+  okEl.style.display = 'none'; erroEl.style.display = 'none';
+
+  try {
+    const resp = await fetch(API + '/portal/executar', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: _sessao.email, fingerprint: FINGERPRINT, modulo })
+    });
+    const data = await resp.json();
+    if (data.ok) {
+      okEl.textContent = '✓ Comando enviado. O agente iniciará em instantes.';
+      okEl.style.display = 'block';
+      setTimeout(carregarHistorico, 2000);
+    } else {
+      mostrarErro(erroEl, data.erro || 'Erro ao enviar comando.');
+    }
+  } catch(e) {
+    mostrarErro(erroEl, 'Erro de conexão com o servidor.');
+  }
+}
+
+// ── Agendar ──────────────────────────────────────────────────────
+async function agendar() {
+  const modulo   = document.getElementById('sel-modulo-ag').value;
+  const datetime = document.getElementById('ag-datetime').value;
+  const okEl     = document.getElementById('ag-ok');
+  const erroEl   = document.getElementById('ag-erro');
+  okEl.style.display = 'none'; erroEl.style.display = 'none';
+
+  if (!datetime) { mostrarErro(erroEl, 'Selecione data e hora.'); return; }
+
+  try {
+    const resp = await fetch(API + '/portal/agendar', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: _sessao.email, fingerprint: FINGERPRINT, modulo, agendado_para: datetime })
+    });
+    const data = await resp.json();
+    if (data.ok) {
+      okEl.textContent = '✓ Agendado com sucesso.';
+      okEl.style.display = 'block';
+    } else {
+      mostrarErro(erroEl, data.erro || 'Erro ao agendar.');
+    }
+  } catch(e) {
+    mostrarErro(erroEl, 'Erro de conexão com o servidor.');
+  }
+}
+
+// ── Histórico ────────────────────────────────────────────────────
+async function carregarHistorico() {
+  if (!_sessao) return;
+  try {
+    const resp = await fetch(API + '/portal/historico?email=' + encodeURIComponent(_sessao.email));
+    const data = await resp.json();
+    const tbody = document.getElementById('historico-body');
+
+    if (!data.historico || data.historico.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="3" class="vazio">Nenhuma execução registrada.</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = data.historico.map(h => `
+      <tr>
+        <td style="font-family:var(--mono);font-size:12px">${h.quando}</td>
+        <td><span class="modulo-tag">${h.modulo}</span></td>
+        <td><span class="status-pill ${h.status}">${labelStatus(h.status)}</span></td>
+      </tr>
+    `).join('');
+
+    const ultimo = data.historico[0];
+    document.getElementById('ultima-exec').textContent = ultimo.modulo + ' — ' + ultimo.quando.substring(0,10);
+  } catch(e) {}
+}
+
+function labelStatus(s) {
+  const m = { concluido: '● Concluído', em_execucao: '● Em execução', erro: '● Erro', pendente: '● Pendente' };
+  return m[s] || s;
+}
+
+function mostrarErro(el, msg) {
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+
+// ── Inicialização ────────────────────────────────────────────────
+window.onload = function() {
+  const sess = localStorage.getItem('rwa_sessao');
+  if (sess) {
+    try {
+      _sessao = JSON.parse(sess);
+      mostrarPainel(_sessao);
+      return;
+    } catch(e) {}
+  }
+  mostrarLogin();
+};
+
+// Enter no login
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    if (document.getElementById('tela-login').style.display !== 'none') fazerLogin();
+    if (document.getElementById('tela-primeiro').style.display !== 'none') fazerPrimeiroAcesso();
+  }
+});
+</script>
+</body>
+</html>
