@@ -331,7 +331,7 @@ async function fazerLogin() {
     const resp = await fetch(API + '/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, senha, fingerprint: FINGERPRINT, versao: '1.0' })
+      body: JSON.stringify({ email, senha })
     });
     const data = await resp.json();
 
@@ -369,7 +369,7 @@ async function fazerPrimeiroAcesso() {
     const resp = await fetch(API + '/auth/primeiro-acesso', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, senha, fingerprint: FINGERPRINT })
+      body: JSON.stringify({ email, senha })
     });
     const data = await resp.json();
 
@@ -400,7 +400,7 @@ async function executarAgora() {
     const resp = await fetch(API + '/portal/executar', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: _sessao.email, fingerprint: FINGERPRINT, modulo })
+      body: JSON.stringify({ email: _sessao.email, modulo })
     });
     const data = await resp.json();
     if (data.ok) {
@@ -429,7 +429,7 @@ async function agendar() {
     const resp = await fetch(API + '/portal/agendar', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: _sessao.email, fingerprint: FINGERPRINT, modulo, agendado_para: datetime })
+      body: JSON.stringify({ email: _sessao.email, modulo, agendado_para: datetime })
     });
     const data = await resp.json();
     if (data.ok) {
