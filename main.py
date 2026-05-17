@@ -93,3 +93,44 @@ def login(req: LoginRequest):
 @app.get("/")
 def root():
     return {"status": "online", "sistema": "RWA Tecnologia Operacional"}
+
+
+# ── Modelos agente ─────────────────────────────────────────────────
+
+class TarefaRequest(BaseModel):
+    email:       str
+    fingerprint: str
+
+class StatusRequest(BaseModel):
+    email:       str
+    fingerprint: str
+    tarefa_id:   str
+    status:      str
+    observacao:  str = ""
+
+
+# ── Endpoints do agente ────────────────────────────────────────────
+
+@app.post("/agente/tarefa")
+def agente_tarefa(req: TarefaRequest):
+    empresa = database.buscar_empresa(req.email)
+    if not empresa:
+        return {"tarefa": None}
+
+    maquinas = database.listar_maquinas(empresa["id"])
+    fps = [m["fingerprint"] for m in maquinas]
+    if req.fingerprint not in fps:
+        return {"tarefa": None, "erro": "maquina_nao_autorizada"}
+
+    tarefa = database.buscar_proxima_tarefa(empresa["id"])
+    return {"tarefa": tarefa}
+
+
+@app.post("/agente/status")
+def agente_status(req: StatusRequest):
+    empresa = database.buscar_empresa(req.email)
+    if not empresa:
+        return {"ok": False}
+
+    database.atualizar_status_tarefa(req.tarefa_id, req.status, req.observacao)
+    return {"ok": True}
