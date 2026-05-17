@@ -36,7 +36,7 @@ class PrimeiroAcessoRequest(BaseModel):
 class AgenteLoginRequest(BaseModel):
     email:       str
     senha:       str
-    fingerprint: str
+    fingerprint: str = ""
     versao:      str = "1.0"
 
 class TarefaRequest(BaseModel):
