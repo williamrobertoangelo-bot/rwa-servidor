@@ -159,17 +159,6 @@ def agente_login(req: AgenteLoginRequest):
     if hoje > venc:
         return {"status": "erro", "mensagem": "Licença vencida. Entre em contato com a RWA."}
 
-    maquinas = database.listar_maquinas(empresa["id"])
-    fps = [m["fingerprint"] for m in maquinas]
-
-    if req.fingerprint not in fps:
-        if len(fps) == 0:
-            database.registrar_maquina(empresa["id"], req.fingerprint)
-        else:
-            auth.notificar_maquina_nao_autorizada(empresa["nome"], req.email, req.fingerprint)
-            return {"status": "erro", "mensagem": "Estação não autorizada. Entre em contato com a RWA."}
-
-    database.registrar_acesso(empresa["id"], req.fingerprint, req.versao)
     return {
         "status":     "ok",
         "mensagem":   "Acesso autorizado.",
