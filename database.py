@@ -226,9 +226,9 @@ def buscar_historico(empresa_id, limite=10):
     with _conn() as con:
         with con.cursor() as cur:
             cur.execute("""
-                SELECT modulo, status, quando, observacao
-                FROM acessos WHERE empresa_id=%s
-                ORDER BY quando DESC LIMIT %s
+                SELECT modulo, status, criado_em as quando, observacao
+                FROM tarefas WHERE empresa_id=%s
+                ORDER BY criado_em DESC LIMIT %s
             """, (empresa_id, limite))
             rows = cur.fetchall()
     return [dict(r) for r in rows]
