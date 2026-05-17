@@ -388,17 +388,63 @@
 
             const dados = await resposta.json();
 
-            alert(dados.mensagem);
-
             if (dados.status === 'ok') {
-                console.log('Login autorizado');
+                localStorage.setItem('rwa_logado', 'sim');
+                localStorage.setItem('rwa_email', dados.email || email);
+                localStorage.setItem('rwa_cliente', dados.cliente || 'Cliente RWA');
+                mostrarPainel(dados);
+                return;
             }
+
+            alert(dados.mensagem || 'Não foi possível realizar o login.');
+        }
+
+        function mostrarPainel(dados) {
+            const cliente = dados.cliente || localStorage.getItem('rwa_cliente') || 'Cliente RWA';
+            const email = dados.email || localStorage.getItem('rwa_email') || '';
+            const vencimento = dados.vencimento || '';
+
+            document.body.innerHTML = `
+                <div class="wrapper">
+                    <div class="login-card">
+                        <div class="logo">
+                            <div class="logo-title">RW<span>A</span></div>
+                            <div class="logo-sub2">SOLUÇÕES</div>
+                            <span class="logo-sub">Painel Operacional</span>
+                        </div>
+
+                        <div class="welcome">
+                            <h2>Acesso autorizado</h2>
+                            <p>${cliente}</p>
+                            <p>${email}</p>
+                            <p>${vencimento ? 'Licença válida até ' + vencimento : ''}</p>
+                        </div>
+
+                        <button type="button" onclick="alert('Botão de download do agente ainda será conectado.')">Baixar RWA Agent</button>
+                        <br><br>
+                        <button type="button" onclick="alert('Histórico ainda será conectado.')">Histórico</button>
+                        <br><br>
+                        <button type="button" onclick="sair()">Sair</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function sair() {
+            localStorage.removeItem('rwa_logado');
+            localStorage.removeItem('rwa_email');
+            localStorage.removeItem('rwa_cliente');
+            window.location.href = '/';
         }
 
         function toggleSenha(btn) {
             var input = document.getElementById('senha');
             input.type = input.type === 'password' ? 'text' : 'password';
             btn.style.opacity = input.type === 'text' ? '0.9' : '0.45';
+        }
+
+        if (localStorage.getItem('rwa_logado') === 'sim') {
+            mostrarPainel({});
         }
     </script>
 </body>
