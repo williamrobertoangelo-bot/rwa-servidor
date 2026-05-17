@@ -297,7 +297,7 @@ function mostrarPainel(dados) {
   document.getElementById('tela-primeiro').style.display = 'none';
   document.getElementById('tela-painel').style.display = 'flex';
   document.getElementById('painel-nome').textContent = dados.cliente;
-  document.getElementById('painel-venc').textContent = dados.vencimento;
+  const _vp = dados.vencimento.split('-'); document.getElementById('painel-venc').textContent = _vp[2]+'/'+_vp[1]+'/'+_vp[0];
   document.getElementById('badge-venc').textContent = 'Vence em ' + diasRestantes(dados.vencimento) + ' dias';
   carregarHistorico();
 }
