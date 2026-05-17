@@ -302,7 +302,7 @@
                 <p>Acesse sua plataforma para gerenciar suas automações</p>
             </div>
 
-            <form method="POST" action="/auth/login">
+            <form onsubmit="login(event)">
 
                 <div class="form-group">
                     <label for="email">E-mail</label>
@@ -369,6 +369,32 @@
     </div>
 
     <script>
+        async function login(event) {
+            event.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const senha = document.getElementById('senha').value;
+
+            const resposta = await fetch('/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email: email,
+                    senha: senha
+                })
+            });
+
+            const dados = await resposta.json();
+
+            alert(dados.mensagem);
+
+            if (dados.status === 'ok') {
+                console.log('Login autorizado');
+            }
+        }
+
         function toggleSenha(btn) {
             var input = document.getElementById('senha');
             input.type = input.type === 'password' ? 'text' : 'password';
