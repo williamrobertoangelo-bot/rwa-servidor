@@ -195,3 +195,10 @@ def agente_status(req: StatusRequest):
 @app.get("/health")
 def health():
     return {"status": "online", "sistema": "RWA Tecnologia Operacional"}
+
+
+# ── SPA Fallback (deve ser a última rota) ──────────────────────────
+
+@app.get("/{full_path:path}")
+def spa_fallback(full_path: str):
+    return FileResponse("static/index.html")
