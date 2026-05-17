@@ -456,16 +456,17 @@ async function carregarHistorico() {
       return;
     }
 
+    const _fmtDH = q => { const p=q.substring(0,19).split('T').join(' ').split(' '); const d=p[0].split('-'); return d[2]+'/'+d[1]+'/'+d[0]+' '+(p[1]||''); };
     tbody.innerHTML = data.historico.map(h => `
       <tr>
-        <td style="font-family:var(--mono);font-size:12px">${h.quando}</td>
+        <td style="font-family:var(--mono);font-size:12px">${_fmtDH(h.quando)}</td>
         <td><span class="modulo-tag">${h.modulo}</span></td>
         <td><span class="status-pill ${h.status}">${labelStatus(h.status)}</span></td>
       </tr>
     `).join('');
 
     const ultimo = data.historico[0];
-    document.getElementById('ultima-exec').textContent = ultimo.modulo + ' — ' + ultimo.quando.substring(0,10);
+    const _dup = ultimo.quando.substring(0,10).split('-'); document.getElementById('ultima-exec').textContent = ultimo.modulo + ' — ' + _dup[2]+'/'+_dup[1]+'/'+_dup[0];
   } catch(e) {}
 }
 
