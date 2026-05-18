@@ -23,8 +23,9 @@ def menu():
     print("  2. Listar empresas")
     print("  3. Listar máquinas de uma empresa")
     print("  4. Remover máquina  (libera nova instalação)")
-    print("  5. Renovar licença")
-    print("  6. Bloquear empresa")
+    print("  5. Registrar máquina (adicionar fingerprint)")
+    print("  6. Renovar licença")
+    print("  7. Bloquear empresa")
     print("  0. Sair")
     print("═" * 52)
     return input("  Opção: ").strip()
@@ -64,12 +65,23 @@ def main():
             database.remover_maquina(eid, fp)
 
         elif op == "5":
+            print("\n── REGISTRAR MÁQUINA ──")
+            email = input("Email da empresa  : ").strip()
+            fp    = input("Fingerprint       : ").strip()
+            emp   = database.buscar_empresa(email)
+            if not emp:
+                print("  ✗ Empresa não encontrada.")
+            else:
+                database.registrar_maquina(emp["id"], fp)
+                print("  ✓ Máquina registrada.")
+
+        elif op == "6":
             print("\n── RENOVAR LICENÇA ──")
             email = input("Email da empresa        : ").strip()
             venc  = input("Novo vencimento (YYYY-MM-DD): ").strip()
             database.renovar_licenca(email, venc)
 
-        elif op == "6":
+        elif op == "7":
             print("\n── BLOQUEAR EMPRESA ──")
             email = input("Email da empresa: ").strip()
             database.bloquear_empresa(email)

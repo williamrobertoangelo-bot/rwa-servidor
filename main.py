@@ -63,6 +63,10 @@ class CancelarRequest(BaseModel):
     email:     str
     tarefa_id: int
 
+class RegistrarMaquinaRequest(BaseModel):
+    email:       str
+    fingerprint: str
+
 
 # ── Portal (web — sem fingerprint) ─────────────────────────────────
 
@@ -207,6 +211,15 @@ def agente_status(req: StatusRequest):
 
     database.atualizar_status_tarefa(req.tarefa_id, req.status, req.observacao)
     return {"ok": True}
+
+
+@app.post("/admin/registrar-maquina")
+def admin_registrar_maquina(req: RegistrarMaquinaRequest):
+    empresa = database.buscar_empresa(req.email)
+    if not empresa:
+        return {"ok": False, "erro": "Empresa não encontrada."}
+    database.registrar_maquina(empresa["id"], req.fingerprint)
+    return {"ok": True, "mensagem": f"Máquina registrada para {empresa['nome']}"}
 
 
 @app.get("/health")
