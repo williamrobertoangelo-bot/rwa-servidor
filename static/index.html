@@ -1,814 +1,1233 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <title>RWA Soluções | Acesso</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        *, *::before, *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+<meta charset="UTF-8">
+<title>RWA Soluções | Portal</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
-        body {
-            min-height: 100vh;
-            font-family: 'Sora', Arial, sans-serif;
-            color: #e8edf5;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-            background: #040e1e;
-        }
+:root {
+  --bg:       #070d1a;
+  --surface:  #0d1526;
+  --card:     #111c33;
+  --card2:    #0f1830;
+  --border:   rgba(255,255,255,0.07);
+  --border2:  rgba(79,70,229,0.3);
+  --indigo:   #4f46e5;
+  --indigo2:  #6366f1;
+  --indigo3:  #818cf8;
+  --text:     #e8edf5;
+  --muted:    #6b7a99;
+  --muted2:   #4a5570;
+  --green:    #22c55e;
+  --red:      #ef4444;
+  --yellow:   #f59e0b;
+  --blue:     #3b82f6;
+  --mono:     'JetBrains Mono', monospace;
+  --sans:     'Sora', sans-serif;
+}
 
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background:
-                radial-gradient(ellipse 90% 70% at 50% 45%, rgba(8,35,90,0.7) 0%, transparent 70%),
-                linear-gradient(160deg, #020b1a 0%, #05142c 50%, #020b1a 100%);
-            z-index: 0;
-        }
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
 
-        body::after {
-            content: '';
-            position: fixed;
-            inset: -100%;
-            background-image: repeating-linear-gradient(
-                -52deg,
-                transparent,
-                transparent 70px,
-                rgba(25,70,180,0.04) 70px,
-                rgba(25,70,180,0.04) 71px
-            );
-            z-index: 0;
-        }
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 50% at 20% 0%, rgba(79,70,229,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 100%, rgba(99,102,241,0.06) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
 
-        .wrapper {
-            position: relative;
-            z-index: 1;
-            width: 100%;
-            max-width: 480px;
-            padding: 20px;
-        }
+/* ── LOGIN ──────────────────────────────────────────────────────── */
 
-        .login-card {
-            width: 100%;
-            background: rgba(8, 18, 38, 0.85);
-            border: 1px solid rgba(50, 100, 220, 0.2);
-            padding: 44px 42px 36px;
-            border-radius: 20px;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-        }
+#tela-login {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
 
-        .logo {
-            text-align: center;
-            margin-bottom: 30px;
-        }
+.login-card {
+  width: 100%;
+  max-width: 440px;
+  background: rgba(13,21,38,0.9);
+  border: 1px solid rgba(79,70,229,0.2);
+  border-radius: 20px;
+  padding: 44px 40px 36px;
+  backdrop-filter: blur(16px);
+}
 
-        .logo-title {
-            font-size: 38px;
-            font-weight: 800;
-            letter-spacing: 4px;
-            color: #ffffff;
-            line-height: 1;
-        }
+.logo-bloco {
+  text-align: center;
+  margin-bottom: 32px;
+}
 
-        .logo-title span {
-            color: #2563eb;
-        }
+.logo-rwa {
+  font-size: 40px;
+  font-weight: 800;
+  letter-spacing: 5px;
+  color: #fff;
+  line-height: 1;
+}
 
-        .logo-sub2 {
-            display: block;
-            font-size: 22px;
-            font-weight: 700;
-            letter-spacing: 8px;
-            color: #c8d8f0;
-            margin-top: 2px;
-        }
+.logo-rwa span { color: var(--indigo2); }
 
-        .logo-sub {
-            display: block;
-            font-size: 11px;
-            font-weight: 600;
-            letter-spacing: 0.22em;
-            color: #2563eb;
-            text-transform: uppercase;
-            margin-top: 8px;
-        }
+.logo-nome {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  color: var(--indigo3);
+  text-transform: uppercase;
+  margin-top: 10px;
+}
 
-        .welcome {
-            text-align: center;
-            margin-bottom: 28px;
-        }
+.logo-tag {
+  display: block;
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 4px;
+  letter-spacing: 0.05em;
+}
 
-        .welcome h2 {
-            font-size: 21px;
-            font-weight: 700;
-            color: #e8edf5;
-            margin-bottom: 7px;
-        }
+.form-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 7px;
+}
 
-        .welcome p {
-            font-size: 13px;
-            color: #7a8eaa;
-            line-height: 1.5;
-        }
+.input-wrap { position: relative; margin-bottom: 16px; }
 
-        .form-group {
-            margin-bottom: 16px;
-        }
+.input-wrap input {
+  width: 100%;
+  padding: 12px 44px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
+}
 
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 12px;
-            font-weight: 600;
-            color: #8fa0bb;
-            letter-spacing: 0.04em;
-        }
+.input-wrap input:focus {
+  border-color: rgba(99,102,241,0.5);
+  background: rgba(99,102,241,0.05);
+}
 
-        .input-wrap {
-            position: relative;
-        }
+.input-wrap input::placeholder { color: var(--muted2); font-size: 13px; }
 
-        .input-icon {
-            position: absolute;
-            left: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 17px;
-            height: 17px;
-            opacity: 0.45;
-            pointer-events: none;
-        }
+.iico {
+  position: absolute;
+  left: 14px; top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.35;
+  pointer-events: none;
+}
 
-        .form-group input[type="email"],
-        .form-group input[type="password"],
-        .form-group input[type="text"] {
-            width: 100%;
-            padding: 13px 44px;
-            border-radius: 10px;
-            border: 1px solid rgba(255,255,255,0.08);
-            background: rgba(255,255,255,0.04);
-            color: #e8edf5;
-            font-family: 'Sora', Arial, sans-serif;
-            font-size: 14px;
-            outline: none;
-            transition: border-color 0.2s, background 0.2s;
-        }
+.toggle-pw {
+  position: absolute;
+  right: 12px; top: 50%;
+  transform: translateY(-50%);
+  background: none; border: none;
+  cursor: pointer; opacity: 0.35;
+  transition: opacity 0.2s;
+  display: flex; align-items: center;
+}
 
-        .form-group input::placeholder {
-            color: #4a5a72;
-            font-size: 13px;
-        }
+.toggle-pw:hover { opacity: 0.8; }
 
-        .form-group input:focus {
-            border-color: rgba(37, 99, 235, 0.6);
-            background: rgba(37, 99, 235, 0.06);
-        }
+.login-opts {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 22px;
+  font-size: 12px;
+}
 
-        .toggle-senha {
-            position: absolute;
-            right: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 0;
-            display: flex;
-            align-items: center;
-            opacity: 0.45;
-            transition: opacity 0.2s;
-            width: auto;
-        }
+.login-opts label {
+  display: flex; align-items: center; gap: 7px;
+  color: var(--muted); cursor: pointer;
+}
 
-        .toggle-senha:hover {
-            opacity: 0.9;
-            background: none;
-        }
+.login-opts input[type=checkbox] { accent-color: var(--indigo); }
 
-        .toggle-senha svg {
-            width: 17px;
-            height: 17px;
-        }
+.login-opts a { color: var(--indigo3); text-decoration: none; font-size: 12px; }
+.login-opts a:hover { color: var(--indigo2); }
 
-        .options {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 22px;
-            font-size: 13px;
-            color: #8fa0bb;
-        }
+.btn-login {
+  width: 100%;
+  padding: 13px;
+  background: var(--indigo);
+  border: none; border-radius: 10px;
+  color: white;
+  font-family: var(--sans);
+  font-size: 14px; font-weight: 600;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 9px;
+  transition: background 0.2s, transform 0.1s;
+}
 
-        .options label {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            font-size: 13px;
-            color: #8fa0bb;
-        }
+.btn-login:hover { background: var(--indigo2); }
+.btn-login:active { transform: scale(0.99); }
 
-        .options input[type="checkbox"] {
-            width: 15px;
-            height: 15px;
-            accent-color: #2563eb;
-            cursor: pointer;
-        }
+.login-footer {
+  border-top: 1px solid var(--border);
+  margin-top: 24px;
+  padding-top: 16px;
+  text-align: center;
+  color: var(--muted2);
+  font-size: 11px;
+  line-height: 1.8;
+}
 
-        .options a {
-            color: #4a90d9;
-            text-decoration: none;
-            font-size: 13px;
-            transition: color 0.2s;
-        }
+.msg-erro-login {
+  background: rgba(239,68,68,0.1);
+  border: 1px solid rgba(239,68,68,0.3);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 12px;
+  color: var(--red);
+  margin-top: 12px;
+  display: none;
+  font-family: var(--mono);
+}
 
-        .options a:hover {
-            color: #60a5fa;
-        }
+/* ── PAINEL ──────────────────────────────────────────────────────── */
 
-        button[type="submit"] {
-            width: 100%;
-            padding: 14px;
-            border: none;
-            border-radius: 10px;
-            background: #2563eb;
-            color: white;
-            font-family: 'Sora', Arial, sans-serif;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            transition: background 0.2s, transform 0.1s;
-            letter-spacing: 0.02em;
-        }
+#tela-painel {
+  display: none;
+  flex-direction: column;
+  min-height: 100vh;
+  position: relative;
+  z-index: 1;
+}
 
-        button[type="submit"]:hover {
-            background: #1a4fc4;
-        }
+/* Header */
+.pheader {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0 32px;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
 
-        button[type="submit"]:active {
-            transform: scale(0.99);
-        }
+.ph-logo {
+  display: flex; align-items: center; gap: 14px;
+}
 
-        .security {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 7px;
-            margin-top: 18px;
-            color: #4a5a72;
-            font-size: 12px;
-        }
+.ph-logo-text { font-size: 18px; font-weight: 800; letter-spacing: 3px; color: #fff; }
+.ph-logo-text span { color: var(--indigo2); }
+.ph-logo-sub { font-size: 10px; color: var(--muted); letter-spacing: 0.15em; text-transform: uppercase; margin-top: 1px; }
 
-        .footer-divider {
-            border: none;
-            border-top: 1px solid rgba(255,255,255,0.06);
-            margin: 22px 0 16px;
-        }
+.ph-right { display: flex; align-items: center; gap: 14px; }
 
-        .footer {
-            text-align: center;
-            color: #3a4a62;
-            font-size: 11px;
-            line-height: 1.7;
-        }
+.ph-cliente { font-size: 13px; color: var(--muted); }
+.ph-cliente strong { color: var(--text); font-weight: 500; }
 
-        /* ── MENSAGENS / PAINEL ORIGINAL ── */
-  .msg-erro {
-    background: #7f1d1d44; border: 1px solid #ef444444; border-radius: 8px;
-    padding: 10px 14px; font-size: 12px; color: var(--red);
-    font-family: var(--mono); margin-top: 12px; display: none;
-  }
-  .msg-ok {
-    background: #14532d44; border: 1px solid #22c55e44; border-radius: 8px;
-    padding: 10px 14px; font-size: 12px; color: var(--green);
-    font-family: var(--mono); margin-top: 12px; display: none;
-  }
+.btn-sair {
+  font-size: 12px; color: var(--muted);
+  background: none; border: 1px solid var(--border);
+  padding: 5px 14px; border-radius: 6px;
+  cursor: pointer; font-family: var(--sans);
+  transition: all 0.2s;
+}
+.btn-sair:hover { border-color: var(--border2); color: var(--text); }
 
-  /* ── PAINEL ── */
-  #tela-painel { display: none; flex-direction: column; min-height: 100vh; position: relative; z-index: 1; width: 100%; }
-  header {
-    background: var(--surface); border-bottom: 1px solid var(--border);
-    padding: 0 32px; height: 60px; display: flex; align-items: center; justify-content: space-between;
-  }
-  .header-logo { display: flex; align-items: center; gap: 12px; }
-  .header-right { display: flex; align-items: center; gap: 16px; }
-  .cliente-nome { font-size: 13px; color: var(--muted); }
-  .cliente-nome strong { color: var(--text); font-weight: 500; }
-  .btn-sair {
-    font-size: 12px; color: var(--muted); background: none;
-    border: 1px solid var(--border); padding: 5px 12px; border-radius: 6px;
-    cursor: pointer; font-family: var(--sans); transition: all 0.2s;
-  }
-  .btn-sair:hover { border-color: var(--indigo); color: var(--text); }
-  main { flex: 1; padding: 32px; max-width: 1100px; margin: 0 auto; width: 100%; }
-  .status-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 28px; }
-  .status-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px 24px; }
-  .s-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; font-family: var(--mono); }
-  .s-valor { font-size: 20px; font-weight: 600; font-family: var(--mono); color: var(--text); }
-  .s-valor.verde { color: var(--green); }
-  .badge { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; padding: 3px 10px; border-radius: 20px; font-family: var(--mono); margin-top: 6px; }
-  .badge.ativa { background: #14532d44; color: var(--green); border: 1px solid #22c55e44; }
-  .badge.vencendo { background: #78350f44; color: var(--yellow); border: 1px solid #eab30844; }
-  .secao-titulo { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; font-family: var(--mono); margin-bottom: 14px; }
-  .acoes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 28px; }
-  .acao-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 24px; transition: border-color 0.2s; }
-  .acao-card:hover { border-color: var(--indigo); }
-  .acao-card h3 { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
-  .acao-card p { font-size: 12px; color: var(--muted); margin-bottom: 18px; line-height: 1.5; }
-  .select-modulo {
-    width: 100%; background: var(--surface); border: 1px solid var(--border);
-    color: var(--text); padding: 8px 12px; border-radius: 8px;
-    font-size: 13px; font-family: var(--sans); margin-bottom: 12px; outline: none;
-  }
-  .select-modulo:focus { border-color: var(--indigo); }
-  .btn-executar {
-    width: 100%; background: var(--indigo); color: white; border: none;
-    padding: 10px 16px; border-radius: 8px; font-size: 13px; font-weight: 600;
-    font-family: var(--sans); cursor: pointer; transition: background 0.2s;
-  }
-  .btn-executar:hover { background: var(--indigo2); }
-  .btn-agendar {
-    width: 100%; background: transparent; color: var(--indigo2);
-    border: 1px solid var(--indigo); padding: 10px 16px; border-radius: 8px;
-    font-size: 13px; font-weight: 600; font-family: var(--sans); cursor: pointer;
-    transition: all 0.2s; margin-bottom: 12px;
-  }
-  .btn-agendar:hover { background: #4f46e522; }
-  .historico-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
-  .historico-header {
-    padding: 16px 24px; border-bottom: 1px solid var(--border);
-    font-size: 13px; font-weight: 600; display: flex; justify-content: space-between; align-items: center;
-  }
-  .historico-header span { font-size: 11px; color: var(--muted); font-family: var(--mono); }
-  table { width: 100%; border-collapse: collapse; }
-  thead tr { background: var(--surface); }
-  th { padding: 10px 24px; text-align: left; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; font-family: var(--mono); font-weight: 400; }
-  td { padding: 14px 24px; font-size: 13px; border-bottom: 1px solid var(--border); }
-  tr:last-child td { border-bottom: none; }
-  .status-pill { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-family: var(--mono); font-weight: 600; }
-  .status-pill.concluido { background: #14532d44; color: var(--green); }
-  .status-pill.em_execucao { background: #1e3a8a44; color: #60a5fa; }
-  .status-pill.erro { background: #7f1d1d44; color: var(--red); }
-  .status-pill.pendente { background: #78350f44; color: var(--yellow); }
-  .status-pill.agendado { background: #78350f44; color: var(--yellow); }
-  .status-pill.cancelado { background: #3f3f46; color: #d4d4d8; }
+/* Main */
+.pmain {
+  flex: 1;
+  padding: 28px 32px;
+  max-width: 1100px;
+  margin: 0 auto;
+  width: 100%;
+}
 
-  .acoes-cell {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-  }
+/* ── CARDS DE STATUS ── */
+.status-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 28px;
+}
 
-  .btn-mini {
-    border: none;
-    border-radius: 6px;
-    padding: 6px 10px;
-    font-size: 11px;
-    font-family: var(--sans);
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.2s;
-  }
+.scard {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 22px;
+}
 
-  .btn-iniciar {
-    background: #1d4ed8;
-    color: white;
-  }
+.scard-label {
+  font-size: 10px;
+  font-family: var(--mono);
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 8px;
+}
 
-  .btn-iniciar:hover {
-    background: #2563eb;
-  }
+.scard-valor {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+}
 
-  .btn-cancelar {
-    background: #7f1d1d;
-    color: white;
-  }
+.scard-valor.verde { color: var(--green); }
 
-  .btn-cancelar:hover {
-    background: #991b1b;
-  }
-  .modulo-tag { font-family: var(--mono); font-size: 11px; background: #4f46e522; color: var(--indigo2); padding: 3px 8px; border-radius: 4px; }
-  .vazio { padding: 32px 24px; text-align: center; color: var(--muted); font-size: 13px; }
+.badge-licenca {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-family: var(--mono);
+  padding: 3px 10px;
+  border-radius: 20px;
+  margin-top: 4px;
+}
 
-  
-        #tela-painel { display: none; }
-    </style>
+.badge-ativa { background: rgba(34,197,94,0.12); color: var(--green); border: 1px solid rgba(34,197,94,0.25); }
+.badge-vencendo { background: rgba(245,158,11,0.12); color: var(--yellow); border: 1px solid rgba(245,158,11,0.25); }
+
+/* ── BOTÃO ABRIR RWA ── */
+.abrir-rwa-bloco {
+  background: var(--card);
+  border: 1px solid var(--border2);
+  border-radius: 14px;
+  padding: 22px 26px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+  gap: 16px;
+}
+
+.abrir-rwa-info h3 {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.abrir-rwa-info p {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.btn-abrir-rwa {
+  background: var(--indigo);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 11px 24px;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: var(--sans);
+  cursor: pointer;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.2s, transform 0.1s;
+  letter-spacing: 0.02em;
+}
+
+.btn-abrir-rwa:hover { background: var(--indigo2); }
+.btn-abrir-rwa:active { transform: scale(0.98); }
+
+/* ── SEÇÃO TÍTULO ── */
+.sec-titulo {
+  font-size: 10px;
+  font-family: var(--mono);
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 14px;
+}
+
+/* ── MÓDULOS ── */
+.modulos-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+.modulo-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 22px;
+  transition: border-color 0.2s;
+}
+
+.modulo-card:hover { border-color: rgba(99,102,241,0.3); }
+
+.mod-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  gap: 12px;
+}
+
+.mod-nome {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 3px;
+}
+
+.mod-desc {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.mod-tag {
+  font-size: 10px;
+  font-family: var(--mono);
+  background: rgba(79,70,229,0.15);
+  color: var(--indigo3);
+  padding: 3px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  border: 1px solid rgba(79,70,229,0.2);
+}
+
+.mod-acoes {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.btn-exec-mod {
+  flex: 1;
+  background: var(--indigo);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 9px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: var(--sans);
+  cursor: pointer;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.btn-exec-mod:hover { background: var(--indigo2); }
+
+.btn-ag-mod {
+  background: transparent;
+  color: var(--indigo3);
+  border: 1px solid rgba(99,102,241,0.3);
+  border-radius: 8px;
+  padding: 9px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: var(--sans);
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.btn-ag-mod:hover { background: rgba(99,102,241,0.1); border-color: var(--indigo3); }
+
+.mod-feedback {
+  font-size: 11px;
+  font-family: var(--mono);
+  margin-top: 8px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  display: none;
+}
+
+.mod-feedback.ok { background: rgba(34,197,94,0.1); color: var(--green); border: 1px solid rgba(34,197,94,0.2); }
+.mod-feedback.erro { background: rgba(239,68,68,0.1); color: var(--red); border: 1px solid rgba(239,68,68,0.2); }
+
+/* ── MODAL DE AGENDAMENTO ── */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-overlay.aberto { display: flex; }
+
+.modal-box {
+  background: var(--card);
+  border: 1px solid var(--border2);
+  border-radius: 16px;
+  padding: 28px 30px;
+  width: 100%;
+  max-width: 380px;
+}
+
+.modal-titulo {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.modal-sub {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+
+.modal-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 7px;
+  display: block;
+}
+
+.modal-input {
+  width: 100%;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  padding: 10px 12px;
+  font-family: var(--sans);
+  font-size: 13px;
+  outline: none;
+  margin-bottom: 18px;
+  transition: border-color 0.2s;
+}
+
+.modal-input:focus { border-color: rgba(99,102,241,0.5); }
+
+.modal-acoes { display: flex; gap: 10px; }
+
+.btn-modal-ok {
+  flex: 1;
+  background: var(--indigo);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: var(--sans);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-modal-ok:hover { background: var(--indigo2); }
+
+.btn-modal-cancel {
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 13px;
+  font-family: var(--sans);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-modal-cancel:hover { border-color: var(--border2); color: var(--text); }
+
+.modal-feedback { font-size: 11px; font-family: var(--mono); margin-top: 12px; display: none; }
+.modal-feedback.ok { color: var(--green); }
+.modal-feedback.erro { color: var(--red); }
+
+/* ── HISTÓRICO ── */
+.hist-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.hist-header {
+  padding: 14px 22px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.hist-header-title { font-size: 13px; font-weight: 600; }
+.hist-header-sub { font-size: 11px; font-family: var(--mono); color: var(--muted); }
+
+table { width: 100%; border-collapse: collapse; }
+
+thead tr { background: rgba(255,255,255,0.02); }
+
+th {
+  padding: 9px 20px;
+  text-align: left;
+  font-size: 10px;
+  font-family: var(--mono);
+  color: var(--muted2);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 400;
+  border-bottom: 1px solid var(--border);
+}
+
+td {
+  padding: 13px 20px;
+  font-size: 13px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  vertical-align: middle;
+}
+
+tr:last-child td { border-bottom: none; }
+
+tr:hover td { background: rgba(255,255,255,0.02); }
+
+.data-cel {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.data-cel .data-dia {
+  color: var(--text);
+  font-weight: 500;
+  display: block;
+}
+
+.data-cel .data-hora {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 1px;
+  display: block;
+}
+
+.mod-pill {
+  font-family: var(--mono);
+  font-size: 11px;
+  background: rgba(79,70,229,0.12);
+  color: var(--indigo3);
+  padding: 4px 10px;
+  border-radius: 5px;
+  border: 1px solid rgba(79,70,229,0.18);
+  display: inline-block;
+}
+
+.spill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-family: var(--mono);
+  font-weight: 500;
+}
+
+.spill::before { content: '●'; font-size: 8px; }
+
+.spill.concluido   { background: rgba(34,197,94,0.1);  color: var(--green); border: 1px solid rgba(34,197,94,0.2); }
+.spill.em_execucao { background: rgba(59,130,246,0.12); color: var(--blue);  border: 1px solid rgba(59,130,246,0.2); }
+.spill.erro        { background: rgba(239,68,68,0.1);  color: var(--red);   border: 1px solid rgba(239,68,68,0.2); }
+.spill.pendente    { background: rgba(245,158,11,0.1); color: var(--yellow);border: 1px solid rgba(245,158,11,0.2); }
+.spill.agendado    { background: rgba(245,158,11,0.1); color: var(--yellow);border: 1px solid rgba(245,158,11,0.2); }
+.spill.cancelado   { background: rgba(100,116,139,0.12);color: #94a3b8;     border: 1px solid rgba(100,116,139,0.2);}
+
+.acoes-cel { display: flex; gap: 7px; align-items: center; }
+
+.btn-mini {
+  border: none;
+  border-radius: 6px;
+  padding: 5px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: var(--sans);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-iniciar-hist { background: var(--indigo); color: white; }
+.btn-iniciar-hist:hover { background: var(--indigo2); }
+.btn-cancelar-hist { background: rgba(239,68,68,0.15); color: var(--red); border: 1px solid rgba(239,68,68,0.2); }
+.btn-cancelar-hist:hover { background: rgba(239,68,68,0.25); }
+
+.hist-vazio {
+  padding: 36px 20px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+/* ── NOTIFICAÇÃO TOAST ── */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: var(--card);
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  padding: 12px 18px;
+  font-size: 13px;
+  font-family: var(--mono);
+  z-index: 300;
+  transform: translateY(80px);
+  opacity: 0;
+  transition: all 0.3s;
+  max-width: 320px;
+}
+
+.toast.visivel { transform: translateY(0); opacity: 1; }
+.toast.ok { border-color: rgba(34,197,94,0.4); color: var(--green); }
+.toast.erro { border-color: rgba(239,68,68,0.4); color: var(--red); }
+</style>
 </head>
 <body>
-    <div class="wrapper">
-        <div class="login-card">
 
-            <div class="logo">
-                <div class="logo-title">RW<span>A</span></div>
-                <div class="logo-sub2">OPERAÇÕES INTELIGENTES</div>
-                <span class="logo-sub">Estabilidade. Resultado. Conformidade.</span>
-            </div>
-
-            <div class="welcome">
-                <p>Tecnologia Aplicada a Operação Real </p>
-            </div>
-
-            <form onsubmit="login(event)">
-
-                <div class="form-group">
-                    <label for="email">E-mail</label>
-                    <div class="input-wrap">
-                        <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="#e8edf5" stroke-width="1.8" stroke-linecap="round">
-                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                            <circle cx="12" cy="7" r="4"/>
-                        </svg>
-                        <input type="email" id="email" name="email" placeholder="seuemail@empresa.com.br" required>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="senha">Senha</label>
-                    <div class="input-wrap">
-                        <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="#e8edf5" stroke-width="1.8" stroke-linecap="round">
-                            <rect x="5" y="11" width="14" height="10" rx="2"/>
-                            <path d="M8 11V7a4 4 0 0 1 8 0v4"/>
-                        </svg>
-                        <input type="password" id="senha" name="senha" placeholder="Digite sua senha" required>
-                        <button type="button" class="toggle-senha" onclick="toggleSenha(this)" aria-label="Mostrar senha">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="#e8edf5" stroke-width="1.8" stroke-linecap="round">
-                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                                <circle cx="12" cy="12" r="3"/>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="options">
-                    <label>
-                        <input type="checkbox" name="manter_conectado">
-                        Manter conectado
-                    </label>
-                    <a href="/recuperar-senha">Esqueci minha senha</a>
-                </div>
-
-                <button type="submit">
-                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round">
-                        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
-                        <polyline points="10 17 15 12 10 7"/>
-                        <line x1="15" y1="12" x2="3" y2="12"/>
-                    </svg>
-                    Entrar na Plataforma
-                </button>
-
-            </form>
-
-            <div class="security">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4a5a72" stroke-width="1.8" stroke-linecap="round">
-                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                </svg>
-                Ambiente seguro e criptografado
-            </div>
-
-            <hr class="footer-divider">
-
-            <div class="footer">
-                Licenciado para uso profissional<br>
-                RWA Soluções © 2026 - Todos os direitos reservados
-            </div>
-
-        </div>
+<!-- ══ TELA LOGIN ══════════════════════════════════════════════════ -->
+<div id="tela-login">
+  <div class="login-card">
+    <div class="logo-bloco">
+      <div class="logo-rwa">RW<span>A</span></div>
+      <span class="logo-nome">Tecnologia Operacional</span>
+      <span class="logo-tag">Estabilidade. Resultado. Conformidade.</span>
     </div>
 
+    <form onsubmit="fazerLogin(event)">
+      <label class="form-label" for="email">E-mail</label>
+      <div class="input-wrap">
+        <svg class="iico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e8edf5" stroke-width="1.8" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <input type="email" id="email" placeholder="seuemail@empresa.com.br" required>
+      </div>
 
-<!-- TELA PAINEL -->
-<div id="tela-painel" style="display:none; flex-direction:column; min-height:100vh;">
-  <header>
-    <div class="header-logo">
-      <div class="logo-icon"><span></span><span></span><span></span></div>
-      <div><div class="logo-text">RWA</div><div class="logo-sub">Tecnologia Operacional</div></div>
+      <label class="form-label" for="senha">Senha</label>
+      <div class="input-wrap">
+        <svg class="iico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e8edf5" stroke-width="1.8" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+        <input type="password" id="senha" placeholder="Digite sua senha" required>
+        <button type="button" class="toggle-pw" onclick="toggleSenha()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e8edf5" stroke-width="1.8" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
+      </div>
+
+      <div class="login-opts">
+        <label><input type="checkbox" id="manter"> Manter conectado</label>
+        <a href="#">Esqueci minha senha</a>
+      </div>
+
+      <button type="submit" class="btn-login">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+        Entrar na Plataforma
+      </button>
+    </form>
+
+    <div id="login-erro" class="msg-erro-login"></div>
+
+    <div class="login-footer">
+      Ambiente seguro e criptografado<br>
+      RWA Soluções © 2026 — Todos os direitos reservados
     </div>
-    <div class="header-right">
-      <div class="cliente-nome">Logado como <strong id="painel-nome"></strong></div>
+  </div>
+</div>
+
+<!-- ══ TELA PAINEL ══════════════════════════════════════════════════ -->
+<div id="tela-painel">
+
+  <header class="pheader">
+    <div class="ph-logo">
+      <div>
+        <div class="ph-logo-text">RW<span>A</span></div>
+        <div class="ph-logo-sub">Tecnologia Operacional</div>
+      </div>
+    </div>
+    <div class="ph-right">
+      <div class="ph-cliente">Logado como <strong id="p-nome"></strong></div>
       <button class="btn-sair" onclick="sair()">Sair</button>
     </div>
   </header>
-  <main>
+
+  <div class="pmain">
+
+    <!-- Status -->
     <div class="status-row">
-      <div class="status-card">
-        <div class="s-label">Licença</div>
-        <div class="s-valor verde">ATIVA</div>
-        <div class="badge ativa" id="badge-venc">—</div>
+      <div class="scard">
+        <div class="scard-label">Licença</div>
+        <div class="scard-valor verde">ATIVA</div>
+        <div class="badge-licenca badge-ativa" id="badge-dias">—</div>
       </div>
-      <div class="status-card">
-        <div class="s-label">Vencimento</div>
-        <div class="s-valor" id="painel-venc">—</div>
+      <div class="scard">
+        <div class="scard-label">Vencimento</div>
+        <div class="scard-valor" id="p-venc">—</div>
       </div>
-      <div class="status-card">
-        <div class="s-label">Última execução</div>
-        <div class="s-valor" id="ultima-exec" style="font-size:14px">—</div>
-      </div>
-    </div>
-
-    <div class="secao-titulo">Execução</div>
-    <div class="acoes-grid">
-      <div class="acao-card">
-        <h3>Executar agora</h3>
-        <p>Inicia a automação imediatamente na máquina autorizada.</p>
-        <select class="select-modulo" id="sel-modulo-exec">
-          <option value="sao_luis">São Luís — STM</option>
-          <option value="padrao_nacional">Padrão Nacional — NFS-e</option>
-          <option value="conferencia_sao_luis">Conferência São Luís</option>
-          <option value="conferencia_pn">Conferência Padrão Nacional</option>
-        </select>
-        <button class="btn-executar" onclick="executarAgora()">▶ Executar agora</button>
-        <div class="msg-ok" id="exec-ok" style="margin-top:10px"></div>
-        <div class="msg-erro" id="exec-erro" style="margin-top:10px"></div>
-      </div>
-      <div class="acao-card">
-        <h3>Agendar execução</h3>
-        <p>Define data e hora para a automação rodar automaticamente.</p>
-        <select class="select-modulo" id="sel-modulo-ag">
-          <option value="sao_luis">São Luís — STM</option>
-          <option value="padrao_nacional">Padrão Nacional — NFS-e</option>
-          <option value="conferencia_sao_luis">Conferência São Luís</option>
-          <option value="conferencia_pn">Conferência Padrão Nacional</option>
-        </select>
-        <input type="datetime-local" class="input-field" id="ag-datetime" style="margin-bottom:12px">
-        <button class="btn-agendar" onclick="agendar()">⏱ Agendar</button>
-        <div class="msg-ok" id="ag-ok"></div>
-        <div class="msg-erro" id="ag-erro"></div>
+      <div class="scard">
+        <div class="scard-label">Última execução</div>
+        <div class="scard-valor" id="p-ultima" style="font-size:14px">—</div>
       </div>
     </div>
 
-    <div class="secao-titulo">Histórico de execuções</div>
-    <div class="historico-card">
-      <div class="historico-header">Execuções recentes <span>últimas 10</span></div>
+    <!-- Abrir RWA -->
+    <div class="abrir-rwa-bloco">
+      <div class="abrir-rwa-info">
+        <h3>Abrir RWA na máquina</h3>
+        <p>Abre o launcher instalado localmente. O agente precisa estar instalado e autorizado.</p>
+      </div>
+      <button class="btn-abrir-rwa" onclick="abrirRWA()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        Abrir RWA
+      </button>
+    </div>
+
+    <!-- Módulos -->
+    <div class="sec-titulo">Automações disponíveis</div>
+    <div class="modulos-grid">
+
+      <div class="modulo-card">
+        <div class="mod-header">
+          <div>
+            <div class="mod-nome">STM — São Luís</div>
+            <div class="mod-desc">Extração de PDF + XML do Sistema Tributário Municipal. Prestado, tomado, talão e guias ISS.</div>
+          </div>
+          <span class="mod-tag">sao_luis</span>
+        </div>
+        <div class="mod-acoes">
+          <button class="btn-exec-mod" onclick="executar('sao_luis', this)">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            Executar agora
+          </button>
+          <button class="btn-ag-mod" onclick="abrirModal('sao_luis')">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Agendar
+          </button>
+        </div>
+        <div class="mod-feedback" id="fb-sao_luis"></div>
+      </div>
+
+      <div class="modulo-card">
+        <div class="mod-header">
+          <div>
+            <div class="mod-nome">NFS-e — Padrão Nacional</div>
+            <div class="mod-desc">Extração via certificado digital A1/A3. Gerencial e detalhamento de notas emitidas.</div>
+          </div>
+          <span class="mod-tag">padrao_nacional</span>
+        </div>
+        <div class="mod-acoes">
+          <button class="btn-exec-mod" onclick="executar('padrao_nacional', this)">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            Executar agora
+          </button>
+          <button class="btn-ag-mod" onclick="abrirModal('padrao_nacional')">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Agendar
+          </button>
+        </div>
+        <div class="mod-feedback" id="fb-padrao_nacional"></div>
+      </div>
+
+      <div class="modulo-card">
+        <div class="mod-header">
+          <div>
+            <div class="mod-nome">Conferência — São Luís</div>
+            <div class="mod-desc">Cruza STM com Domínio (Serviços + Simples Nacional). Move arquivos automaticamente quando tudo bate.</div>
+          </div>
+          <span class="mod-tag">conferencia_sl</span>
+        </div>
+        <div class="mod-acoes">
+          <button class="btn-exec-mod" onclick="executar('conferencia_sao_luis', this)">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            Executar agora
+          </button>
+          <button class="btn-ag-mod" onclick="abrirModal('conferencia_sao_luis')">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Agendar
+          </button>
+        </div>
+        <div class="mod-feedback" id="fb-conferencia_sao_luis"></div>
+      </div>
+
+      <div class="modulo-card">
+        <div class="mod-header">
+          <div>
+            <div class="mod-nome">Conferência — Padrão Nacional</div>
+            <div class="mod-desc">Valida 5 pontos: cliente, quantidade, período, CNPJ e valor. Cruza Detalhamento × Domínio.</div>
+          </div>
+          <span class="mod-tag">conferencia_pn</span>
+        </div>
+        <div class="mod-acoes">
+          <button class="btn-exec-mod" onclick="executar('conferencia_pn', this)">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            Executar agora
+          </button>
+          <button class="btn-ag-mod" onclick="abrirModal('conferencia_pn')">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Agendar
+          </button>
+        </div>
+        <div class="mod-feedback" id="fb-conferencia_pn"></div>
+      </div>
+
+    </div>
+
+    <!-- Histórico -->
+    <div class="sec-titulo">Histórico de execuções</div>
+    <div class="hist-card">
+      <div class="hist-header">
+        <span class="hist-header-title">Execuções recentes</span>
+        <span class="hist-header-sub">últimas 10</span>
+      </div>
       <table>
         <thead>
           <tr>
-            <th>Data / Hora</th>
+            <th>Data</th>
             <th>Módulo</th>
             <th>Status</th>
             <th>Ações</th>
           </tr>
         </thead>
-        <tbody id="historico-body">
-          <tr>
-            <td colspan="4" class="vazio">Carregando...</td>
-          </tr>
+        <tbody id="hist-body">
+          <tr><td colspan="4" class="hist-vazio">Carregando...</td></tr>
         </tbody>
       </table>
     </div>
-  </main>
+
+  </div><!-- /pmain -->
+</div><!-- /painel -->
+
+<!-- ══ MODAL AGENDAMENTO ══════════════════════════════════════════ -->
+<div class="modal-overlay" id="modal-ag">
+  <div class="modal-box">
+    <div class="modal-titulo" id="modal-titulo">Agendar execução</div>
+    <div class="modal-sub" id="modal-sub">Defina data e hora para a automação rodar automaticamente.</div>
+    <label class="modal-label">Data e hora</label>
+    <input type="datetime-local" class="modal-input" id="modal-dt">
+    <div class="modal-acoes">
+      <button class="btn-modal-ok" onclick="confirmarAgendamento()">Confirmar agendamento</button>
+      <button class="btn-modal-cancel" onclick="fecharModal()">Cancelar</button>
+    </div>
+    <div class="modal-feedback" id="modal-feedback"></div>
+  </div>
 </div>
 
-    <script>
-        const API = '';
-        let _sessao = null;
+<!-- ══ TOAST ═════════════════════════════════════════════════════ -->
+<div class="toast" id="toast"></div>
 
-        function gerarFingerprint() {
-            const dados = [
-                navigator.userAgent,
-                navigator.language,
-                screen.width + 'x' + screen.height,
-                new Date().getTimezoneOffset(),
-                navigator.hardwareConcurrency || 0,
-                navigator.platform || '',
-            ].join('|');
-            let hash = 0;
-            for (let i = 0; i < dados.length; i++) {
-                hash = ((hash << 5) - hash) + dados.charCodeAt(i);
-                hash |= 0;
-            }
-            return Math.abs(hash).toString(16).padStart(8,'0') + Date.now().toString(16);
-        }
+<script>
+const API = '';
+let _sessao = null;
+let _modalModulo = null;
 
-        const FINGERPRINT = gerarFingerprint();
+const NOMES = {
+  sao_luis: 'STM — São Luís',
+  padrao_nacional: 'NFS-e — Padrão Nacional',
+  conferencia_sao_luis: 'Conferência São Luís',
+  conferencia_pn: 'Conferência Padrão Nacional',
+};
 
-        async function login(event) {
-            event.preventDefault();
+// ── Utilitários ────────────────────────────────────────────────────
 
-            const email = document.getElementById('email').value;
-            const senha = document.getElementById('senha').value;
+function fmtData(str) {
+  if (!str) return '—';
+  const s = str.substring(0, 19).replace('T', ' ');
+  const [data, hora] = s.split(' ');
+  const [y, m, d] = data.split('-');
+  return { dia: `${d}/${m}/${y}`, hora: hora || '' };
+}
 
-            const resposta = await fetch('/auth/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    email: email,
-                    senha: senha
-                })
-            });
+function diasRestantes(venc) {
+  return Math.max(0, Math.ceil((new Date(venc) - new Date()) / 86400000));
+}
 
-            const dados = await resposta.json();
+function labelStatus(s) {
+  const m = {
+    concluido: 'Concluído', em_execucao: 'Em execução',
+    erro: 'Erro', pendente: 'Pendente',
+    agendado: 'Agendado', cancelado: 'Cancelado'
+  };
+  return m[s] || s;
+}
 
-            if (dados.status === 'ok') {
-                _sessao = { email, fingerprint: FINGERPRINT, ...dados };
-                localStorage.setItem('rwa_sessao', JSON.stringify(_sessao));
-                mostrarPainel(dados);
-                return;
-            }
+function toast(msg, tipo = 'ok') {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = `toast visivel ${tipo}`;
+  setTimeout(() => { el.className = 'toast'; }, 3500);
+}
 
-            alert(dados.mensagem || 'Não foi possível realizar o login.');
-        }
+function toggleSenha() {
+  const i = document.getElementById('senha');
+  i.type = i.type === 'password' ? 'text' : 'password';
+}
 
-        function mostrarPainel(dados) {
-            document.body.style.display = 'block';
-            document.body.style.alignItems = 'initial';
-            document.body.style.justifyContent = 'initial';
-            document.body.style.overflow = 'auto';
+// ── Login ──────────────────────────────────────────────────────────
 
-            const wrapper = document.querySelector('.wrapper');
-            if (wrapper) wrapper.style.display = 'none';
+async function fazerLogin(e) {
+  e.preventDefault();
+  const email = document.getElementById('email').value;
+  const senha = document.getElementById('senha').value;
+  const erroEl = document.getElementById('login-erro');
+  erroEl.style.display = 'none';
 
-            document.getElementById('tela-painel').style.display = 'flex';
-            document.getElementById('painel-nome').textContent = dados.cliente;
-            const _vp = dados.vencimento.split('-');
-            document.getElementById('painel-venc').textContent = _vp[2]+'/'+_vp[1]+'/'+_vp[0];
-            document.getElementById('badge-venc').textContent = 'Vence em ' + diasRestantes(dados.vencimento) + ' dias';
-            carregarHistorico();
-        }
+  try {
+    const r = await fetch('/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, senha })
+    });
+    const d = await r.json();
+    if (d.status === 'ok') {
+      _sessao = { email, ...d };
+      if (document.getElementById('manter').checked)
+        localStorage.setItem('rwa_sessao', JSON.stringify(_sessao));
+      abrirPainel(d);
+    } else {
+      erroEl.textContent = d.mensagem || 'Erro ao fazer login.';
+      erroEl.style.display = 'block';
+    }
+  } catch {
+    erroEl.textContent = 'Erro de conexão com o servidor.';
+    erroEl.style.display = 'block';
+  }
+}
 
-        function diasRestantes(venc) {
-            const hoje = new Date();
-            const v = new Date(venc);
-            return Math.max(0, Math.ceil((v - hoje) / 86400000));
-        }
+function abrirPainel(d) {
+  document.getElementById('tela-login').style.display = 'none';
+  const p = document.getElementById('tela-painel');
+  p.style.display = 'flex';
 
-        function sair() {
-            _sessao = null;
-            localStorage.removeItem('rwa_sessao');
-            window.location.href = '/';
-        }
+  document.getElementById('p-nome').textContent = d.cliente || d.nome || '';
 
-        async function executarAgora() {
-            const modulo = document.getElementById('sel-modulo-exec').value;
-            const okEl   = document.getElementById('exec-ok');
-            const erroEl = document.getElementById('exec-erro');
-            okEl.style.display = 'none';
-            erroEl.style.display = 'none';
+  const [y, m, dia] = d.vencimento.split('-');
+  document.getElementById('p-venc').textContent = `${dia}/${m}/${y}`;
 
-            try {
-                const resp = await fetch(API + '/portal/executar', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email: _sessao.email, modulo })
-                });
-                const data = await resp.json();
-                if (data.ok) {
-                    okEl.textContent = '✓ Comando enviado. O agente iniciará em instantes.';
-                    okEl.style.display = 'block';
-                    setTimeout(carregarHistorico, 2000);
-                } else {
-                    mostrarErro(erroEl, data.erro || 'Erro ao enviar comando.');
-                }
-            } catch(e) {
-                mostrarErro(erroEl, 'Erro de conexão com o servidor.');
-            }
-        }
+  const dias = diasRestantes(d.vencimento);
+  const badge = document.getElementById('badge-dias');
+  badge.textContent = `Vence em ${dias} dias`;
+  badge.className = `badge-licenca ${dias <= 30 ? 'badge-vencendo' : 'badge-ativa'}`;
 
-        async function agendar() {
-            const modulo   = document.getElementById('sel-modulo-ag').value;
-            const datetime = document.getElementById('ag-datetime').value;
-            const okEl     = document.getElementById('ag-ok');
-            const erroEl   = document.getElementById('ag-erro');
-            okEl.style.display = 'none';
-            erroEl.style.display = 'none';
+  carregarHistorico();
+  setInterval(carregarHistorico, 15000);
+}
 
-            if (!datetime) {
-                mostrarErro(erroEl, 'Selecione data e hora.');
-                return;
-            }
+function sair() {
+  _sessao = null;
+  localStorage.removeItem('rwa_sessao');
+  location.href = '/';
+}
 
-            try {
-                const resp = await fetch(API + '/portal/agendar', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email: _sessao.email, modulo, agendado_para: datetime })
-                });
-                const data = await resp.json();
-                if (data.ok) {
-                    okEl.textContent = '✓ Agendado com sucesso.';
-                    okEl.style.display = 'block';
-                } else {
-                    mostrarErro(erroEl, data.erro || 'Erro ao agendar.');
-                }
-            } catch(e) {
-                mostrarErro(erroEl, 'Erro de conexão com o servidor.');
-            }
-        }
+// ── Abrir RWA ──────────────────────────────────────────────────────
 
-        async function carregarHistorico() {
-            if (!_sessao) return;
-            try {
-                const resp = await fetch(API + '/portal/historico?email=' + encodeURIComponent(_sessao.email));
-                const data = await resp.json();
-                const tbody = document.getElementById('historico-body');
+function abrirRWA() {
+  window.location.href = 'rwa://abrir';
+}
 
-                if (!data.historico || data.historico.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="4" class="vazio">Nenhuma execução registrada.</td></tr>';
-                    return;
-                }
+// ── Executar ───────────────────────────────────────────────────────
 
-                const _fmtDH = q => {
-                    const p = q.substring(0,19).split('T').join(' ').split(' ');
-                    const d = p[0].split('-');
-                    return d[2]+'/'+d[1]+'/'+d[0]+' '+(p[1]||'');
-                };
+async function executar(modulo, btn) {
+  const fb = document.getElementById(`fb-${modulo}`);
+  fb.className = 'mod-feedback';
+  fb.style.display = 'none';
 
-                tbody.innerHTML = data.historico.map(h => `
-                    <tr>
-                        <td style="font-family:var(--mono);font-size:12px">${_fmtDH(h.quando)}</td>
-                        <td><span class="modulo-tag">${h.modulo}</span></td>
-                        <td><span class="status-pill ${h.status}">${labelStatus(h.status)}</span></td>
-                        <td>
-                            <div class="acoes-cell">
-                                <button class="btn-mini btn-iniciar" onclick="executarModulo('${h.modulo}')">Iniciar</button>
-                                ${(h.status === 'pendente' || h.status === 'agendado' || h.status === 'em_execucao') ? `
-                                    <button class="btn-mini btn-cancelar" onclick="cancelarTarefa(${h.id})">Cancelar</button>
-                                ` : ''}
-                            </div>
-                        </td>
-                    </tr>
-                `).join('');
+  try {
+    const r = await fetch('/portal/executar', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: _sessao.email, modulo })
+    });
+    const d = await r.json();
+    if (d.ok) {
+      toast(`✓ Comando enviado — ${NOMES[modulo]}`, 'ok');
+      setTimeout(carregarHistorico, 1500);
+    } else {
+      toast(d.erro || 'Erro ao enviar comando.', 'erro');
+    }
+  } catch {
+    toast('Erro de conexão com o servidor.', 'erro');
+  }
+}
 
-                const ultimo = data.historico[0];
-                const _dup = ultimo.quando.substring(0,10).split('-');
-                document.getElementById('ultima-exec').textContent = ultimo.modulo + ' — ' + _dup[2]+'/'+_dup[1]+'/'+_dup[0];
-            } catch(e) {}
-        }
+// ── Modal agendamento ──────────────────────────────────────────────
 
-        async function executarModulo(modulo) {
-            try {
-                const resp = await fetch(API + '/portal/executar', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        email: _sessao.email,
-                        modulo: modulo
-                    })
-                });
+function abrirModal(modulo) {
+  _modalModulo = modulo;
+  document.getElementById('modal-titulo').textContent = `Agendar — ${NOMES[modulo]}`;
+  document.getElementById('modal-feedback').style.display = 'none';
+  document.getElementById('modal-dt').value = '';
+  document.getElementById('modal-ag').classList.add('aberto');
+}
 
-                const data = await resp.json();
+function fecharModal() {
+  document.getElementById('modal-ag').classList.remove('aberto');
+  _modalModulo = null;
+}
 
-                if (data.ok) {
-                    carregarHistorico();
-                }
-            } catch(e) {}
-        }
+async function confirmarAgendamento() {
+  const dt = document.getElementById('modal-dt').value;
+  const fb = document.getElementById('modal-feedback');
+  fb.style.display = 'none';
 
-        async function cancelarTarefa(tarefa_id) {
-            try {
-                const resp = await fetch(API + '/portal/cancelar', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        email: _sessao.email,
-                        tarefa_id: tarefa_id
-                    })
-                });
+  if (!dt) {
+    fb.textContent = 'Selecione data e hora.';
+    fb.className = 'modal-feedback erro';
+    fb.style.display = 'block';
+    return;
+  }
 
-                const data = await resp.json();
+  try {
+    const r = await fetch('/portal/agendar', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: _sessao.email, modulo: _modalModulo, agendado_para: dt })
+    });
+    const d = await r.json();
+    if (d.ok) {
+      fecharModal();
+      toast('✓ Agendado com sucesso.', 'ok');
+      setTimeout(carregarHistorico, 1000);
+    } else {
+      fb.textContent = d.erro || 'Erro ao agendar.';
+      fb.className = 'modal-feedback erro';
+      fb.style.display = 'block';
+    }
+  } catch {
+    fb.textContent = 'Erro de conexão.';
+    fb.className = 'modal-feedback erro';
+    fb.style.display = 'block';
+  }
+}
 
-                if (data.ok) {
-                    carregarHistorico();
-                }
-            } catch(e) {}
-        }
+// ── Histórico ──────────────────────────────────────────────────────
 
-        function labelStatus(s) {
-            const m = { concluido: '● Concluído', em_execucao: '● Em execução', erro: '● Erro', pendente: '● Pendente', agendado: '● Agendado', cancelado: '● Cancelado' };
-            return m[s] || s;
-        }
+async function carregarHistorico() {
+  if (!_sessao) return;
+  try {
+    const r = await fetch(`/portal/historico?email=${encodeURIComponent(_sessao.email)}`);
+    const d = await r.json();
+    const tbody = document.getElementById('hist-body');
 
-        function mostrarErro(el, msg) {
-            el.textContent = msg;
-            el.style.display = 'block';
-        }
+    if (!d.historico || d.historico.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="4" class="hist-vazio">Nenhuma execução registrada ainda.</td></tr>';
+      return;
+    }
 
-        function toggleSenha(btn) {
-            var input = document.getElementById('senha');
-            input.type = input.type === 'password' ? 'text' : 'password';
-            btn.style.opacity = input.type === 'text' ? '0.9' : '0.45';
-        }
+    // Última execução no card de status
+    const ult = d.historico[0];
+    const ultFmt = fmtData(ult.quando);
+    document.getElementById('p-ultima').textContent =
+      `${NOMES[ult.modulo] || ult.modulo} — ${ultFmt.dia}`;
 
-        if (localStorage.getItem('rwa_sessao')) {
-            try {
-                _sessao = JSON.parse(localStorage.getItem('rwa_sessao'));
-                mostrarPainel(_sessao);
-            } catch(e) {}
-        }
-    </script>
+    tbody.innerHTML = d.historico.map((h, idx) => {
+      const dt = fmtData(h.quando);
+      const ePrimeiro = idx === 0;
+      const eCancelavel = ['pendente','agendado','em_execucao'].includes(h.status);
+
+      const btnIniciar = ePrimeiro
+        ? `<button class="btn-mini btn-iniciar-hist" onclick="reexecutar('${h.modulo}')">Iniciar</button>`
+        : '';
+
+      const btnCancelar = eCancelavel
+        ? `<button class="btn-mini btn-cancelar-hist" onclick="cancelar(${h.id})">Cancelar</button>`
+        : '';
+
+      return `
+        <tr>
+          <td>
+            <span class="data-cel">
+              <span class="data-dia">${dt.dia}</span>
+              <span class="data-hora">${dt.hora}</span>
+            </span>
+          </td>
+          <td><span class="mod-pill">${NOMES[h.modulo] || h.modulo}</span></td>
+          <td><span class="spill ${h.status}">${labelStatus(h.status)}</span></td>
+          <td>
+            <div class="acoes-cel">
+              ${btnIniciar}
+              ${btnCancelar}
+            </div>
+          </td>
+        </tr>
+      `;
+    }).join('');
+
+  } catch {}
+}
+
+async function reexecutar(modulo) {
+  try {
+    const r = await fetch('/portal/executar', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: _sessao.email, modulo })
+    });
+    const d = await r.json();
+    if (d.ok) {
+      toast(`✓ ${NOMES[modulo]} — comando enviado`, 'ok');
+      setTimeout(carregarHistorico, 1500);
+    }
+  } catch {}
+}
+
+async function cancelar(id) {
+  try {
+    const r = await fetch('/portal/cancelar', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: _sessao.email, tarefa_id: id })
+    });
+    const d = await r.json();
+    if (d.ok) {
+      toast('Tarefa cancelada.', 'ok');
+      carregarHistorico();
+    }
+  } catch {}
+}
+
+// Fechar modal clicando fora
+document.getElementById('modal-ag').addEventListener('click', function(e) {
+  if (e.target === this) fecharModal();
+});
+
+// Sessão salva
+const s = localStorage.getItem('rwa_sessao');
+if (s) {
+  try {
+    _sessao = JSON.parse(s);
+    abrirPainel(_sessao);
+  } catch { localStorage.removeItem('rwa_sessao'); }
+}
+</script>
 </body>
 </html>
