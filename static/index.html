@@ -986,11 +986,31 @@ const NOMES = {
 // ── Utilitários ────────────────────────────────────────────────────
 
 function fmtData(str) {
-  if (!str) return '—';
-  const s = new Date(str).toLocaleString("pt-BR", {timeZone: "America/Sao_Paulo"}).replace(',', '');
-  const [data, hora] = s.split(' ');
-  const [y, m, d] = data.split('-');
-  return { dia: `${d}/${m}/${y}`, hora: hora || '' };
+  if (!str) return { dia: '—', hora: '' };
+
+  const bruto = String(str).trim();
+  const normalizado = bruto.includes('T')
+    ? bruto
+    : bruto.replace(' ', 'T').split('.')[0];
+
+  const dt = new Date(normalizado);
+
+  if (isNaN(dt.getTime())) {
+    return { dia: bruto, hora: '' };
+  }
+
+  const data = dt.toLocaleDateString('pt-BR', {
+    timeZone: 'America/Sao_Paulo'
+  });
+
+  const hora = dt.toLocaleTimeString('pt-BR', {
+    timeZone: 'America/Sao_Paulo',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit'
+  });
+
+  return { dia: data, hora: hora };
 }
 
 function diasRestantes(venc) {
