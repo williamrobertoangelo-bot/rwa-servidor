@@ -180,22 +180,26 @@ def definir_senha(email, senha_hash):
 
 def criar_tarefa(empresa_id, modulo, parametros):
     import json
+    from datetime import datetime, timezone, timedelta
+    agora = datetime.now(timezone(timedelta(hours=-3))).strftime("%Y-%m-%d %H:%M:%S")
     with _conn() as con:
         with con.cursor() as cur:
             cur.execute(
-                "INSERT INTO tarefas (empresa_id, modulo, parametros, status) VALUES (%s,%s,%s,'pendente')",
-                (empresa_id, modulo, json.dumps(parametros))
+                "INSERT INTO tarefas (empresa_id, modulo, parametros, status, criado_em) VALUES (%s,%s,%s,'pendente',%s)",
+                (empresa_id, modulo, json.dumps(parametros), agora)
             )
         con.commit()
 
 
 def criar_tarefa_agendada(empresa_id, modulo, agendado_para):
+    from datetime import datetime, timezone, timedelta
+    agora = datetime.now(timezone(timedelta(hours=-3))).strftime("%Y-%m-%d %H:%M:%S")
     with _conn() as con:
         with con.cursor() as cur:
             cur.execute(
-                "INSERT INTO tarefas (empresa_id, modulo, parametros, status, agendado_para) "
-                "VALUES (%s,%s,'{}','agendado',%s)",
-                (empresa_id, modulo, agendado_para)
+                "INSERT INTO tarefas (empresa_id, modulo, parametros, status, criado_em, agendado_para) "
+                "VALUES (%s,%s,'{}','agendado',%s,%s)",
+                (empresa_id, modulo, agora, agendado_para)
             )
         con.commit()
 
