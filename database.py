@@ -234,6 +234,14 @@ def cancelar_tarefa(empresa_id, tarefa_id):
     return linhas > 0
 
 
+def buscar_status_tarefa(tarefa_id):
+    with _conn() as con:
+        with con.cursor() as cur:
+            cur.execute("SELECT status FROM tarefas WHERE id=%s", (tarefa_id,))
+            row = cur.fetchone()
+    return dict(row)["status"] if row else None
+
+
 def buscar_historico(empresa_id, limite=10):
     with _conn() as con:
         with con.cursor() as cur:
