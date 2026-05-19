@@ -1096,8 +1096,22 @@ function sair() {
 
 // ── Abrir RWA ──────────────────────────────────────────────────────
 
-function abrirRWA() {
-  window.location.href = 'rwa://abrir';
+async function abrirRWA() {
+  try {
+    const r = await fetch('/auth/gerar-token-launcher', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: _sessao.email })
+    });
+    const d = await r.json();
+    if (d.ok) {
+      window.location.href = `rwa://abrir?token=${d.token}`;
+    } else {
+      toast(d.erro || 'Erro ao gerar token.', 'erro');
+    }
+  } catch {
+    toast('Erro de conexão com o servidor.', 'erro');
+  }
 }
 
 // ── Executar ───────────────────────────────────────────────────────

@@ -12,6 +12,8 @@ from datetime import datetime
 import database
 import auth
 import os
+import uuid
+import time
 
 app = FastAPI(title="RWA Tecnologia Operacional")
 
@@ -21,6 +23,8 @@ if Path("static").exists():
     app.mount("/static", StaticFiles(directory="static"), name="static")
 
 database.inicializar_banco()
+
+_tokens_launcher: dict = {}
 
 
 # ── Models ─────────────────────────────────────────────────────────
@@ -71,6 +75,13 @@ class StatusTarefaRequest(BaseModel):
     email:       str
     fingerprint: str
     tarefa_id:   str
+
+class GerarTokenLauncherRequest(BaseModel):
+    email: str
+
+class ValidarTokenLauncherRequest(BaseModel):
+    token:       str
+    fingerprint: str
 
 
 # ── Portal (web — sem fingerprint) ─────────────────────────────────
@@ -240,6 +251,44 @@ def admin_registrar_maquina(req: RegistrarMaquinaRequest):
 @app.get("/health")
 def health():
     return {"status": "online", "sistema": "RWA Tecnologia Operacional"}
+
+
+# ── Token launcher ──────────────────────────────────────────────────
+
+@app.post("/auth/gerar-token-launcher")
+def auth_gerar_token_launcher(req: GerarTokenLauncherRequest):
+    empresa = database.buscar_empresa(req.email)
+    if not empresa:
+        return {"ok": False, "erro": "Empresa não encontrada."}
+    token = uuid.uuid4().hex
+    _tokens_launcher[token] = {
+        "email":      req.email,
+        "cliente":    empresa["nome"],
+        "expires_at": time.time() + 60,
+        "usado":      False,
+    }
+    return {"ok": True, "token": token}
+
+
+@app.post("/auth/validar-token-launcher")
+def auth_validar_token_launcher(req: ValidarTokenLauncherRequest):
+    dado = _tokens_launcher.get(req.token)
+    if not dado:
+        return {"ok": False, "erro": "Token inválido."}
+    if dado["usado"]:
+        return {"ok": False, "erro": "Token já utilizado."}
+    if time.time() > dado["expires_at"]:
+        del _tokens_launcher[req.token]
+        return {"ok": False, "erro": "Token expirado."}
+    empresa = database.buscar_empresa(dado["email"])
+    if not empresa:
+        return {"ok": False, "erro": "Empresa não encontrada."}
+    maquinas = database.listar_maquinas(empresa["id"])
+    fps = [m["fingerprint"] for m in maquinas]
+    if req.fingerprint not in fps:
+        return {"ok": False, "erro": "Máquina não autorizada."}
+    dado["usado"] = True
+    return {"ok": True, "email": dado["email"], "cliente": dado["cliente"]}
 
 
 # ── SPA Fallback (deve ser a última rota) ──────────────────────────
