@@ -63,6 +63,10 @@ class CancelarRequest(BaseModel):
     email:     str
     tarefa_id: int
 
+class RegistrarMaquinaRequest(BaseModel):
+    email:       str
+    fingerprint: str
+
 class StatusTarefaRequest(BaseModel):
     email:       str
     fingerprint: str

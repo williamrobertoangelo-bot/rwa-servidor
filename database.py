@@ -25,13 +25,13 @@ def inicializar_banco():
                     vencimento  TEXT    NOT NULL,
                     chave_aes   TEXT    NOT NULL,
                     ativa       INTEGER NOT NULL DEFAULT 1,
-                    criado_em   TEXT    NOT NULL DEFAULT ((NOW() AT TIME ZONE 'America/Fortaleza')::TEXT)
+                    criado_em   TEXT    NOT NULL DEFAULT ((NOW() AT TIME ZONE '-03:00')::TEXT)
                 );
                 CREATE TABLE IF NOT EXISTS maquinas (
                     id          SERIAL PRIMARY KEY,
                     empresa_id  INTEGER NOT NULL,
                     fingerprint TEXT    NOT NULL,
-                    registrado  TEXT    NOT NULL DEFAULT ((NOW() AT TIME ZONE 'America/Fortaleza')::TEXT),
+                    registrado  TEXT    NOT NULL DEFAULT ((NOW() AT TIME ZONE '-03:00')::TEXT),
                     UNIQUE(empresa_id, fingerprint),
                     FOREIGN KEY (empresa_id) REFERENCES empresas(id)
                 );
@@ -40,7 +40,7 @@ def inicializar_banco():
                     empresa_id  INTEGER NOT NULL,
                     fingerprint TEXT    NOT NULL,
                     versao      TEXT,
-                    quando      TEXT    NOT NULL DEFAULT ((NOW() AT TIME ZONE 'America/Fortaleza')::TEXT),
+                    quando      TEXT    NOT NULL DEFAULT ((NOW() AT TIME ZONE '-03:00')::TEXT),
                     FOREIGN KEY (empresa_id) REFERENCES empresas(id)
                 );
             """)
@@ -138,7 +138,7 @@ def atualizar_status_tarefa(tarefa_id, status, observacao=""):
     with _conn() as con:
         with con.cursor() as cur:
             cur.execute("""
-                UPDATE tarefas SET status=%s, observacao=%s, atualizado_em=(NOW() AT TIME ZONE 'America/Fortaleza')::TEXT
+                UPDATE tarefas SET status=%s, observacao=%s, atualizado_em=(NOW() AT TIME ZONE '-03:00')::TEXT
                 WHERE id=%s
             """, (status, observacao, tarefa_id))
         con.commit()
@@ -155,7 +155,7 @@ def criar_tabela_tarefas():
                     parametros   TEXT    DEFAULT '{}',
                     status       TEXT    NOT NULL DEFAULT 'pendente',
                     observacao   TEXT    DEFAULT '',
-                    criado_em    TEXT    NOT NULL DEFAULT ((NOW() AT TIME ZONE 'America/Fortaleza')::TEXT),
+                    criado_em    TEXT    NOT NULL DEFAULT ((NOW() AT TIME ZONE '-03:00')::TEXT),
                     atualizado_em TEXT   DEFAULT '',
                     FOREIGN KEY (empresa_id) REFERENCES empresas(id)
                 );
@@ -180,22 +180,26 @@ def definir_senha(email, senha_hash):
 
 def criar_tarefa(empresa_id, modulo, parametros):
     import json
+    from datetime import datetime, timezone, timedelta
+    agora = datetime.now(timezone(timedelta(hours=-3))).strftime("%Y-%m-%d %H:%M:%S")
     with _conn() as con:
         with con.cursor() as cur:
             cur.execute(
-                "INSERT INTO tarefas (empresa_id, modulo, parametros, status) VALUES (%s,%s,%s,'pendente')",
-                (empresa_id, modulo, json.dumps(parametros))
+                "INSERT INTO tarefas (empresa_id, modulo, parametros, status, criado_em) VALUES (%s,%s,%s,'pendente',%s)",
+                (empresa_id, modulo, json.dumps(parametros), agora)
             )
         con.commit()
 
 
 def criar_tarefa_agendada(empresa_id, modulo, agendado_para):
+    from datetime import datetime, timezone, timedelta
+    agora = datetime.now(timezone(timedelta(hours=-3))).strftime("%Y-%m-%d %H:%M:%S")
     with _conn() as con:
         with con.cursor() as cur:
             cur.execute(
-                "INSERT INTO tarefas (empresa_id, modulo, parametros, status, agendado_para) "
-                "VALUES (%s,%s,'{}','agendado',%s)",
-                (empresa_id, modulo, agendado_para)
+                "INSERT INTO tarefas (empresa_id, modulo, parametros, status, criado_em, agendado_para) "
+                "VALUES (%s,%s,'{}','agendado',%s,%s)",
+                (empresa_id, modulo, agora, agendado_para)
             )
         con.commit()
 
@@ -209,7 +213,7 @@ def buscar_proxima_tarefa(empresa_id):
                     status='pendente'
                     OR (
                         status='agendado'
-                        AND agendado_para <= (NOW() AT TIME ZONE 'America/Fortaleza')::TEXT
+                        AND agendado_para <= (NOW() AT TIME ZONE '-03:00')::TEXT
                     )
                 )
                 ORDER BY criado_em ASC LIMIT 1
