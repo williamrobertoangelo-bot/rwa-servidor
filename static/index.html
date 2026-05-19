@@ -987,7 +987,7 @@ const NOMES = {
 
 function fmtData(str) {
   if (!str) return '—';
-  const s = str.substring(0, 19).replace('T', ' ');
+  const s = new Date(str).toLocaleString("pt-BR", {timeZone: "America/Sao_Paulo"}).replace(',', '');
   const [data, hora] = s.split(' ');
   const [y, m, d] = data.split('-');
   return { dia: `${d}/${m}/${y}`, hora: hora || '' };
