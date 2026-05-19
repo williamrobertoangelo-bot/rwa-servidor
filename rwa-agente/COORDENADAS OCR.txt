@@ -1,0 +1,49 @@
+========================================================
+CONFIGURACAO DE COORDENADAS - CERTIFICADO DIGITAL
+========================================================
+
+IMPORTANTE:
+Nao altere os nomes.
+Altere apenas os numeros.
+
+========================================================
+LISTA DE CERTIFICADOS
+========================================================
+
+LINHA_1_X=912
+LINHA_1_Y=255
+
+LINHA_2_X=913
+LINHA_2_Y=304
+
+LINHA_3_X=916
+LINHA_3_Y=351
+
+========================================================
+BOTAO OK
+========================================================
+
+BOTAO_OK_X=1111
+BOTAO_OK_Y=443
+
+========================================================
+AREA DE LEITURA OCR
+========================================================
+
+SUPERIOR_ESQUERDO_X=654
+SUPERIOR_ESQUERDO_Y=244
+
+SUPERIOR_DIREITO_X=1234
+SUPERIOR_DIREITO_Y=243
+
+INFERIOR_ESQUERDO_X=653
+INFERIOR_ESQUERDO_Y=366
+
+INFERIOR_DIREITO_X=1243
+INFERIOR_DIREITO_Y=360
+
+========================================================
+CONFIGURACOES AVANCADAS
+========================================================
+
+MAXIMO_ROLAGENS=150

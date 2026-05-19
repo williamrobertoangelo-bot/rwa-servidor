@@ -1,0 +1,122 @@
+================================================================================
+  NFS-e PADRAO NACIONAL  |  RELATORIO DE CONCLUSAO
+  Competencia : 04/2026
+  Gerado em   : 18/05/2026 17:22:05
+  Tempo total : 12min29s
+================================================================================
+RESUMO - Media/empresa    : 1min08s
+------------------------------------------------------------
+  Total empresas                           : 11
+  Processamento concluido                  : 11
+  Processadas com sucesso com movimento    : 9
+  Processadas com sucesso sem movimento    : 2
+  Certificado nao localizado               : 0
+  Login ou senha incorreto                 : 0
+  Divergentes                              : 0
+------------------------------------------------------------
+Observacoes:
+  Pasta nao informada                      : 0
+  Com erros                                : 0
+
+================================================================================
+EMPRESAS PROCESSADAS COM SUCESSO (9)
+================================================================================
+
+  Empresa                      : 21 - TALMATHE
+  Emitidas PDF                 : ✓ (3)
+  Emitidas XML                 : ✓ (3)
+  Recebidas PDF                : Sem movimento
+  Recebidas XML                : Sem movimento
+  Tempo                        : 0min45s
+  ------------------------------------------------------------
+
+  Empresa                      : 23 - CARDOSO & GONZAGA - INSTITUTO W
+  Emitidas PDF                 : ✓ (11)
+  Emitidas XML                 : ✓ (11)
+  Recebidas PDF                : Sem movimento
+  Recebidas XML                : Sem movimento
+  Tempo                        : 1min17s
+  ------------------------------------------------------------
+
+  Empresa                      : 72 - V F BARROS - CAPACETE
+  Emitidas PDF                 : ✓ (38)
+  Emitidas XML                 : ✓ (38)
+  Recebidas PDF                : Sem movimento
+  Recebidas XML                : Sem movimento
+  Canceladas                   : 2
+  Tempo                        : 4min03s
+  ------------------------------------------------------------
+
+  Empresa                      : 100 - AABB
+  Emitidas PDF                 : ✓ (1)
+  Emitidas XML                 : ✓ (1)
+  Recebidas PDF                : Sem movimento
+  Recebidas XML                : Sem movimento
+  Tempo                        : 0min23s
+  ------------------------------------------------------------
+
+  Empresa                      : 102 - H L C PINHEIRO 
+  Emitidas PDF                 : ✓ (1)
+  Emitidas XML                 : ✓ (1)
+  Recebidas PDF                : Sem movimento
+  Recebidas XML                : Sem movimento
+  Tempo                        : 0min29s
+  ------------------------------------------------------------
+
+  Empresa                      : 133 - GIGANTE CAMISETAS LTDA
+  Emitidas PDF                 : ✓ (3)
+  Emitidas XML                 : ✓ (3)
+  Recebidas PDF                : Sem movimento
+  Recebidas XML                : Sem movimento
+  Canceladas                   : 1
+  Tempo                        : 0min34s
+  ------------------------------------------------------------
+
+  Empresa                      : 159 - A L MONTES SERVIÇOS
+  Emitidas PDF                 : ✓ (14)
+  Emitidas XML                 : ✓ (14)
+  Recebidas PDF                : Sem movimento
+  Recebidas XML                : Sem movimento
+  Tempo                        : 1min31s
+  ------------------------------------------------------------
+
+  Empresa                      : 1964 - CHAGAS REPRESENTAÇÕES
+  Emitidas PDF                 : ✓ (14)
+  Emitidas XML                 : ✓ (14)
+  Recebidas PDF                : Sem movimento
+  Recebidas XML                : Sem movimento
+  Tempo                        : 1min32s
+  ------------------------------------------------------------
+
+  Empresa                      : 12212 - NILVAN
+  Emitidas PDF                 : ✓ (2)
+  Emitidas XML                 : ✓ (2)
+  Recebidas PDF                : Sem movimento
+  Recebidas XML                : Sem movimento
+  Tempo                        : 0min29s
+  ------------------------------------------------------------
+
+================================================================================
+EMPRESAS PROCESSADAS COM SUCESSO SEM MOVIMENTO NA COMPETENCIA (2)
+================================================================================
+  95 - HOSPITAL PEQUENO PRINCIPE  |  Observacao: Evidencia sem movimento salvo na pasta  -  0min16s
+  112 - M DA C SOUZA CABELEIREIROS LTDA  |  Observacao: Evidencia sem movimento salvo na pasta  -  0min23s
+
+================================================================================
+EMPRESAS COM CERTIFICADO NAO LOCALIZADO (0)
+================================================================================
+NENHUM CERTIFICADO NAO LOCALIZADO REGISTRADO.
+
+================================================================================
+EMPRESAS COM LOGIN OU SENHA INCORRETO (0)
+================================================================================
+NENHUM LOGIN OU SENHA INCORRETO REGISTRADO.
+
+================================================================================
+EMPRESAS PORTAL INSTAVEL (0)
+================================================================================
+NENHUMA INSTABILIDADE DE PORTAL REGISTRADA.
+
+================================================================================
+  FIM DO RELATORIO DE CONCLUSAO  |  NFS-e PADRAO NACIONAL
+================================================================================

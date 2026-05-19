@@ -1,0 +1,658 @@
+18/05/2026 20:14:23 [INFO] =======================================================
+18/05/2026 20:14:23 [INFO]   RWA Tecnologia Operacional — Agente v2.0
+18/05/2026 20:14:23 [INFO] =======================================================
+18/05/2026 20:14:23 [INFO] [FP] FBA83A8C0EFB94E411B0FB01A993516C
+18/05/2026 20:14:32 [INFO] [LOGIN] Validando — williamrobertoangelo@gmail.com
+18/05/2026 20:14:32 [ERROR] [LOGIN] Recusado — Senha incorreta.
+18/05/2026 20:14:32 [ERROR] [AGENTE] Login falhou. Verifique credenciais.
+18/05/2026 20:14:44 [INFO] =======================================================
+18/05/2026 20:14:44 [INFO]   RWA Tecnologia Operacional — Agente v2.0
+18/05/2026 20:14:44 [INFO] =======================================================
+18/05/2026 20:14:44 [INFO] [FP] FBA83A8C0EFB94E411B0FB01A993516C
+18/05/2026 20:14:54 [INFO] [LOGIN] Validando — williamrobertoangelo@gmail.com
+18/05/2026 20:14:55 [ERROR] [LOGIN] Recusado — Senha incorreta.
+18/05/2026 20:14:55 [ERROR] [AGENTE] Login falhou. Verifique credenciais.
+18/05/2026 20:14:57 [INFO] =======================================================
+18/05/2026 20:14:57 [INFO]   RWA Tecnologia Operacional — Agente v2.0
+18/05/2026 20:14:57 [INFO] =======================================================
+18/05/2026 20:14:58 [INFO] [FP] FBA83A8C0EFB94E411B0FB01A993516C
+18/05/2026 20:15:11 [INFO] =======================================================
+18/05/2026 20:15:11 [INFO]   RWA Tecnologia Operacional — Agente v2.0
+18/05/2026 20:15:11 [INFO] =======================================================
+18/05/2026 20:15:11 [INFO] [FP] FBA83A8C0EFB94E411B0FB01A993516C
+18/05/2026 20:15:57 [INFO] =======================================================
+18/05/2026 20:15:57 [INFO]   RWA Tecnologia Operacional — Agente v2.0
+18/05/2026 20:15:57 [INFO] =======================================================
+18/05/2026 20:15:57 [INFO] [FP] FBA83A8C0EFB94E411B0FB01A993516C
+18/05/2026 20:15:59 [INFO] [LOGIN] Validando — williamrobertoangelo@gmail.com
+18/05/2026 20:16:00 [INFO] [LOGIN] Autorizado — William Roberto
+18/05/2026 20:16:00 [INFO] [TRAY] Ícone iniciado na bandeja.
+18/05/2026 20:16:00 [INFO] [AGENTE] Aguardando tarefas...
+18/05/2026 20:16:00 [INFO] [AGENTE] Loop iniciado. Intervalo: 1s
+18/05/2026 20:16:01 [WARNING] [AGENTE] Máquina não autorizada no servidor.
+18/05/2026 20:16:03 [WARNING] [AGENTE] Máquina não autorizada no servidor.
+18/05/2026 20:16:05 [WARNING] [AGENTE] Máquina não autorizada no servidor.
+18/05/2026 20:16:07 [WARNING] [AGENTE] Máquina não autorizada no servidor.
+18/05/2026 20:16:09 [WARNING] [AGENTE] Máquina não autorizada no servidor.
+18/05/2026 20:16:10 [WARNING] [AGENTE] Máquina não autorizada no servidor.
+18/05/2026 20:16:12 [WARNING] [AGENTE] Máquina não autorizada no servidor.
+18/05/2026 20:16:14 [WARNING] [AGENTE] Máquina não autorizada no servidor.
+18/05/2026 20:16:16 [WARNING] [AGENTE] Máquina não autorizada no servidor.
+18/05/2026 20:16:18 [WARNING] [AGENTE] Máquina não autorizada no servidor.
+18/05/2026 20:16:19 [WARNING] [AGENTE] Máquina não autorizada no servidor.
+18/05/2026 20:16:21 [WARNING] [AGENTE] Máquina não autorizada no servidor.
+18/05/2026 20:16:23 [WARNING] [AGENTE] Máquina não autorizada no servidor.
+18/05/2026 20:16:25 [WARNING] [AGENTE] Máquina não autorizada no servidor.
+18/05/2026 20:16:28 [WARNING] [AGENTE] Máquina não autorizada no servidor.
+18/05/2026 20:16:30 [WARNING] [AGENTE] Máquina não autorizada no servidor.
+18/05/2026 20:16:32 [WARNING] [AGENTE] Máquina não autorizada no servidor.
+18/05/2026 20:16:34 [WARNING] [AGENTE] Máquina não autorizada no servidor.
+18/05/2026 20:16:36 [WARNING] [AGENTE] Máquina não autorizada no servidor.
+18/05/2026 20:16:37 [WARNING] [AGENTE] Máquina não autorizada no servidor.
+18/05/2026 20:16:39 [WARNING] [AGENTE] Máquina não autorizada no servidor.
+18/05/2026 20:20:20 [INFO] =======================================================
+18/05/2026 20:20:20 [INFO]   RWA Tecnologia Operacional — Agente v2.0
+18/05/2026 20:20:20 [INFO] =======================================================
+18/05/2026 20:20:20 [INFO] [FP] FBA83A8C0EFB94E411B0FB01A993516C
+18/05/2026 20:20:24 [INFO] [LOGIN] Validando — williamrobertoangelo@gmail.com
+18/05/2026 20:20:26 [INFO] [LOGIN] Autorizado — William Roberto
+18/05/2026 20:20:26 [INFO] [TRAY] Ícone iniciado na bandeja.
+18/05/2026 20:20:26 [INFO] [AGENTE] Aguardando tarefas...
+18/05/2026 20:20:26 [INFO] [AGENTE] Loop iniciado. Intervalo: 1s
+18/05/2026 20:20:26 [INFO] [AGENTE] Tarefa recebida: sao_luis id=47
+18/05/2026 20:20:26 [INFO] [EXEC] Iniciando — id=47 módulo=sao_luis
+18/05/2026 20:20:27 [INFO] [EXEC] Sao_Luis.main()
+18/05/2026 20:22:00 [INFO] =======================================================
+18/05/2026 20:22:00 [INFO]   RWA Tecnologia Operacional — Agente v2.0
+18/05/2026 20:22:00 [INFO] =======================================================
+18/05/2026 20:22:00 [INFO] [FP] FBA83A8C0EFB94E411B0FB01A993516C
+18/05/2026 20:22:03 [INFO] [LOGIN] Validando — williamrobertoangelo@gmail.com
+18/05/2026 20:22:04 [INFO] [LOGIN] Autorizado — William Roberto
+18/05/2026 20:22:04 [INFO] [TRAY] Ícone iniciado na bandeja.
+18/05/2026 20:22:04 [INFO] [AGENTE] Aguardando tarefas...
+18/05/2026 20:22:04 [INFO] [AGENTE] Loop iniciado. Intervalo: 1s
+18/05/2026 20:22:30 [INFO] [AGENTE] Tarefa recebida: sao_luis id=49
+18/05/2026 20:22:30 [INFO] [EXEC] Iniciando — id=49 módulo=sao_luis
+18/05/2026 20:22:31 [INFO] [EXEC] Sao_Luis.main()
+18/05/2026 20:23:06 [INFO] [PARAR] Sinal detectado — encerrando tarefa 49
+18/05/2026 20:23:06 [INFO] [PARAR] Chrome encerrado via taskkill.
+18/05/2026 20:26:06 [INFO] =======================================================
+18/05/2026 20:26:06 [INFO]   RWA Tecnologia Operacional — Agente v2.0
+18/05/2026 20:26:06 [INFO] =======================================================
+18/05/2026 20:26:06 [INFO] [FP] FBA83A8C0EFB94E411B0FB01A993516C
+18/05/2026 20:26:08 [INFO] [LOGIN] Validando — williamrobertoangelo@gmail.com
+18/05/2026 20:26:19 [ERROR] [LOGIN] Recusado — <urlopen error [Errno 11001] getaddrinfo failed>
+18/05/2026 20:26:19 [ERROR] [AGENTE] Login falhou. Verifique credenciais.
+18/05/2026 20:26:28 [INFO] =======================================================
+18/05/2026 20:26:28 [INFO]   RWA Tecnologia Operacional — Agente v2.0
+18/05/2026 20:26:28 [INFO] =======================================================
+18/05/2026 20:26:28 [INFO] [FP] FBA83A8C0EFB94E411B0FB01A993516C
+18/05/2026 20:26:30 [INFO] [LOGIN] Validando — williamrobertoangelo@gmail.com
+18/05/2026 20:26:30 [ERROR] [LOGIN] Recusado — <urlopen error [Errno 11001] getaddrinfo failed>
+18/05/2026 20:26:30 [ERROR] [AGENTE] Login falhou. Verifique credenciais.
+18/05/2026 20:26:33 [INFO] =======================================================
+18/05/2026 20:26:33 [INFO]   RWA Tecnologia Operacional — Agente v2.0
+18/05/2026 20:26:33 [INFO] =======================================================
+18/05/2026 20:26:33 [INFO] [FP] FBA83A8C0EFB94E411B0FB01A993516C
+18/05/2026 20:26:35 [INFO] [LOGIN] Validando — williamrobertoangelo@gmail.com
+18/05/2026 20:26:35 [ERROR] [LOGIN] Recusado — <urlopen error [Errno 11001] getaddrinfo failed>
+18/05/2026 20:26:35 [ERROR] [AGENTE] Login falhou. Verifique credenciais.
+18/05/2026 20:27:17 [INFO] =======================================================
+18/05/2026 20:27:17 [INFO]   RWA Tecnologia Operacional — Agente v2.0
+18/05/2026 20:27:17 [INFO] =======================================================
+18/05/2026 20:27:18 [INFO] [FP] FBA83A8C0EFB94E411B0FB01A993516C
+18/05/2026 20:27:21 [INFO] [LOGIN] Validando — williamrobertoangelo@gmail.com
+18/05/2026 20:27:21 [ERROR] [LOGIN] Recusado — <urlopen error [Errno 11001] getaddrinfo failed>
+18/05/2026 20:27:21 [ERROR] [AGENTE] Login falhou. Verifique credenciais.
+18/05/2026 20:28:08 [INFO] =======================================================
+18/05/2026 20:28:08 [INFO]   RWA Tecnologia Operacional — Agente v2.0
+18/05/2026 20:28:08 [INFO] =======================================================
+18/05/2026 20:28:08 [INFO] [FP] FBA83A8C0EFB94E411B0FB01A993516C
+18/05/2026 20:28:10 [INFO] [LOGIN] Validando — williamrobertoangelo@gmail.com
+18/05/2026 20:28:11 [INFO] [LOGIN] Autorizado — William Roberto
+18/05/2026 20:28:11 [INFO] [TRAY] Ícone iniciado na bandeja.
+18/05/2026 20:28:11 [INFO] [AGENTE] Aguardando tarefas...
+18/05/2026 20:28:11 [INFO] [AGENTE] Loop iniciado. Intervalo: 1s
+18/05/2026 20:28:41 [INFO] [AGENTE] Tarefa recebida: padrao_nacional id=53
+18/05/2026 20:28:41 [INFO] [EXEC] Iniciando — id=53 módulo=padrao_nacional
+18/05/2026 20:28:43 [INFO] [EXEC] Padrao_nacional.main()
+18/05/2026 20:29:15 [INFO] [PARAR] Sinal detectado — encerrando tarefa 53
+18/05/2026 20:29:15 [INFO] [PARAR] Chrome encerrado via taskkill.
+18/05/2026 20:31:27 [INFO] =======================================================
+18/05/2026 20:31:27 [INFO]   RWA Tecnologia Operacional — Agente v2.0
+18/05/2026 20:31:27 [INFO] =======================================================
+18/05/2026 20:31:27 [INFO] [FP] FBA83A8C0EFB94E411B0FB01A993516C
+18/05/2026 20:31:29 [INFO] [LOGIN] Validando — williamrobertoangelo@gmail.com
+18/05/2026 20:31:35 [INFO] [LOGIN] Autorizado — William Roberto
+18/05/2026 20:31:35 [INFO] [TRAY] Ícone iniciado na bandeja.
+18/05/2026 20:31:35 [INFO] [AGENTE] Aguardando tarefas...
+18/05/2026 20:31:35 [INFO] [AGENTE] Loop iniciado. Intervalo: 1s
+18/05/2026 20:32:00 [INFO] [AGENTE] Tarefa recebida: sao_luis id=54
+18/05/2026 20:32:00 [INFO] [EXEC] Iniciando — id=54 módulo=sao_luis
+18/05/2026 20:32:01 [INFO] [EXEC] Sao_Luis.main()
+18/05/2026 20:32:13 [INFO] [PARAR] Sinal detectado — encerrando tarefa 54
+18/05/2026 20:32:13 [INFO] [PARAR] Chrome encerrado via taskkill.
+18/05/2026 20:35:20 [INFO] =======================================================
+18/05/2026 20:35:20 [INFO]   RWA Tecnologia Operacional — Agente v2.0
+18/05/2026 20:35:20 [INFO] =======================================================
+18/05/2026 20:35:20 [INFO] [FP] FBA83A8C0EFB94E411B0FB01A993516C
+18/05/2026 20:35:22 [INFO] [LOGIN] Validando — williamrobertoangelo@gmail.com
+18/05/2026 20:35:23 [INFO] [LOGIN] Autorizado — William Roberto
+18/05/2026 20:35:23 [INFO] [TRAY] Ícone iniciado na bandeja.
+18/05/2026 20:35:23 [INFO] [AGENTE] Aguardando tarefas...
+18/05/2026 20:35:23 [INFO] [AGENTE] Loop iniciado. Intervalo: 1s
+18/05/2026 20:37:51 [INFO] =======================================================
+18/05/2026 20:37:51 [INFO]   RWA Tecnologia Operacional — Agente v2.0
+18/05/2026 20:37:51 [INFO] =======================================================
+18/05/2026 20:37:51 [INFO] [FP] FBA83A8C0EFB94E411B0FB01A993516C
+18/05/2026 20:37:53 [INFO] [LOGIN] Validando — williamrobertoangelo@gmail.com
+18/05/2026 20:37:54 [INFO] [LOGIN] Autorizado — William Roberto
+18/05/2026 20:37:54 [INFO] [TRAY] Ícone iniciado na bandeja.
+18/05/2026 20:37:54 [INFO] [AGENTE] Aguardando tarefas...
+18/05/2026 20:37:54 [INFO] [AGENTE] Loop iniciado. Intervalo: 1s
+18/05/2026 20:38:20 [INFO] [AGENTE] Tarefa recebida: sao_luis id=55
+18/05/2026 20:38:20 [INFO] [EXEC] Iniciando — id=55 módulo=sao_luis
+18/05/2026 20:38:21 [INFO] [EXEC] Iniciando subprocesso: Sao_Luis.PY
+18/05/2026 20:38:29 [INFO] [PARAR] Sinal detectado — encerrando tarefa 55
+18/05/2026 20:38:29 [INFO] [PARAR] Processo 18136 encerrado.
+18/05/2026 20:38:29 [INFO] [EXEC] Interrompido — sao_luis (código 1)
+18/05/2026 20:38:52 [INFO] [AGENTE] Tarefa recebida: padrao_nacional id=56
+18/05/2026 20:38:52 [INFO] [EXEC] Iniciando — id=56 módulo=padrao_nacional
+18/05/2026 20:38:52 [INFO] [EXEC] Iniciando subprocesso: Padrao_nacional.py
+18/05/2026 20:39:05 [INFO] [PARAR] Sinal detectado — encerrando tarefa 56
+18/05/2026 20:39:05 [INFO] [PARAR] Processo 10644 encerrado.
+18/05/2026 20:39:05 [INFO] [EXEC] Interrompido — padrao_nacional (código 1)
+18/05/2026 20:39:31 [INFO] [AGENTE] Tarefa recebida: sao_luis id=57
+18/05/2026 20:39:31 [INFO] [EXEC] Iniciando — id=57 módulo=sao_luis
+18/05/2026 20:39:31 [INFO] [EXEC] Iniciando subprocesso: Sao_Luis.PY
+18/05/2026 20:39:46 [INFO] [PARAR] Sinal detectado — encerrando tarefa 57
+18/05/2026 20:39:46 [INFO] [PARAR] Processo 21792 encerrado.
+18/05/2026 20:39:46 [INFO] [EXEC] Interrompido — sao_luis (código 1)
+18/05/2026 20:39:53 [INFO] [AGENTE] Tarefa recebida: padrao_nacional id=58
+18/05/2026 20:39:53 [INFO] [EXEC] Iniciando — id=58 módulo=padrao_nacional
+18/05/2026 20:39:54 [INFO] [EXEC] Iniciando subprocesso: Padrao_nacional.py
+18/05/2026 20:40:31 [INFO] [PARAR] Sinal detectado — encerrando tarefa 58
+18/05/2026 20:40:32 [INFO] [PARAR] Processo 18248 encerrado.
+18/05/2026 20:40:32 [INFO] [EXEC] Interrompido — padrao_nacional (código 1)
+18/05/2026 20:40:40 [INFO] [AGENTE] Tarefa recebida: sao_luis id=59
+18/05/2026 20:40:40 [INFO] [EXEC] Iniciando — id=59 módulo=sao_luis
+18/05/2026 20:40:41 [INFO] [EXEC] Iniciando subprocesso: Sao_Luis.PY
+18/05/2026 20:41:00 [INFO] [PARAR] Sinal detectado — encerrando tarefa 59
+18/05/2026 20:41:00 [INFO] [PARAR] Processo 17384 encerrado.
+18/05/2026 20:41:00 [INFO] [EXEC] Interrompido — sao_luis (código 1)
+18/05/2026 20:41:07 [INFO] [AGENTE] Tarefa recebida: padrao_nacional id=60
+18/05/2026 20:41:07 [INFO] [EXEC] Iniciando — id=60 módulo=padrao_nacional
+18/05/2026 20:41:08 [INFO] [EXEC] Iniciando subprocesso: Padrao_nacional.py
+18/05/2026 20:41:33 [INFO] [PARAR] Sinal detectado — encerrando tarefa 60
+18/05/2026 20:41:33 [INFO] [PARAR] Processo 18116 encerrado.
+18/05/2026 20:41:33 [INFO] [EXEC] Interrompido — padrao_nacional (código 1)
+18/05/2026 20:56:05 [INFO] =======================================================
+18/05/2026 20:56:05 [INFO]   RWA Tecnologia Operacional — Agente v2.0
+18/05/2026 20:56:05 [INFO] =======================================================
+18/05/2026 20:56:05 [INFO] [FP] FBA83A8C0EFB94E411B0FB01A993516C
+18/05/2026 20:56:09 [INFO] [LOGIN] Validando — williamrobertoangelo@gmail.com
+18/05/2026 20:56:10 [INFO] [LOGIN] Autorizado — William Roberto
+18/05/2026 20:56:10 [INFO] [TRAY] Ícone iniciado na bandeja.
+18/05/2026 20:56:10 [INFO] [AGENTE] Aguardando tarefas...
+18/05/2026 20:56:10 [INFO] [AGENTE] Loop iniciado. Intervalo: 1s
+18/05/2026 20:56:44 [INFO] [AGENTE] Tarefa recebida: sao_luis id=61
+18/05/2026 20:56:44 [INFO] [EXEC] Iniciando — id=61 módulo=sao_luis
+18/05/2026 20:56:45 [INFO] [EXEC] Iniciando subprocesso: Sao_Luis.PY
+18/05/2026 20:56:56 [INFO] [PARAR] Sinal detectado — encerrando tarefa 61
+18/05/2026 20:56:56 [INFO] [PARAR] Processo 19688 encerrado.
+18/05/2026 20:56:56 [INFO] [EXEC] Interrompido — sao_luis (código 1)
+18/05/2026 21:49:26 [INFO] =======================================================
+18/05/2026 21:49:26 [INFO]   RWA Tecnologia Operacional — Agente v2.0
+18/05/2026 21:49:26 [INFO] =======================================================
+18/05/2026 21:49:26 [INFO] [FP] FBA83A8C0EFB94E411B0FB01A993516C
+18/05/2026 21:49:28 [INFO] [LOGIN] Validando — williamrobertoangelo@gmail.com
+18/05/2026 21:49:29 [INFO] [LOGIN] Autorizado — William Roberto
+18/05/2026 21:49:29 [INFO] [TRAY] Ícone iniciado na bandeja.
+18/05/2026 21:49:29 [INFO] [AGENTE] Aguardando tarefas...
+18/05/2026 21:49:29 [INFO] [AGENTE] Loop iniciado. Intervalo: 1s
+18/05/2026 21:49:51 [INFO] [AGENTE] Tarefa recebida: sao_luis id=62
+18/05/2026 21:49:51 [INFO] [EXEC] Iniciando — id=62 módulo=sao_luis
+18/05/2026 21:49:51 [INFO] [EXEC] Iniciando subprocesso: Sao_Luis.PY
+18/05/2026 21:50:03 [INFO] [PARAR] Sinal detectado — encerrando tarefa 62
+18/05/2026 21:50:03 [INFO] [PARAR] Processo 21148 encerrado.
+18/05/2026 21:50:03 [INFO] [EXEC] Interrompido — sao_luis (código 1)
+18/05/2026 21:50:09 [INFO] [AGENTE] Tarefa recebida: padrao_nacional id=63
+18/05/2026 21:50:09 [INFO] [EXEC] Iniciando — id=63 módulo=padrao_nacional
+18/05/2026 21:50:10 [INFO] [EXEC] Iniciando subprocesso: Padrao_nacional.py
+18/05/2026 21:50:14 [INFO] [PARAR] Sinal detectado — encerrando tarefa 63
+18/05/2026 21:50:14 [INFO] [PARAR] Processo 18904 encerrado.
+18/05/2026 21:50:14 [INFO] [EXEC] Interrompido — padrao_nacional (código 1)
+18/05/2026 21:50:24 [INFO] [AGENTE] Tarefa recebida: conferencia_sao_luis id=64
+18/05/2026 21:50:24 [INFO] [EXEC] Iniciando — id=64 módulo=conferencia_sao_luis
+18/05/2026 21:50:25 [INFO] [EXEC] Iniciando subprocesso: conferencias_sao_luis.py
+18/05/2026 21:50:38 [ERROR] [EXEC] Erro — conferencia_sao_luis (código 2147483651)
+18/05/2026 21:50:41 [INFO] [AGENTE] Tarefa recebida: conferencia_pn id=65
+18/05/2026 21:50:41 [INFO] [EXEC] Iniciando — id=65 módulo=conferencia_pn
+18/05/2026 21:50:41 [INFO] [EXEC] Iniciando subprocesso: conferencias_pn.py
+18/05/2026 21:50:46 [ERROR] [EXEC] Erro — conferencia_pn (código 3221225786)
+18/05/2026 21:57:23 [INFO] =======================================================
+18/05/2026 21:57:23 [INFO]   RWA Tecnologia Operacional — Agente v2.0
+18/05/2026 21:57:23 [INFO] =======================================================
+18/05/2026 21:57:23 [INFO] [FP] FBA83A8C0EFB94E411B0FB01A993516C
+18/05/2026 21:57:26 [INFO] [LOGIN] Validando — williamrobertoangelo@gmail.com
+18/05/2026 21:57:27 [INFO] [LOGIN] Autorizado — William Roberto
+18/05/2026 21:57:27 [INFO] [TRAY] Ícone iniciado na bandeja.
+18/05/2026 21:57:27 [INFO] [AGENTE] Aguardando tarefas...
+18/05/2026 21:57:27 [INFO] [AGENTE] Loop iniciado. Intervalo: 1s
+18/05/2026 21:57:44 [INFO] [AGENTE] Tarefa recebida: sao_luis id=66
+18/05/2026 21:57:44 [INFO] [EXEC] Iniciando — id=66 módulo=sao_luis
+18/05/2026 21:57:44 [INFO] [EXEC] Iniciando subprocesso: Sao_Luis.PY
+18/05/2026 21:57:56 [INFO] [PARAR] Sinal detectado — encerrando tarefa 66
+18/05/2026 21:57:56 [INFO] [PARAR] Processo 13280 encerrado.
+18/05/2026 21:57:56 [INFO] [EXEC] Interrompido — sao_luis (código 1)
+18/05/2026 22:00:57 [INFO] =======================================================
+18/05/2026 22:00:57 [INFO]   RWA Tecnologia Operacional — Agente v2.0
+18/05/2026 22:00:57 [INFO] =======================================================
+18/05/2026 22:00:57 [INFO] [FP] FBA83A8C0EFB94E411B0FB01A993516C
+18/05/2026 22:01:00 [INFO] [LOGIN] Validando — williamrobertoangelo@gmail.com
+18/05/2026 22:01:01 [INFO] [LOGIN] Autorizado — William Roberto
+18/05/2026 22:01:01 [INFO] [TRAY] Ícone iniciado na bandeja.
+18/05/2026 22:01:01 [INFO] [AGENTE] Aguardando tarefas...
+18/05/2026 22:01:01 [INFO] [AGENTE] Loop iniciado. Intervalo: 1s
+18/05/2026 22:01:31 [INFO] [AGENTE] Tarefa recebida: sao_luis id=67
+18/05/2026 22:01:31 [INFO] [EXEC] Iniciando — id=67 módulo=sao_luis
+18/05/2026 22:01:32 [INFO] [EXEC] Iniciando subprocesso: Sao_Luis.PY
+18/05/2026 22:01:36 [INFO] [PARAR] Sinal detectado — encerrando tarefa 67
+18/05/2026 22:01:36 [INFO] [PARAR] Processo 5008 encerrado.
+18/05/2026 22:01:36 [INFO] [EXEC] Interrompido — sao_luis (código 1)
+18/05/2026 22:01:40 [INFO] [AGENTE] Tarefa recebida: sao_luis id=68
+18/05/2026 22:01:40 [INFO] [EXEC] Iniciando — id=68 módulo=sao_luis
+18/05/2026 22:01:40 [INFO] [EXEC] Iniciando subprocesso: Sao_Luis.PY
+18/05/2026 22:01:43 [INFO] [PARAR] Sinal detectado — encerrando tarefa 68
+18/05/2026 22:01:43 [INFO] [PARAR] Processo 18864 encerrado.
+18/05/2026 22:01:43 [INFO] [EXEC] Interrompido — sao_luis (código 1)
+18/05/2026 22:01:47 [INFO] [AGENTE] Tarefa recebida: padrao_nacional id=69
+18/05/2026 22:01:47 [INFO] [EXEC] Iniciando — id=69 módulo=padrao_nacional
+18/05/2026 22:01:48 [INFO] [EXEC] Iniciando subprocesso: Padrao_nacional.py
+18/05/2026 22:01:50 [INFO] [PARAR] Sinal detectado — encerrando tarefa 69
+18/05/2026 22:01:51 [INFO] [PARAR] Processo 15244 encerrado.
+18/05/2026 22:01:51 [INFO] [EXEC] Interrompido — padrao_nacional (código 1)
+18/05/2026 22:03:30 [INFO] [AGENTE] Tarefa recebida: conferencia_sao_luis id=70
+18/05/2026 22:03:30 [INFO] [EXEC] Iniciando — id=70 módulo=conferencia_sao_luis
+18/05/2026 22:03:31 [INFO] [EXEC] Iniciando subprocesso: conferencias_sao_luis.py
+18/05/2026 22:04:19 [ERROR] [EXEC] Erro — conferencia_sao_luis (código 2147483651)
+18/05/2026 22:04:21 [INFO] [AGENTE] Tarefa recebida: conferencia_sao_luis id=71
+18/05/2026 22:04:21 [INFO] [EXEC] Iniciando — id=71 módulo=conferencia_sao_luis
+18/05/2026 22:04:22 [INFO] [EXEC] Iniciando subprocesso: conferencias_sao_luis.py
+18/05/2026 22:08:04 [INFO] =======================================================
+18/05/2026 22:08:04 [INFO]   RWA Tecnologia Operacional — Agente v2.0
+18/05/2026 22:08:04 [INFO] =======================================================
+18/05/2026 22:08:04 [INFO] [FP] FBA83A8C0EFB94E411B0FB01A993516C
+18/05/2026 22:08:06 [INFO] [LOGIN] Validando — williamrobertoangelo@gmail.com
+18/05/2026 22:08:07 [INFO] [LOGIN] Autorizado — William Roberto
+18/05/2026 22:08:07 [INFO] [TRAY] Ícone iniciado na bandeja.
+18/05/2026 22:08:07 [INFO] [AGENTE] Aguardando tarefas...
+18/05/2026 22:08:07 [INFO] [AGENTE] Loop iniciado. Intervalo: 1s
+18/05/2026 22:08:38 [ERROR] [EXEC] Erro — conferencia_sao_luis (código 3221225786)
+18/05/2026 22:08:41 [INFO] =======================================================
+18/05/2026 22:08:41 [INFO]   RWA Tecnologia Operacional — Agente v2.0
+18/05/2026 22:08:41 [INFO] =======================================================
+18/05/2026 22:08:41 [INFO] [FP] FBA83A8C0EFB94E411B0FB01A993516C
+18/05/2026 22:08:43 [INFO] [LOGIN] Validando — williamrobertoangelo@gmail.com
+18/05/2026 22:08:44 [INFO] [LOGIN] Autorizado — William Roberto
+18/05/2026 22:08:44 [INFO] [TRAY] Ícone iniciado na bandeja.
+18/05/2026 22:08:44 [INFO] [AGENTE] Aguardando tarefas...
+18/05/2026 22:08:44 [INFO] [AGENTE] Loop iniciado. Intervalo: 1s
+18/05/2026 22:09:11 [INFO] [AGENTE] Tarefa recebida: sao_luis id=72
+18/05/2026 22:09:11 [INFO] [EXEC] Iniciando — id=72 módulo=sao_luis
+18/05/2026 22:09:11 [INFO] [EXEC] Iniciando subprocesso: Sao_Luis.PY
+18/05/2026 22:09:16 [INFO] [PARAR] Sinal detectado — encerrando tarefa 72
+18/05/2026 22:09:16 [INFO] [PARAR] Processo 19912 encerrado.
+18/05/2026 22:09:16 [INFO] [EXEC] Interrompido — sao_luis (código 1)
+18/05/2026 22:09:18 [INFO] [AGENTE] Tarefa recebida: padrao_nacional id=73
+18/05/2026 22:09:18 [INFO] [EXEC] Iniciando — id=73 módulo=padrao_nacional
+18/05/2026 22:09:19 [INFO] [EXEC] Iniciando subprocesso: Padrao_nacional.py
+18/05/2026 22:09:22 [INFO] [PARAR] Sinal detectado — encerrando tarefa 73
+18/05/2026 22:09:23 [INFO] [PARAR] Processo 16760 encerrado.
+18/05/2026 22:09:23 [INFO] [EXEC] Interrompido — padrao_nacional (código 1)
+18/05/2026 22:09:42 [INFO] [AGENTE] Tarefa recebida: conferencia_sao_luis id=74
+18/05/2026 22:09:42 [INFO] [EXEC] Iniciando — id=74 módulo=conferencia_sao_luis
+18/05/2026 22:09:43 [INFO] [EXEC] Iniciando subprocesso: conferencias_sao_luis.py
+18/05/2026 22:09:54 [ERROR] [EXEC] Erro — conferencia_sao_luis (código 2147483651)
+18/05/2026 22:14:23 [INFO] =======================================================
+18/05/2026 22:14:23 [INFO]   RWA Tecnologia Operacional — Agente v2.0
+18/05/2026 22:14:23 [INFO] =======================================================
+18/05/2026 22:14:23 [INFO] [FP] FBA83A8C0EFB94E411B0FB01A993516C
+18/05/2026 22:14:23 [ERROR] [AGENTE] Sem credenciais. Execute o launcher primeiro.
+18/05/2026 22:14:28 [INFO] =======================================================
+18/05/2026 22:14:28 [INFO]   RWA Tecnologia Operacional — Agente v2.0
+18/05/2026 22:14:28 [INFO] =======================================================
+18/05/2026 22:14:28 [INFO] [FP] FBA83A8C0EFB94E411B0FB01A993516C
+18/05/2026 22:14:28 [ERROR] [AGENTE] Sem credenciais. Execute o launcher primeiro.
+18/05/2026 22:15:05 [INFO] =======================================================
+18/05/2026 22:15:05 [INFO]   RWA Tecnologia Operacional — Agente v2.0
+18/05/2026 22:15:05 [INFO] =======================================================
+18/05/2026 22:15:05 [INFO] [FP] FBA83A8C0EFB94E411B0FB01A993516C
+18/05/2026 22:15:05 [ERROR] [AGENTE] Sem credenciais. Execute o launcher primeiro.
+18/05/2026 22:17:08 [INFO] =======================================================
+18/05/2026 22:17:08 [INFO]   RWA Tecnologia Operacional — Agente v2.0
+18/05/2026 22:17:08 [INFO] =======================================================
+18/05/2026 22:17:08 [INFO] [FP] FBA83A8C0EFB94E411B0FB01A993516C
+18/05/2026 22:17:08 [ERROR] [AGENTE] Sem credenciais. Execute o launcher primeiro.
+18/05/2026 22:20:41 [INFO] =======================================================
+18/05/2026 22:20:41 [INFO]   RWA Tecnologia Operacional — Agente v2.0
+18/05/2026 22:20:41 [INFO] =======================================================
+18/05/2026 22:20:42 [INFO] [FP] FBA83A8C0EFB94E411B0FB01A993516C
+18/05/2026 22:20:43 [INFO] [LOGIN] Validando — williamrobertoangelo@gmail.com
+18/05/2026 22:20:44 [INFO] [LOGIN] Autorizado — William Roberto
+18/05/2026 22:20:44 [INFO] [TRAY] Ícone iniciado na bandeja.
+18/05/2026 22:20:44 [INFO] [AGENTE] Aguardando tarefas...
+18/05/2026 22:20:44 [INFO] [AGENTE] Loop iniciado. Intervalo: 1s
+18/05/2026 22:21:10 [INFO] [AGENTE] Tarefa recebida: conferencia_pn id=76
+18/05/2026 22:21:10 [INFO] [EXEC] Iniciando — id=76 módulo=conferencia_pn
+18/05/2026 22:21:10 [INFO] [EXEC] Iniciando subprocesso: conferencias_pn.py
+18/05/2026 22:21:24 [ERROR] [EXEC] Erro — conferencia_pn (código 2147483651)
+18/05/2026 22:27:07 [INFO] =======================================================
+18/05/2026 22:27:07 [INFO]   RWA Tecnologia Operacional — Agente v2.0
+18/05/2026 22:27:07 [INFO] =======================================================
+18/05/2026 22:27:07 [INFO] [FP] FBA83A8C0EFB94E411B0FB01A993516C
+18/05/2026 22:27:09 [INFO] [LOGIN] Validando — williamrobertoangelo@gmail.com
+18/05/2026 22:27:10 [INFO] [LOGIN] Autorizado — William Roberto
+18/05/2026 22:27:10 [INFO] [TRAY] Ícone iniciado na bandeja.
+18/05/2026 22:27:10 [INFO] [AGENTE] Aguardando tarefas...
+18/05/2026 22:27:10 [INFO] [AGENTE] Loop iniciado. Intervalo: 1s
+18/05/2026 22:29:55 [INFO] [AGENTE] Tarefa recebida: sao_luis id=77
+18/05/2026 22:29:55 [INFO] [EXEC] Iniciando — id=77 módulo=sao_luis
+18/05/2026 22:29:55 [INFO] [EXEC] Iniciando subprocesso: Sao_Luis.PY
+18/05/2026 22:29:59 [INFO] [PARAR] Sinal detectado — encerrando tarefa 77
+18/05/2026 22:30:00 [INFO] [PARAR] Processo 5448 encerrado.
+18/05/2026 22:30:00 [INFO] [EXEC] Interrompido — sao_luis (código 1)
+18/05/2026 22:30:05 [INFO] [AGENTE] Tarefa recebida: padrao_nacional id=78
+18/05/2026 22:30:05 [INFO] [EXEC] Iniciando — id=78 módulo=padrao_nacional
+18/05/2026 22:30:06 [INFO] [EXEC] Iniciando subprocesso: Padrao_nacional.py
+18/05/2026 22:30:09 [INFO] [PARAR] Sinal detectado — encerrando tarefa 78
+18/05/2026 22:30:09 [INFO] [PARAR] Processo 15532 encerrado.
+18/05/2026 22:30:09 [INFO] [EXEC] Interrompido — padrao_nacional (código 1)
+18/05/2026 22:30:59 [INFO] =======================================================
+18/05/2026 22:30:59 [INFO]   RWA Tecnologia Operacional — Agente v2.0
+18/05/2026 22:30:59 [INFO] =======================================================
+18/05/2026 22:31:00 [INFO] [FP] FBA83A8C0EFB94E411B0FB01A993516C
+18/05/2026 22:31:01 [INFO] [LOGIN] Validando — williamrobertoangelo@gmail.com
+18/05/2026 22:31:02 [INFO] [LOGIN] Autorizado — William Roberto
+18/05/2026 22:31:02 [INFO] [TRAY] Ícone iniciado na bandeja.
+18/05/2026 22:31:02 [INFO] [AGENTE] Aguardando tarefas...
+18/05/2026 22:31:02 [INFO] [AGENTE] Loop iniciado. Intervalo: 1s
+18/05/2026 22:31:03 [INFO] [AGENTE] Tarefa recebida: sao_luis id=79
+18/05/2026 22:31:03 [INFO] [EXEC] Iniciando — id=79 módulo=sao_luis
+18/05/2026 22:31:04 [INFO] [EXEC] Iniciando subprocesso: Sao_Luis.PY
+18/05/2026 22:31:29 [ERROR] [EXEC] Erro — sao_luis (código 3221225786)
+18/05/2026 22:32:39 [INFO] =======================================================
+18/05/2026 22:32:39 [INFO]   RWA Tecnologia Operacional — Agente v2.0
+18/05/2026 22:32:39 [INFO] =======================================================
+18/05/2026 22:32:39 [INFO] [FP] FBA83A8C0EFB94E411B0FB01A993516C
+18/05/2026 22:32:41 [INFO] [LOGIN] Validando — williamrobertoangelo@gmail.com
+18/05/2026 22:32:42 [INFO] [LOGIN] Autorizado — William Roberto
+18/05/2026 22:32:42 [INFO] [TRAY] Ícone iniciado na bandeja.
+18/05/2026 22:32:42 [INFO] [AGENTE] Aguardando tarefas...
+18/05/2026 22:32:42 [INFO] [AGENTE] Loop iniciado. Intervalo: 1s
+18/05/2026 22:32:46 [INFO] [AGENTE] Tarefa recebida: sao_luis id=81
+18/05/2026 22:32:46 [INFO] [EXEC] Iniciando — id=81 módulo=sao_luis
+18/05/2026 22:32:47 [INFO] [EXEC] Iniciando subprocesso: Sao_Luis.PY
+18/05/2026 22:37:59 [INFO] =======================================================
+18/05/2026 22:37:59 [INFO]   RWA Tecnologia Operacional — Agente v2.0
+18/05/2026 22:37:59 [INFO] =======================================================
+18/05/2026 22:37:59 [INFO] [FP] FBA83A8C0EFB94E411B0FB01A993516C
+18/05/2026 22:38:01 [INFO] [LOGIN] Validando — williamrobertoangelo@gmail.com
+18/05/2026 22:38:02 [INFO] [LOGIN] Autorizado — William Roberto
+18/05/2026 22:38:02 [INFO] [TRAY] Ícone iniciado na bandeja.
+18/05/2026 22:38:02 [INFO] [AGENTE] Aguardando tarefas...
+18/05/2026 22:38:02 [INFO] [AGENTE] Loop iniciado. Intervalo: 1s
+18/05/2026 22:38:11 [INFO] [AGENTE] Tarefa recebida: sao_luis id=84
+18/05/2026 22:38:11 [INFO] [EXEC] Iniciando — id=84 módulo=sao_luis
+18/05/2026 22:38:11 [INFO] [EXEC] Iniciando subprocesso: Sao_Luis.PY
+18/05/2026 22:39:16 [ERROR] [EXEC] Erro — sao_luis (código 3221225786)
+18/05/2026 22:47:27 [INFO] =======================================================
+18/05/2026 22:47:27 [INFO]   RWA Tecnologia Operacional — Agente v2.0
+18/05/2026 22:47:27 [INFO] =======================================================
+18/05/2026 22:47:27 [INFO] [FP] FBA83A8C0EFB94E411B0FB01A993516C
+18/05/2026 22:47:29 [INFO] [LOGIN] Validando — williamrobertoangelo@gmail.com
+18/05/2026 22:47:30 [INFO] [LOGIN] Autorizado — William Roberto
+18/05/2026 22:47:30 [INFO] [TRAY] Ícone iniciado na bandeja.
+18/05/2026 22:47:30 [INFO] [AGENTE] Aguardando tarefas...
+18/05/2026 22:47:30 [INFO] [AGENTE] Loop iniciado. Intervalo: 1s
+18/05/2026 22:47:50 [INFO] [AGENTE] Tarefa recebida: sao_luis id=87
+18/05/2026 22:47:50 [INFO] [EXEC] Iniciando — id=87 módulo=sao_luis
+18/05/2026 22:47:50 [INFO] [EXEC] Iniciando subprocesso: Sao_Luis.PY
+18/05/2026 22:47:58 [INFO] [PARAR] Sinal local detectado — encerrando tarefa 87
+18/05/2026 22:47:59 [INFO] [PARAR] Processo 15800 encerrado.
+18/05/2026 22:47:59 [INFO] [EXEC] Interrompido — sao_luis (código 1)
+18/05/2026 22:48:08 [INFO] [AGENTE] Tarefa recebida: padrao_nacional id=88
+18/05/2026 22:48:08 [INFO] [EXEC] Iniciando — id=88 módulo=padrao_nacional
+18/05/2026 22:48:08 [INFO] [EXEC] Iniciando subprocesso: Padrao_nacional.py
+18/05/2026 22:48:11 [INFO] [PARAR] Sinal local detectado — encerrando tarefa 88
+18/05/2026 22:48:12 [INFO] [PARAR] Processo 19556 encerrado.
+18/05/2026 22:48:12 [INFO] [EXEC] Interrompido — padrao_nacional (código 1)
+18/05/2026 22:48:17 [INFO] [AGENTE] Tarefa recebida: sao_luis id=89
+18/05/2026 22:48:17 [INFO] [EXEC] Iniciando — id=89 módulo=sao_luis
+18/05/2026 22:48:18 [INFO] [EXEC] Iniciando subprocesso: Sao_Luis.PY
+18/05/2026 22:48:21 [INFO] [PARAR] Cancelamento remoto detectado — encerrando tarefa 89
+18/05/2026 22:48:21 [INFO] [PARAR] Processo 20572 encerrado via portal.
+18/05/2026 22:48:21 [INFO] [EXEC] Interrompido — sao_luis (código 1)
+18/05/2026 22:48:27 [INFO] [AGENTE] Tarefa recebida: padrao_nacional id=90
+18/05/2026 22:48:27 [INFO] [EXEC] Iniciando — id=90 módulo=padrao_nacional
+18/05/2026 22:48:28 [INFO] [EXEC] Iniciando subprocesso: Padrao_nacional.py
+18/05/2026 22:48:37 [INFO] [PARAR] Cancelamento remoto detectado — encerrando tarefa 90
+18/05/2026 22:48:37 [INFO] [PARAR] Processo 14812 encerrado via portal.
+18/05/2026 22:48:37 [INFO] [EXEC] Interrompido — padrao_nacional (código 1)
+18/05/2026 22:54:23 [INFO] =======================================================
+18/05/2026 22:54:23 [INFO]   RWA Tecnologia Operacional — Agente v2.0
+18/05/2026 22:54:23 [INFO] =======================================================
+18/05/2026 22:54:23 [INFO] [FP] FBA83A8C0EFB94E411B0FB01A993516C
+18/05/2026 22:54:25 [INFO] [LOGIN] Validando — williamrobertoangelo@gmail.com
+18/05/2026 22:54:28 [INFO] [LOGIN] Autorizado — William Roberto
+18/05/2026 22:54:28 [INFO] [TRAY] Ícone iniciado na bandeja.
+18/05/2026 22:54:28 [INFO] [AGENTE] Aguardando tarefas...
+18/05/2026 22:54:28 [INFO] [AGENTE] Loop iniciado. Intervalo: 1s
+18/05/2026 22:57:26 [INFO] =======================================================
+18/05/2026 22:57:26 [INFO]   RWA Tecnologia Operacional — Agente v2.0
+18/05/2026 22:57:26 [INFO] =======================================================
+18/05/2026 22:57:26 [INFO] [FP] FBA83A8C0EFB94E411B0FB01A993516C
+18/05/2026 22:57:27 [INFO] [LOGIN] Validando — williamrobertoangelo@gmail.com
+18/05/2026 22:57:30 [INFO] [LOGIN] Autorizado — William Roberto
+18/05/2026 22:57:30 [INFO] [TRAY] Ícone iniciado na bandeja.
+18/05/2026 22:57:30 [INFO] [AGENTE] Aguardando tarefas...
+18/05/2026 22:57:30 [INFO] [AGENTE] Loop iniciado. Intervalo: 1s
+18/05/2026 23:14:51 [INFO] =======================================================
+18/05/2026 23:14:51 [INFO]   RWA Tecnologia Operacional — Agente v2.0
+18/05/2026 23:14:51 [INFO] =======================================================
+18/05/2026 23:14:51 [INFO] [FP] FBA83A8C0EFB94E411B0FB01A993516C
+18/05/2026 23:14:53 [INFO] [LOGIN] Validando — williamrobertoangelo@gmail.com
+18/05/2026 23:14:57 [INFO] [LOGIN] Autorizado — William Roberto
+18/05/2026 23:14:57 [INFO] [TRAY] Ícone iniciado na bandeja.
+18/05/2026 23:14:57 [INFO] [AGENTE] Aguardando tarefas...
+18/05/2026 23:14:57 [INFO] [AGENTE] Loop iniciado. Intervalo: 1s
+18/05/2026 23:14:58 [INFO] [AGENTE] Tarefa recebida: padrao_nacional id=3
+18/05/2026 23:14:58 [INFO] [EXEC] Iniciando — id=3 módulo=padrao_nacional
+18/05/2026 23:14:59 [INFO] [EXEC] Iniciando subprocesso: Padrao_nacional.py
+18/05/2026 23:15:10 [ERROR] [EXEC] Erro — padrao_nacional (código 3221225786)
+18/05/2026 23:16:04 [INFO] =======================================================
+18/05/2026 23:16:04 [INFO]   RWA Tecnologia Operacional — Agente v2.0
+18/05/2026 23:16:04 [INFO] =======================================================
+18/05/2026 23:16:04 [INFO] [FP] FBA83A8C0EFB94E411B0FB01A993516C
+18/05/2026 23:16:06 [INFO] [LOGIN] Validando — williamrobertoangelo@gmail.com
+18/05/2026 23:16:07 [INFO] [LOGIN] Autorizado — William Roberto
+18/05/2026 23:16:07 [INFO] [TRAY] Ícone iniciado na bandeja.
+18/05/2026 23:16:07 [INFO] [AGENTE] Aguardando tarefas...
+18/05/2026 23:16:07 [INFO] [AGENTE] Loop iniciado. Intervalo: 1s
+18/05/2026 23:16:07 [INFO] [AGENTE] Tarefa recebida: sao_luis id=14
+18/05/2026 23:16:07 [INFO] [EXEC] Iniciando — id=14 módulo=sao_luis
+18/05/2026 23:16:08 [INFO] [EXEC] Iniciando subprocesso: Sao_Luis.PY
+18/05/2026 23:20:13 [ERROR] [EXEC] Erro — sao_luis (código 3221225786)
+18/05/2026 23:29:55 [INFO] =======================================================
+18/05/2026 23:29:55 [INFO]   RWA Tecnologia Operacional — Agente v2.0
+18/05/2026 23:29:55 [INFO] =======================================================
+18/05/2026 23:29:56 [INFO] [FP] FBA83A8C0EFB94E411B0FB01A993516C
+18/05/2026 23:29:57 [INFO] [LOGIN] Validando — williamrobertoangelo@gmail.com
+18/05/2026 23:29:58 [INFO] [LOGIN] Autorizado — William Roberto
+18/05/2026 23:29:58 [INFO] [TRAY] Ícone iniciado na bandeja.
+18/05/2026 23:29:58 [INFO] [AGENTE] Aguardando tarefas...
+18/05/2026 23:29:58 [INFO] [AGENTE] Loop iniciado. Intervalo: 1s
+18/05/2026 23:29:59 [INFO] [AGENTE] Tarefa recebida: sao_luis id=19
+18/05/2026 23:29:59 [INFO] [EXEC] Iniciando — id=19 módulo=sao_luis
+18/05/2026 23:30:00 [INFO] [EXEC] Iniciando subprocesso: Sao_Luis.PY
+18/05/2026 23:32:06 [ERROR] [EXEC] Erro — sao_luis (código 3221225786)
+18/05/2026 23:34:35 [INFO] =======================================================
+18/05/2026 23:34:35 [INFO]   RWA Tecnologia Operacional — Agente v2.0
+18/05/2026 23:34:35 [INFO] =======================================================
+18/05/2026 23:34:35 [INFO] [FP] FBA83A8C0EFB94E411B0FB01A993516C
+18/05/2026 23:34:38 [INFO] [LOGIN] Validando — williamrobertoangelo@gmail.com
+18/05/2026 23:34:39 [INFO] [LOGIN] Autorizado — William Roberto
+18/05/2026 23:34:39 [INFO] [TRAY] Ícone iniciado na bandeja.
+18/05/2026 23:34:39 [INFO] [AGENTE] Aguardando tarefas...
+18/05/2026 23:34:39 [INFO] [AGENTE] Loop iniciado. Intervalo: 1s
+18/05/2026 23:34:40 [INFO] [AGENTE] Tarefa recebida: padrao_nacional id=93
+18/05/2026 23:34:40 [INFO] [EXEC] Iniciando — id=93 módulo=padrao_nacional
+18/05/2026 23:34:41 [INFO] [EXEC] Iniciando subprocesso: Padrao_nacional.py
+18/05/2026 23:36:47 [ERROR] [EXEC] Erro — padrao_nacional (código 3221225786)
+18/05/2026 23:41:10 [INFO] =======================================================
+18/05/2026 23:41:10 [INFO]   RWA Tecnologia Operacional — Agente v2.0
+18/05/2026 23:41:10 [INFO] =======================================================
+18/05/2026 23:41:10 [INFO] [FP] FBA83A8C0EFB94E411B0FB01A993516C
+18/05/2026 23:41:12 [INFO] [LOGIN] Validando — williamrobertoangelo@gmail.com
+18/05/2026 23:41:13 [ERROR] [LOGIN] Recusado — Senha incorreta.
+18/05/2026 23:41:13 [ERROR] [AGENTE] Login falhou. Verifique credenciais.
+18/05/2026 23:41:19 [INFO] =======================================================
+18/05/2026 23:41:19 [INFO]   RWA Tecnologia Operacional — Agente v2.0
+18/05/2026 23:41:19 [INFO] =======================================================
+18/05/2026 23:41:19 [INFO] [FP] FBA83A8C0EFB94E411B0FB01A993516C
+18/05/2026 23:41:21 [INFO] [LOGIN] Validando — williamrobertoangelo@gmail.com
+18/05/2026 23:41:22 [ERROR] [LOGIN] Recusado — Senha incorreta.
+18/05/2026 23:41:22 [ERROR] [AGENTE] Login falhou. Verifique credenciais.
+18/05/2026 23:42:17 [INFO] =======================================================
+18/05/2026 23:42:17 [INFO]   RWA Tecnologia Operacional — Agente v2.0
+18/05/2026 23:42:17 [INFO] =======================================================
+18/05/2026 23:42:17 [INFO] [FP] FBA83A8C0EFB94E411B0FB01A993516C
+18/05/2026 23:42:19 [INFO] [LOGIN] Validando — williamrobertoangelo@gmail.com
+18/05/2026 23:42:20 [INFO] [LOGIN] Autorizado — William Roberto
+18/05/2026 23:42:20 [INFO] [TRAY] Ícone iniciado na bandeja.
+18/05/2026 23:42:20 [INFO] [AGENTE] Aguardando tarefas...
+18/05/2026 23:42:20 [INFO] [AGENTE] Loop iniciado. Intervalo: 1s
+18/05/2026 23:42:21 [INFO] [AGENTE] Tarefa recebida: padrao_nacional id=94
+18/05/2026 23:42:21 [INFO] [EXEC] Iniciando — id=94 módulo=padrao_nacional
+18/05/2026 23:42:22 [INFO] [EXEC] Iniciando subprocesso: Padrao_nacional.py
+18/05/2026 23:43:14 [ERROR] [EXEC] Erro — padrao_nacional (código 3221225786)
+18/05/2026 23:48:36 [INFO] =======================================================
+18/05/2026 23:48:36 [INFO]   RWA Tecnologia Operacional — Agente v2.0
+18/05/2026 23:48:36 [INFO] =======================================================
+18/05/2026 23:48:36 [INFO] [FP] FBA83A8C0EFB94E411B0FB01A993516C
+18/05/2026 23:48:38 [INFO] [LOGIN] Validando — williamrobertoangelo@gmail.com
+18/05/2026 23:48:41 [INFO] [LOGIN] Autorizado — William Roberto
+18/05/2026 23:48:41 [INFO] [TRAY] Ícone iniciado na bandeja.
+18/05/2026 23:48:41 [INFO] [AGENTE] Aguardando tarefas...
+18/05/2026 23:48:41 [INFO] [AGENTE] Loop iniciado. Intervalo: 1s
+18/05/2026 23:48:58 [INFO] [AGENTE] Tarefa recebida: sao_luis id=105
+18/05/2026 23:48:58 [INFO] [EXEC] Iniciando — id=105 módulo=sao_luis
+18/05/2026 23:48:59 [INFO] [EXEC] Iniciando subprocesso: Sao_Luis.PY
+18/05/2026 23:49:05 [INFO] [PARAR] Sinal local detectado — encerrando tarefa 105
+18/05/2026 23:49:05 [INFO] [PARAR] Processo 21328 encerrado.
+18/05/2026 23:49:05 [INFO] [EXEC] Interrompido — sao_luis (código 1)
+18/05/2026 23:49:15 [INFO] [AGENTE] Tarefa recebida: sao_luis id=106
+18/05/2026 23:49:15 [INFO] [EXEC] Iniciando — id=106 módulo=sao_luis
+18/05/2026 23:49:16 [INFO] [EXEC] Iniciando subprocesso: Sao_Luis.PY
+18/05/2026 23:49:19 [INFO] [PARAR] Sinal local detectado — encerrando tarefa 106
+18/05/2026 23:49:19 [INFO] [PARAR] Processo 2092 encerrado.
+18/05/2026 23:49:19 [INFO] [EXEC] Interrompido — sao_luis (código 1)
+18/05/2026 23:49:24 [INFO] [AGENTE] Tarefa recebida: padrao_nacional id=107
+18/05/2026 23:49:24 [INFO] [EXEC] Iniciando — id=107 módulo=padrao_nacional
+18/05/2026 23:49:25 [INFO] [EXEC] Iniciando subprocesso: Padrao_nacional.py
+18/05/2026 23:49:28 [INFO] [PARAR] Sinal local detectado — encerrando tarefa 107
+18/05/2026 23:49:28 [INFO] [PARAR] Processo 22352 encerrado.
+18/05/2026 23:49:28 [INFO] [EXEC] Interrompido — padrao_nacional (código 1)
+18/05/2026 23:49:44 [INFO] [AGENTE] Tarefa recebida: sao_luis id=108
+18/05/2026 23:49:44 [INFO] [EXEC] Iniciando — id=108 módulo=sao_luis
+18/05/2026 23:49:45 [INFO] [EXEC] Iniciando subprocesso: Sao_Luis.PY
+18/05/2026 23:50:00 [INFO] [PARAR] Cancelamento remoto detectado — encerrando tarefa 108
+18/05/2026 23:50:01 [INFO] [PARAR] Processo 6656 encerrado via portal.
+18/05/2026 23:50:01 [INFO] [EXEC] Interrompido — sao_luis (código 1)
+18/05/2026 23:50:11 [INFO] [AGENTE] Tarefa recebida: padrao_nacional id=109
+18/05/2026 23:50:11 [INFO] [EXEC] Iniciando — id=109 módulo=padrao_nacional
+18/05/2026 23:50:12 [INFO] [EXEC] Iniciando subprocesso: Padrao_nacional.py
+18/05/2026 23:50:18 [INFO] [PARAR] Cancelamento remoto detectado — encerrando tarefa 109
+18/05/2026 23:50:18 [INFO] [PARAR] Processo 19516 encerrado via portal.
+18/05/2026 23:50:18 [INFO] [EXEC] Interrompido — padrao_nacional (código 1)
+19/05/2026 00:25:10 [INFO] =======================================================
+19/05/2026 00:25:10 [INFO]   RWA Tecnologia Operacional — Agente v2.0
+19/05/2026 00:25:10 [INFO] =======================================================
+19/05/2026 00:25:10 [INFO] [FP] FBA83A8C0EFB94E411B0FB01A993516C
+19/05/2026 00:25:12 [INFO] [LOGIN] Validando — williamrobertoangelo@gmail.com
+19/05/2026 00:25:13 [INFO] [LOGIN] Autorizado — William Roberto
+19/05/2026 00:25:13 [INFO] [TRAY] Ícone iniciado na bandeja.
+19/05/2026 00:25:13 [INFO] [AGENTE] Aguardando tarefas...
+19/05/2026 00:25:13 [INFO] [AGENTE] Loop iniciado. Intervalo: 1s
+19/05/2026 00:25:39 [INFO] [AGENTE] Tarefa recebida: sao_luis id=114
+19/05/2026 00:25:39 [INFO] [EXEC] Iniciando — id=114 módulo=sao_luis
+19/05/2026 00:25:41 [INFO] [EXEC] Iniciando subprocesso: Sao_Luis.PY
+19/05/2026 00:25:48 [INFO] [PARAR] Sinal local detectado — encerrando tarefa 114
+19/05/2026 00:25:48 [INFO] [PARAR] Processo 10288 encerrado.
+19/05/2026 00:25:48 [INFO] [EXEC] Interrompido — sao_luis (código 1)
+19/05/2026 00:25:52 [INFO] [AGENTE] Tarefa recebida: padrao_nacional id=115
+19/05/2026 00:25:52 [INFO] [EXEC] Iniciando — id=115 módulo=padrao_nacional
+19/05/2026 00:25:53 [INFO] [EXEC] Iniciando subprocesso: Padrao_nacional.py
+19/05/2026 00:25:58 [INFO] [PARAR] Sinal local detectado — encerrando tarefa 115
+19/05/2026 00:25:59 [INFO] [PARAR] Processo 15392 encerrado.
+19/05/2026 00:25:59 [INFO] [EXEC] Interrompido — padrao_nacional (código 1)
+19/05/2026 00:26:00 [INFO] [AGENTE] Tarefa recebida: padrao_nacional id=116
+19/05/2026 00:26:00 [INFO] [EXEC] Iniciando — id=116 módulo=padrao_nacional
+19/05/2026 00:26:01 [INFO] [EXEC] Iniciando subprocesso: Padrao_nacional.py
+19/05/2026 00:26:04 [INFO] [PARAR] Sinal local detectado — encerrando tarefa 116
+19/05/2026 00:26:05 [INFO] [PARAR] Processo 9520 encerrado.
+19/05/2026 00:26:05 [INFO] [EXEC] Interrompido — padrao_nacional (código 1)
+19/05/2026 00:26:12 [INFO] [AGENTE] Tarefa recebida: sao_luis id=117
+19/05/2026 00:26:12 [INFO] [EXEC] Iniciando — id=117 módulo=sao_luis
+19/05/2026 00:26:13 [INFO] [EXEC] Iniciando subprocesso: Sao_Luis.PY
+19/05/2026 00:26:18 [INFO] [PARAR] Sinal local detectado — encerrando tarefa 117
+19/05/2026 00:26:19 [INFO] [PARAR] Processo 14544 encerrado.
+19/05/2026 00:26:19 [INFO] [EXEC] Interrompido — sao_luis (código 1)
+19/05/2026 00:26:31 [INFO] [AGENTE] Tarefa recebida: sao_luis id=118
+19/05/2026 00:26:31 [INFO] [EXEC] Iniciando — id=118 módulo=sao_luis
+19/05/2026 00:26:33 [INFO] [EXEC] Iniciando subprocesso: Sao_Luis.PY
+19/05/2026 00:26:45 [INFO] [PARAR] Cancelamento remoto detectado — encerrando tarefa 118
+19/05/2026 00:26:46 [INFO] [PARAR] Processo 9776 encerrado via portal.
+19/05/2026 00:26:46 [INFO] [EXEC] Interrompido — sao_luis (código 1)
+19/05/2026 00:26:50 [INFO] [AGENTE] Tarefa recebida: padrao_nacional id=119
+19/05/2026 00:26:50 [INFO] [EXEC] Iniciando — id=119 módulo=padrao_nacional
+19/05/2026 00:26:50 [INFO] [EXEC] Iniciando subprocesso: Padrao_nacional.py
+19/05/2026 00:27:02 [INFO] [PARAR] Cancelamento remoto detectado — encerrando tarefa 119
+19/05/2026 00:27:02 [INFO] [PARAR] Processo 11672 encerrado via portal.
+19/05/2026 00:27:02 [INFO] [EXEC] Interrompido — padrao_nacional (código 1)
+19/05/2026 08:07:56 [INFO] =======================================================
+19/05/2026 08:07:56 [INFO]   RWA Tecnologia Operacional — Agente v2.0
+19/05/2026 08:07:56 [INFO] =======================================================
+19/05/2026 08:07:56 [INFO] [FP] FBA83A8C0EFB94E411B0FB01A993516C
+19/05/2026 08:07:58 [INFO] [LOGIN] Validando — williamrobertoangelo@gmail.com
+19/05/2026 08:07:59 [INFO] [LOGIN] Autorizado — William Roberto
+19/05/2026 08:07:59 [INFO] [TRAY] Ícone iniciado na bandeja.
+19/05/2026 08:07:59 [INFO] [AGENTE] Aguardando tarefas...
+19/05/2026 08:07:59 [INFO] [AGENTE] Loop iniciado. Intervalo: 1s
+19/05/2026 08:18:36 [INFO] [AGENTE] Tarefa recebida: sao_luis id=120
+19/05/2026 08:18:36 [INFO] [EXEC] Iniciando — id=120 módulo=sao_luis
+19/05/2026 08:18:36 [INFO] [EXEC] Iniciando subprocesso: Sao_Luis.PY
+19/05/2026 08:18:45 [INFO] [PARAR] Sinal local detectado — encerrando tarefa 120
+19/05/2026 08:18:45 [INFO] [PARAR] Processo 3424 encerrado.
+19/05/2026 08:18:45 [INFO] [EXEC] Interrompido — sao_luis (código 1)
+19/05/2026 08:18:50 [INFO] [AGENTE] Tarefa recebida: sao_luis id=121
+19/05/2026 08:18:50 [INFO] [EXEC] Iniciando — id=121 módulo=sao_luis
+19/05/2026 08:18:51 [INFO] [EXEC] Iniciando subprocesso: Sao_Luis.PY
+19/05/2026 08:18:56 [INFO] [PARAR] Sinal local detectado — encerrando tarefa 121
+19/05/2026 08:18:56 [INFO] [PARAR] Processo 9020 encerrado.
+19/05/2026 08:18:56 [INFO] [EXEC] Interrompido — sao_luis (código 1)
+19/05/2026 08:18:59 [INFO] [AGENTE] Tarefa recebida: padrao_nacional id=122
+19/05/2026 08:18:59 [INFO] [EXEC] Iniciando — id=122 módulo=padrao_nacional
+19/05/2026 08:19:00 [INFO] [EXEC] Iniciando subprocesso: Padrao_nacional.py
+19/05/2026 08:19:05 [INFO] [PARAR] Sinal local detectado — encerrando tarefa 122
+19/05/2026 08:19:06 [INFO] [PARAR] Processo 18584 encerrado.
+19/05/2026 08:19:06 [INFO] [EXEC] Interrompido — padrao_nacional (código 1)
+19/05/2026 08:19:32 [INFO] =======================================================
+19/05/2026 08:19:32 [INFO]   RWA Tecnologia Operacional — Agente v2.0
+19/05/2026 08:19:32 [INFO] =======================================================
+19/05/2026 08:19:32 [INFO] [FP] FBA83A8C0EFB94E411B0FB01A993516C
+19/05/2026 08:19:34 [INFO] [LOGIN] Validando — williamrobertoangelo@gmail.com
+19/05/2026 08:19:35 [INFO] [LOGIN] Autorizado — William Roberto
+19/05/2026 08:19:35 [INFO] [TRAY] Ícone iniciado na bandeja.
+19/05/2026 08:19:35 [INFO] [AGENTE] Aguardando tarefas...
+19/05/2026 08:19:35 [INFO] [AGENTE] Loop iniciado. Intervalo: 1s

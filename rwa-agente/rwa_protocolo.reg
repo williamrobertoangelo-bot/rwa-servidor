@@ -1,0 +1,15 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_CLASSES_ROOT\rwa]
+@="RWA Tecnologia Operacional"
+"URL Protocol"=""
+
+[HKEY_CLASSES_ROOT\rwa\DefaultIcon]
+@="C:\\rwa-agente\\RWA_LAUNCHER.py,0"
+
+[HKEY_CLASSES_ROOT\rwa\shell]
+
+[HKEY_CLASSES_ROOT\rwa\shell\open]
+
+[HKEY_CLASSES_ROOT\rwa\shell\open\command]
+@="\"C:\\Users\\willi\\AppData\\Local\\Microsoft\\WindowsApps\\python.exe\" \"C:\\rwa-agente\\RWA_LAUNCHER.py\" \"%1\""
