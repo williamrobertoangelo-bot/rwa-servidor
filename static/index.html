@@ -447,6 +447,31 @@ body::before {
 
 .btn-exec-mod:hover { background: var(--indigo2); }
 
+.btn-parar-mod {
+  flex: 1;
+  background: var(--red);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 9px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: var(--sans);
+  cursor: pointer;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.btn-parar-mod:hover { background: #dc2626; }
+
+.btn-exec-mod:disabled {
+  background: var(--muted2);
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
 .btn-ag-mod {
   background: transparent;
   color: var(--indigo3);
@@ -949,6 +974,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 const API = '';
 let _sessao = null;
 let _modalModulo = null;
+let _tarefaAtiva = { id: null, modulo: null };
 
 const NOMES = {
   sao_luis: 'STM — São Luís',
@@ -1129,6 +1155,47 @@ async function confirmarAgendamento() {
   }
 }
 
+async function parar() {
+  if (!_tarefaAtiva.id) return;
+  try {
+    const r = await fetch('/portal/cancelar', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: _sessao.email, tarefa_id: _tarefaAtiva.id })
+    });
+    const d = await r.json();
+    if (d.ok) {
+      toast('Parada solicitada.', 'ok');
+      setTimeout(carregarHistorico, 1000);
+    }
+  } catch {}
+}
+
+function atualizarBotoesModulos(moduloRodando, tarefaId) {
+  const modulos = ['sao_luis', 'padrao_nacional', 'conferencia_sao_luis', 'conferencia_pn'];
+  modulos.forEach(mod => {
+    const acoes = document.querySelector(`[onclick="executar('${mod}', this)"]`)?.parentElement;
+    if (!acoes) return;
+    const btnExec = acoes.querySelector('.btn-exec-mod, .btn-parar-mod');
+    if (!btnExec) return;
+
+    if (mod === moduloRodando) {
+      btnExec.className = 'btn-parar-mod';
+      btnExec.onclick = parar;
+      btnExec.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="white"><rect x="6" y="6" width="12" height="12" rx="1"/></svg> Parar`;
+    } else {
+      btnExec.className = 'btn-exec-mod';
+      btnExec.onclick = function() { executar(mod, this); };
+      btnExec.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><polygon points="5 3 19 12 5 21 5 3"/></svg> Executar agora`;
+      if (moduloRodando) {
+        btnExec.disabled = true;
+      } else {
+        btnExec.disabled = false;
+      }
+    }
+  });
+}
+
 // ── Histórico ──────────────────────────────────────────────────────
 
 async function carregarHistorico() {
@@ -1148,6 +1215,15 @@ async function carregarHistorico() {
     const ultFmt = fmtData(ult.quando);
     document.getElementById('p-ultima').textContent =
       `${NOMES[ult.modulo] || ult.modulo} — ${ultFmt.dia}`;
+
+    // Detecta módulo em execução e atualiza botões
+    const emExec = d.historico.find(h => h.status === 'em_execucao');
+    if (emExec) {
+      _tarefaAtiva = { id: emExec.id, modulo: emExec.modulo };
+    } else {
+      _tarefaAtiva = { id: null, modulo: null };
+    }
+    atualizarBotoesModulos(_tarefaAtiva.modulo, _tarefaAtiva.id);
 
     tbody.innerHTML = d.historico.map((h, idx) => {
       const dt = fmtData(h.quando);
