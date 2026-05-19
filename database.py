@@ -25,13 +25,13 @@ def inicializar_banco():
                     vencimento  TEXT    NOT NULL,
                     chave_aes   TEXT    NOT NULL,
                     ativa       INTEGER NOT NULL DEFAULT 1,
-                    criado_em   TEXT    NOT NULL DEFAULT (NOW()::TEXT)
+                    criado_em   TEXT    NOT NULL DEFAULT ((TIMEZONE('America/Sao_Paulo', NOW()))::TEXT)
                 );
                 CREATE TABLE IF NOT EXISTS maquinas (
                     id          SERIAL PRIMARY KEY,
                     empresa_id  INTEGER NOT NULL,
                     fingerprint TEXT    NOT NULL,
-                    registrado  TEXT    NOT NULL DEFAULT (NOW()::TEXT),
+                    registrado  TEXT    NOT NULL DEFAULT ((TIMEZONE('America/Sao_Paulo', NOW()))::TEXT),
                     UNIQUE(empresa_id, fingerprint),
                     FOREIGN KEY (empresa_id) REFERENCES empresas(id)
                 );
@@ -40,7 +40,7 @@ def inicializar_banco():
                     empresa_id  INTEGER NOT NULL,
                     fingerprint TEXT    NOT NULL,
                     versao      TEXT,
-                    quando      TEXT    NOT NULL DEFAULT (NOW()::TEXT),
+                    quando      TEXT    NOT NULL DEFAULT ((TIMEZONE('America/Sao_Paulo', NOW()))::TEXT),
                     FOREIGN KEY (empresa_id) REFERENCES empresas(id)
                 );
             """)
@@ -148,7 +148,7 @@ def criar_tabela_tarefas():
                     parametros   TEXT    DEFAULT '{}',
                     status       TEXT    NOT NULL DEFAULT 'pendente',
                     observacao   TEXT    DEFAULT '',
-                    criado_em    TEXT    NOT NULL DEFAULT (NOW()::TEXT),
+                    criado_em    TEXT    NOT NULL DEFAULT ((TIMEZONE('America/Sao_Paulo', NOW()))::TEXT),
                     atualizado_em TEXT   DEFAULT '',
                     FOREIGN KEY (empresa_id) REFERENCES empresas(id)
                 );
