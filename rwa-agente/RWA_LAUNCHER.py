@@ -40,7 +40,7 @@ _SCRIPT_DIR = os.path.dirname(os.path.abspath(
 if not os.path.isdir(_SCRIPT_DIR):
     _SCRIPT_DIR = os.getcwd()
 
-_PASTA_CONFIG  = os.path.join(_SCRIPT_DIR, "config")
+_PASTA_CONFIG  = os.path.join(os.environ.get("LOCALAPPDATA", _SCRIPT_DIR), "RWA_AUTOMACOES", "config")
 _ARQUIVO_CRED  = os.path.join(_PASTA_CONFIG, "credenciais.json")
 _ARQUIVO_PATH  = os.path.join(_PASTA_CONFIG, "paths.json")
 _ARQUIVO_SINAL = os.path.join(_PASTA_CONFIG, "parar.signal")
@@ -526,7 +526,7 @@ def _tela_config():
                  bg=C_BG, fg=C_TEXT3, anchor="w").pack(fill="x", pady=(14, 1))
 
         tk.Label(frame, text=dica, font=("Arial", 8),
-                 bg=C_BG, fg=C_DIM, anchor="w").pack(fill="x", pady=(0, 3))
+                 bg=C_BG, fg=C_TEXT3, anchor="w").pack(fill="x", pady=(0, 3))
 
         row = tk.Frame(frame, bg=C_BG)
         row.pack(fill="x")
@@ -539,10 +539,11 @@ def _tela_config():
         def _browse(ch=chave, tp=tipo):
             if tp == "arquivo":
                 p = filedialog.askopenfilename(
+                    parent=win,
                     title=f"Selecionar {ch}",
                     filetypes=[("Excel", "*.xlsx *.xls"), ("Todos", "*.*")])
             else:
-                p = filedialog.askdirectory(title="Selecionar pasta")
+                p = filedialog.askdirectory(parent=win, title="Selecionar pasta")
             if p:
                 vars_path[ch].set(p)
 
@@ -1034,7 +1035,7 @@ def _tela_bloqueio(mensagem: str = ""):
     _logo_bloco(win, size_rwa=24, size_sub=9, size_tag=8)
     tk.Frame(win, bg=C_SEP, height=1).pack(fill="x", padx=36, pady=(12, 0))
     tk.Label(win,
-             text=mensagem or "Acesse o portal para abrir o Launcher.",
+             text=mensagem or "Este programa deve ser aberto pelo portal.",
              font=("Arial", 10), bg=C_BG, fg=C_TEXT2,
              wraplength=320, justify="center").pack(pady=(16, 4))
     tk.Label(win, text="rwasolucoes.com.br",
@@ -1059,6 +1060,122 @@ def _validar_token_portal(token: str) -> bool:
 
 
 # ─────────────────────────────────────────────────────────────────────
+# PRIMEIRO ACESSO (chamado pelo instalador com --primeiro-acesso)
+# ─────────────────────────────────────────────────────────────────────
+
+def _tela_primeiro_acesso():
+    """Tela de login para primeiro acesso via instalador."""
+    win = tk.Tk()
+    win.title("RWA")
+    win.resizable(False, False)
+    win.attributes("-topmost", True)
+    win.configure(bg=C_BG)
+    _centralizar(win, 400, 380)
+    _barra_topo(win)
+    _logo_bloco(win, size_rwa=24, size_sub=9, size_tag=8)
+    tk.Frame(win, bg=C_SEP, height=1).pack(fill="x", padx=36, pady=(12, 0))
+
+    tk.Label(win, text="Primeiro acesso — informe suas credenciais",
+             font=("Arial", 9), bg=C_BG, fg=C_TEXT2,
+             wraplength=320, justify="center").pack(pady=(14, 10))
+
+    frm = tk.Frame(win, bg=C_BG)
+    frm.pack(padx=36, fill="x")
+
+    tk.Label(frm, text="E-mail", font=("Arial", 9), bg=C_BG, fg=C_TEXT2, anchor="w").pack(fill="x")
+    ent_email = tk.Entry(frm, font=("Arial", 11), bg=C_CARD, fg=C_TEXT, insertbackground=C_TEXT,
+                         relief="flat", bd=6)
+    ent_email.pack(fill="x", pady=(2, 10))
+
+    tk.Label(frm, text="Senha", font=("Arial", 9), bg=C_BG, fg=C_TEXT2, anchor="w").pack(fill="x")
+    ent_senha = tk.Entry(frm, font=("Arial", 11), bg=C_CARD, fg=C_TEXT, insertbackground=C_TEXT,
+                         relief="flat", bd=6, show="●")
+    ent_senha.pack(fill="x", pady=(2, 0))
+
+    lbl_status = tk.Label(win, text="", font=("Arial", 9), bg=C_BG, fg=C_YELLOW,
+                          wraplength=320, justify="center")
+    lbl_status.pack(pady=(10, 0))
+
+    def _confirmar(event=None):
+        email = ent_email.get().strip()
+        senha = ent_senha.get().strip()
+        if not email or not senha:
+            lbl_status.config(text="Preencha e-mail e senha.", fg=C_RED)
+            return
+
+        lbl_status.config(text="Validando credenciais...", fg=C_YELLOW)
+        win.update()
+
+        resp = _post("/agente/login", {
+            "email":       email.lower(),
+            "senha":       senha,
+            "fingerprint": _FINGERPRINT,
+            "versao":      _VERSAO,
+        })
+
+        if resp.get("status") != "ok":
+            lbl_status.config(text=resp.get("mensagem", "Credenciais inválidas."), fg=C_RED)
+            return
+
+        # Salva credenciais
+        os.makedirs(_PASTA_CONFIG, exist_ok=True)
+        with open(_ARQUIVO_CRED, "w", encoding="utf-8") as f:
+            json.dump({"email": email.lower(), "senha": senha}, f)
+
+        # Inicia agente em segundo plano
+        if getattr(sys, "frozen", False):
+            agente_path = os.path.join(_SCRIPT_DIR, "RWA_AGENTE.exe")
+        else:
+            agente_path = os.path.join(_SCRIPT_DIR, "RWA_AGENTE.py")
+
+        if os.path.exists(agente_path):
+            if getattr(sys, "frozen", False):
+                subprocess.Popen(
+                    [agente_path],
+                    cwd=_SCRIPT_DIR,
+                    creationflags=subprocess.DETACHED_PROCESS | subprocess.CREATE_NEW_PROCESS_GROUP
+                )
+            else:
+                subprocess.Popen(
+                    [sys.executable, agente_path],
+                    cwd=_SCRIPT_DIR,
+                    creationflags=subprocess.DETACHED_PROCESS | subprocess.CREATE_NEW_PROCESS_GROUP
+                )
+
+        # Mensagem final customizada RWA
+        win.destroy()
+        fim = tk.Tk()
+        fim.title("RWA")
+        fim.resizable(False, False)
+        fim.attributes("-topmost", True)
+        fim.configure(bg=C_BG)
+        _centralizar(fim, 400, 260)
+        _barra_topo(fim)
+        _logo_bloco(fim, size_rwa=24, size_sub=9, size_tag=8)
+        tk.Frame(fim, bg=C_SEP, height=1).pack(fill="x", padx=36, pady=(12, 0))
+        tk.Label(fim, text="Instalação concluída com sucesso.",
+                 font=("Arial", 11, "bold"), bg=C_BG, fg=C_GREEN).pack(pady=(16, 4))
+        tk.Label(fim, text="O agente RWA está rodando em segundo plano.\nAcesse o portal para usar o sistema.",
+                 font=("Arial", 9), bg=C_BG, fg=C_TEXT2,
+                 wraplength=320, justify="center").pack(pady=(4, 4))
+        tk.Label(fim, text="rwasolucoes.com.br",
+                 font=("Arial", 10, "bold"), bg=C_BG, fg=C_ACCENT2).pack()
+        _rodape(fim)
+        fim.after(5000, fim.destroy)
+        fim.mainloop()
+
+    btn = tk.Button(frm, text="Confirmar", font=("Arial", 10, "bold"),
+                    bg=C_ACCENT, fg=C_TEXT, relief="flat", bd=0,
+                    activebackground=C_ACCENT2, activeforeground=C_TEXT,
+                    cursor="hand2", command=_confirmar)
+    btn.pack(fill="x", pady=(14, 0), ipady=8)
+    ent_senha.bind("<Return>", _confirmar)
+
+    _rodape(win)
+    win.mainloop()
+
+
+# ─────────────────────────────────────────────────────────────────────
 # MAIN
 # ─────────────────────────────────────────────────────────────────────
 
@@ -1066,6 +1183,11 @@ def main():
     global _FINGERPRINT, _EMAIL_SESSAO, _NOME_CLIENTE
 
     _FINGERPRINT = _gerar_fingerprint()
+
+    # 0. Primeiro acesso via instalador
+    if "--primeiro-acesso" in sys.argv:
+        _tela_primeiro_acesso()
+        return
 
     # 1. Verifica token (rwa://abrir?token=XYZ)
     token = _extrair_token_argv()

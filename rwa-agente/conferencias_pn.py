@@ -186,7 +186,7 @@ class RWAProgressWindow:
 def _ler_paths_launcher():
     try:
         import json as _json
-        p = Path(__file__).parent / "config" / "paths.json"
+        p = Path(os.environ.get("LOCALAPPDATA", "")) / "RWA_AUTOMACOES" / "config" / "paths.json"
         if p.exists():
             return _json.loads(p.read_text("utf-8"))
     except Exception:

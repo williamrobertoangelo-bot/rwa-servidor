@@ -54,7 +54,15 @@ else:
     PASTA_COMANDO = os.path.dirname(os.path.abspath(__file__))
 PASTA_BASE    = PASTA_COMANDO  # Relatorios (CONCLUSAO, GERENCIAL) salvos na pasta do script
 PASTA_DIAG_TECNICO = os.path.join(PASTA_BASE, "DIAGNOSTICO TECNICO")
-SENHAS_XLSX   = os.path.join(PASTA_COMANDO, "SENHAS SAO LUIS.xlsx")
+_rwa_paths_sl = {}
+try:
+    import json as _json_sl
+    _rwa_paths_file_sl = os.path.join(os.environ.get("LOCALAPPDATA", ""), "RWA_AUTOMACOES", "config", "paths.json")
+    if os.path.exists(_rwa_paths_file_sl):
+        _rwa_paths_sl = _json_sl.loads(open(_rwa_paths_file_sl, encoding="utf-8").read())
+except Exception:
+    pass
+SENHAS_XLSX   = _rwa_paths_sl.get("senhas_sl") or os.path.join(PASTA_COMANDO, "SENHAS SAO LUIS.xlsx")
 
 hoje        = datetime.today()
 competencia = hoje - relativedelta(months=1)
@@ -236,7 +244,22 @@ def ler_empresas():
 
 def configurar_driver(pasta_download):
     options = Options()
-    perfil_temp = tempfile.mkdtemp(prefix="ChromePerfilSTM_")
+    try:
+        _log_env = open(os.path.join(os.environ.get("LOCALAPPDATA", "C:\\"), "RWA_AUTOMACOES", "logs", "slz_env.log"), "w", encoding="utf-8")
+        _log_env.write(f"cwd: {os.getcwd()}\n")
+        _log_env.write(f"LOCALAPPDATA: {os.environ.get('LOCALAPPDATA')}\n")
+        _log_env.write(f"TEMP: {os.environ.get('TEMP')}\n")
+        _log_env.write(f"TMP: {os.environ.get('TMP')}\n")
+        _log_env.write(f"USERPROFILE: {os.environ.get('USERPROFILE')}\n")
+        _log_env.close()
+    except Exception as _e:
+        pass
+    pasta_temp_usuario = os.path.join(os.environ.get("LOCALAPPDATA", tempfile.gettempdir()), "Temp")
+    os.makedirs(pasta_temp_usuario, exist_ok=True)
+    perfil_temp = tempfile.mkdtemp(
+        prefix="ChromePerfilSTM_",
+        dir=pasta_temp_usuario
+    )
 
     options.add_argument(f"--user-data-dir={perfil_temp}")
     options.add_argument("--profile-directory=Default")

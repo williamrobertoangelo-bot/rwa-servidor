@@ -36,8 +36,8 @@ _SCRIPT_DIR = os.path.dirname(os.path.abspath(
 if not os.path.isdir(_SCRIPT_DIR):
     _SCRIPT_DIR = os.getcwd()
 
-_PASTA_CONFIG = os.path.join(_SCRIPT_DIR, "config")
-_PASTA_LOGS   = os.path.join(_SCRIPT_DIR, "logs")
+_PASTA_CONFIG = os.path.join(os.environ.get("LOCALAPPDATA", _SCRIPT_DIR), "RWA_AUTOMACOES", "config")
+_PASTA_LOGS   = os.path.join(os.environ.get("LOCALAPPDATA", _SCRIPT_DIR), "RWA_AUTOMACOES", "logs")
 _ARQUIVO_CRED  = os.path.join(_PASTA_CONFIG, "credenciais.json")
 _ARQUIVO_PATH  = os.path.join(_PASTA_CONFIG, "paths.json")
 _ARQUIVO_LOG   = os.path.join(_PASTA_LOGS,   "agente.log")

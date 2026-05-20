@@ -4085,7 +4085,15 @@ def _main_corpo(_pw, _sys, _stdout_original):
     lang = detectar_lang()
     erros_globais = []
 
-    _caminho_senhas = os.path.join(_SCRIPT_DIR, "SENHAS PADRAO NACIONAL.xlsx")
+    _rwa_paths_pn = {}
+    try:
+        import json as _json_pn
+        _rwa_paths_file_pn = os.path.join(os.environ.get("LOCALAPPDATA", ""), "RWA_AUTOMACOES", "config", "paths.json")
+        if os.path.exists(_rwa_paths_file_pn):
+            _rwa_paths_pn = _json_pn.loads(open(_rwa_paths_file_pn, encoding="utf-8").read())
+    except Exception:
+        pass
+    _caminho_senhas = _rwa_paths_pn.get("senhas_pn") or os.path.join(_SCRIPT_DIR, "SENHAS PADRAO NACIONAL.xlsx")
     if not os.path.exists(_caminho_senhas):
         _arquivos_xlsx = [f for f in os.listdir(_SCRIPT_DIR) if f.lower().endswith(".xlsx")]
         print()
