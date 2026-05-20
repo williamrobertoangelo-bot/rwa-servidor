@@ -1,0 +1,37 @@
+# ── Python ────────────────────────────────────────────────────────
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# ── PyInstaller ───────────────────────────────────────────────────
+build/
+dist/
+*.spec
+
+# ── Compilados RWA ────────────────────────────────────────────────
+rwa-agente/COMPILAR_RWA/build/
+rwa-agente/COMPILAR_RWA/dist/
+rwa-agente/COMPILAR_RWA/exe/
+rwa-agente/COMPILAR_RWA/ofuscado/
+rwa-agente/COMPILAR_RWA/*.exe
+rwa-agente/COMPILAR_RWA/*.pkg
+rwa-agente/COMPILAR_RWA/*.pyz
+rwa-agente/COMPILAR_RWA/*.zip
+
+# ── Specs PyInstaller ─────────────────────────────────────────────
+rwa-agente/*.spec
+RWA_AGENTE.spec
+RWA_LAUNCHER.spec
+
+# ── Instalador ────────────────────────────────────────────────────
+rwa-agente/RWA_INSTALADOR.iss
+
+# ── Ambiente Python ───────────────────────────────────────────────
+venv/
+.env
+*.egg-info/
+
+# ── Sistema ───────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
