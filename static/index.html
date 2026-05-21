@@ -1120,22 +1120,35 @@ function sair() {
 
 // ── Abrir RWA ──────────────────────────────────────────────────────
 
-async function abrirRWA() {
-  try {
-    const r = await fetch('/auth/gerar-token-launcher', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: _sessao.email })
-    });
-    const d = await r.json();
+function abrirRWA() {
+  if (!_sessao || !_sessao.email) {
+    toast('Sessão inválida. Faça login novamente.', 'erro');
+    return;
+  }
+
+  const popup = window.open('about:blank', '_blank');
+
+  fetch('/auth/gerar-token-launcher', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email: _sessao.email })
+  })
+  .then(r => r.json())
+  .then(d => {
     if (d.ok) {
-      window.location.href = `rwa://abrir?token=${d.token}`;
+      popup.location.href = `rwa://abrir?token=${d.token}`;
+      setTimeout(() => {
+        try { popup.close(); } catch (e) {}
+      }, 1500);
     } else {
+      try { popup.close(); } catch (e) {}
       toast(d.erro || 'Erro ao gerar token.', 'erro');
     }
-  } catch {
+  })
+  .catch(() => {
+    try { popup.close(); } catch (e) {}
     toast('Erro de conexão com o servidor.', 'erro');
-  }
+  });
 }
 
 // ── Executar ───────────────────────────────────────────────────────
