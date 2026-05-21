@@ -1,0 +1,12 @@
+[BUG]: no found input "RWA_LAUNCHER.py"
+
+## Command Line
+C:\Users\willi\AppData\Local\Python\pythoncore-3.14-64\Scripts\pyarmor gen -O COMPILAR_RWA\ofuscado RWA_LAUNCHER.py RWA_AGENTE.py Sao_Luis.py Padrao_nacional.py conferencias_sao_luis.py conferencias_pn.py
+
+## Environments
+Python 3.14.4
+Pyarmor 9.2.4 (basic), 012235, RWA
+Platform windows.x86_64
+Native windows.amd64
+Home C:\Users\willi\.pyarmor
+

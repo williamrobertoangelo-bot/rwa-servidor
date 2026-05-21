@@ -15,6 +15,7 @@ import getpass
 import platform
 import subprocess
 import threading
+import traceback
 import tkinter as tk
 from tkinter import filedialog, messagebox
 from datetime import datetime
@@ -41,10 +42,24 @@ if not os.path.isdir(_SCRIPT_DIR):
     _SCRIPT_DIR = os.getcwd()
 
 _PASTA_CONFIG  = os.path.join(os.environ.get("LOCALAPPDATA", _SCRIPT_DIR), "RWA_AUTOMACOES", "config")
+_PASTA_LOGS    = os.path.join(os.environ.get("LOCALAPPDATA", _SCRIPT_DIR), "RWA_AUTOMACOES", "logs")
 _ARQUIVO_CRED  = os.path.join(_PASTA_CONFIG, "credenciais.json")
 _ARQUIVO_PATH  = os.path.join(_PASTA_CONFIG, "paths.json")
 _ARQUIVO_SINAL = os.path.join(_PASTA_CONFIG, "parar.signal")
+_ARQUIVO_LOCK  = os.path.join(_PASTA_CONFIG, "launcher.lock")
+_ARQUIVO_LOG_LAUNCHER = os.path.join(_PASTA_LOGS, "launcher_debug.log")
 os.makedirs(_PASTA_CONFIG, exist_ok=True)
+os.makedirs(_PASTA_LOGS, exist_ok=True)
+
+
+def _log_launcher(msg: str):
+    try:
+        agora = datetime.now().strftime("%d/%m/%Y %H:%M:%S.%f")[:-3]
+        linha = f"{agora} [PID {os.getpid()}] {msg}\n"
+        with open(_ARQUIVO_LOG_LAUNCHER, "a", encoding="utf-8") as f:
+            f.write(linha)
+    except Exception:
+        pass
 
 # ── Cores ────────────────────────────────────────────────────────────
 C_BG      = "#1e1e2e"
@@ -121,9 +136,9 @@ def _gerar_fingerprint() -> str:
 # CREDENCIAIS E PATHS
 # ─────────────────────────────────────────────────────────────────────
 
-def _salvar_credenciais(email: str):
+def _salvar_credenciais(email: str, senha: str):
     with open(_ARQUIVO_CRED, "w", encoding="utf-8") as f:
-        json.dump({"email": email}, f)
+        json.dump({"email": email, "senha": senha}, f)
 
 
 def _carregar_credenciais() -> dict:
@@ -306,45 +321,7 @@ def _iniciar_tray():
 # SPLASH
 # ─────────────────────────────────────────────────────────────────────
 
-def _splash(mensagem: str = ""):
-    sp = tk.Tk()
-    sp.title("RWA")
-    sp.resizable(False, False)
-    sp.attributes("-topmost", True)
-    sp.overrideredirect(True)
-    sp.configure(bg=C_BG)
-    _centralizar(sp, 480, 290)
 
-    _barra_topo(sp)
-    _logo_bloco(sp, size_rwa=32, size_sub=11, size_tag=9)
-
-    tk.Label(sp, text=f"v{_VERSAO}", font=("Arial", 9),
-             bg=C_BG, fg=C_TEXT3).pack(pady=(4, 0))
-
-    if mensagem:
-        tk.Label(sp, text=mensagem, font=("Arial", 9, "italic"),
-                 bg=C_BG, fg=C_TEXT2).pack(pady=(2, 0))
-
-    canvas = tk.Canvas(sp, width=360, height=5,
-                       bg=C_DIM, highlightthickness=0)
-    canvas.pack(pady=22)
-    barra = canvas.create_rectangle(0, 0, 0, 5, fill=C_ACCENT, outline="")
-
-    tk.Label(sp, text="Desenvolvido por RWA Tecnologia Operacional",
-             font=("Arial", 8), bg=C_BG, fg=C_TEXT3).pack(side="bottom", pady=8)
-
-    passos    = 60
-    intervalo = 2800 // passos
-
-    def _animar(p=0):
-        if p <= passos:
-            canvas.coords(barra, 0, 0, int((p / passos) * 360), 5)
-            sp.after(intervalo, _animar, p + 1)
-        else:
-            sp.destroy()
-
-    sp.after(80, _animar)
-    sp.mainloop()
 
 
 # ─────────────────────────────────────────────────────────────────────
@@ -417,7 +394,7 @@ def _tela_login(email_salvo: str = ""):
             global _EMAIL_SESSAO, _NOME_CLIENTE
             _EMAIL_SESSAO  = email
             _NOME_CLIENTE  = resp.get("cliente", "")
-            _salvar_credenciais(email)
+            _salvar_credenciais(email, senha)
             resultado["ok"] = True
             win.destroy()
         else:
@@ -848,8 +825,46 @@ def _painel_principal():
     _centralizar(_root, 560, 660)
     _root.protocol("WM_DELETE_WINDOW", lambda: _root.withdraw())
 
+    def _snapshot_janela(origem: str):
+        try:
+            _log_launcher(
+                f"[VIGIA] origem={origem} state={_root.state()!r} "
+                f"exists={_root.winfo_exists()} viewable={_root.winfo_viewable()} "
+                f"pos=({_root.winfo_x()},{_root.winfo_y()}) "
+                f"tamanho=({_root.winfo_width()}x{_root.winfo_height()})"
+            )
+        except Exception:
+            _log_launcher(f"[VIGIA][ERRO] falha ao capturar estado origem={origem}")
+            _log_launcher(traceback.format_exc())
+
+    def _tk_exception_auditada(exc, val, tb):
+        _log_launcher("[TK_EXCEPTION] exception em callback Tkinter")
+        _log_launcher("".join(traceback.format_exception(exc, val, tb)))
+
+    _root.report_callback_exception = _tk_exception_auditada
+
+    _log_launcher("[ROTA] entrou em _painel_principal; root criado/configurado")
+    _snapshot_janela("apos_root_configurado")
+
+    _log_launcher("[ROTA] forçando exibicao inicial da janela")
+    try:
+        _root.deiconify()
+        _root.lift()
+        _root.attributes("-topmost", True)
+        _root.focus_force()
+        _root.update_idletasks()
+        _root.update()
+        _root.attributes("-topmost", False)
+        _snapshot_janela("apos_forcar_visual_inicial")
+    except Exception:
+        _log_launcher("[ROTA][ERRO] falha ao forcar exibicao inicial")
+        _log_launcher(traceback.format_exc())
+
+    _log_launcher("[ROTA] iniciando barra topo")
+
     # Barra topo índigo
     tk.Frame(_root, bg=C_ACCENT, height=4).pack(fill="x")
+    _log_launcher("[ROTA] barra topo montada; iniciando header")
 
     # Header
     header = tk.Frame(_root, bg=C_BG2)
@@ -873,10 +888,12 @@ def _painel_principal():
     tk.Label(h_right, text=_EMAIL_SESSAO,
              font=("Arial", 8), bg=C_BG2, fg=C_TEXT3).pack(anchor="e")
 
+    _log_launcher("[ROTA] header montado; iniciando corpo")
     # Corpo
     corpo = tk.Frame(_root, bg=C_BG)
     corpo.pack(fill="both", expand=True, padx=20, pady=(16, 0))
 
+    _log_launcher("[ROTA] corpo montado; iniciando linha topo")
     # Linha topo: título + botões
     topo = tk.Frame(corpo, bg=C_BG)
     topo.pack(fill="x", pady=(0, 12))
@@ -896,39 +913,51 @@ def _painel_principal():
               padx=12, pady=5, cursor="hand2",
               command=_tela_config).pack(side="right")
 
+    _log_launcher("[ROTA] linha topo montada; iniciando cards")
     # Cards dos módulos - altura fixa para uniformidade
     _status_labels = {}
     CARD_H = 92
 
     for mod_id, mod_nome, mod_desc in _MODULOS:
-        card = tk.Frame(corpo, bg=C_CARD, bd=0, height=CARD_H)
-        card.pack(fill="x", pady=(0, 10))
-        card.pack_propagate(False)
+        _log_launcher(f"[ROTA][CARD] iniciando card mod_id={mod_id}")
+        try:
+            card = tk.Frame(corpo, bg=C_CARD, bd=0, height=CARD_H)
+            card.pack(fill="x", pady=(0, 10))
+            card.pack_propagate(False)
 
-        inner = tk.Frame(card, bg=C_CARD)
-        inner.place(relx=0, rely=0, relwidth=1, relheight=1)
+            inner = tk.Frame(card, bg=C_CARD)
+            inner.place(relx=0, rely=0, relwidth=1, relheight=1)
 
-        tk.Label(inner, text=mod_nome, font=("Arial", 11, "bold"),
-                 bg=C_CARD, fg=C_TEXT, anchor="w").place(x=16, y=14)
+            tk.Label(inner, text=mod_nome, font=("Arial", 11, "bold"),
+                     bg=C_CARD, fg=C_TEXT, anchor="w").place(x=16, y=14)
 
-        tk.Label(inner, text=mod_desc, font=("Arial", 9),
-                 bg=C_CARD, fg=C_TEXT2, anchor="w").place(x=16, y=40)
+            tk.Label(inner, text=mod_desc, font=("Arial", 9),
+                     bg=C_CARD, fg=C_TEXT2, anchor="w").place(x=16, y=40)
 
-        lbl_st = tk.Label(inner, text="",
-                          font=("Arial", 9), bg=C_CARD, fg=C_TEXT3)
-        lbl_st.place(x=16, y=64)
-        _status_labels[mod_id] = lbl_st
+            lbl_st = tk.Label(inner, text="",
+                              font=("Arial", 9), bg=C_CARD, fg=C_TEXT3)
+            lbl_st.place(x=16, y=64)
+            _status_labels[mod_id] = lbl_st
 
-        btn = tk.Button(inner, text="▶  Executar agora",
-                        font=("Arial", 9, "bold"),
-                        bg=C_ACCENT, fg=C_TEXT, relief="flat",
-                        padx=14, pady=5, cursor="hand2",
-                        command=lambda m=mod_id, lbl=lbl_st: _executar_modulo(m, lbl))
-        btn.place(relx=1.0, rely=1.0, anchor="se", x=-16, y=-10)
-        _btns_executar[mod_id] = btn
+            btn = tk.Button(inner, text="▶  Executar agora",
+                            font=("Arial", 9, "bold"),
+                            bg=C_ACCENT, fg=C_TEXT, relief="flat",
+                            padx=14, pady=5, cursor="hand2",
+                            command=lambda m=mod_id, lbl=lbl_st: _executar_modulo(m, lbl))
+            btn.place(relx=1.0, rely=1.0, anchor="se", x=-16, y=-10)
+            _btns_executar[mod_id] = btn
+            _log_launcher(f"[ROTA][CARD] card concluido mod_id={mod_id}")
+        except Exception:
+            _log_launcher(f"[ROTA][CARD][ERRO] falha ao montar card mod_id={mod_id}")
+            _log_launcher(traceback.format_exc())
+            raise
+
+    _log_launcher("[ROTA] cards montados; iniciando separador/ultima execucao")
+    _snapshot_janela("apos_cards")
 
     # Separador + última execução
     tk.Frame(corpo, bg=C_SEP, height=1).pack(fill="x", pady=(12, 10))
+    _log_launcher("[ROTA] separador montado")
 
     tk.Label(corpo, text="ÚLTIMA EXECUÇÃO",
              font=("Arial", 9, "bold"), bg=C_BG, fg=C_TEXT3,
@@ -938,6 +967,7 @@ def _painel_principal():
                           font=("Arial", 10), bg=C_BG, fg=C_TEXT2,
                           anchor="w")
     lbl_ultima.pack(fill="x", pady=(4, 0))
+    _log_launcher("[ROTA] ultima execucao montada; iniciando rodape")
 
     # Rodapé
     tk.Frame(_root, bg=C_SEP, height=1).pack(fill="x", padx=20, pady=(14, 0))
@@ -947,6 +977,8 @@ def _painel_principal():
              font=("Arial", 8), bg=C_BG, fg=C_TEXT3).pack(side="left")
     tk.Label(rod, text=f"v{_VERSAO}",
              font=("Arial", 8), bg=C_BG, fg=C_DIM).pack(side="right")
+    _log_launcher("[ROTA] rodape montado; preparando polling")
+    _snapshot_janela("apos_rodape")
 
     # Polling última execução
     nomes_mod = {m[0]: m[1] for m in _MODULOS}
@@ -1004,13 +1036,47 @@ def _painel_principal():
                             _status_labels[mod_id].config(text="")
 
         except Exception:
-            pass
+            _log_launcher("[ATUALIZAR][ERRO] exception dentro do polling de historico")
+            _log_launcher(traceback.format_exc())
         if _loop_ativo and _root.winfo_exists():
             _root.after(_INTERVALO_S * 1000, _atualizar)
 
+    def _vigiar_janela():
+        try:
+            _snapshot_janela("watchdog")
+            if _loop_ativo and _root.winfo_exists():
+                _root.after(1000, _vigiar_janela)
+        except Exception:
+            _log_launcher("[VIGIA][ERRO] exception no watchdog da janela")
+            _log_launcher(traceback.format_exc())
+
+    _log_launcher("[ROTA] polling definido; forçando visual final")
+    try:
+        _root.deiconify()
+        _root.lift()
+        _root.attributes("-topmost", True)
+        _root.focus_force()
+        _root.update_idletasks()
+        _root.update()
+        _root.attributes("-topmost", False)
+        _snapshot_janela("apos_forcar_visual_final")
+    except Exception:
+        _log_launcher("[ROTA][ERRO] falha ao forcar visual final")
+        _log_launcher(traceback.format_exc())
+
+    _log_launcher("[ROTA] antes de ativar loop")
     _loop_ativo = True
+    _log_launcher("[ROTA] antes de registrar after historico")
     _root.after(2000, _atualizar)
+    _log_launcher("[ROTA] after historico registrado")
+    _log_launcher("[ROTA] antes de registrar watchdog")
+    _root.after(1000, _vigiar_janela)
+    _log_launcher("[ROTA] watchdog registrado")
+    _snapshot_janela("antes_mainloop")
+    _log_launcher("[ROTA] entrando no mainloop")
     _root.mainloop()
+    _log_launcher("[ROTA] mainloop saiu")
+    _snapshot_janela("depois_mainloop")
 
 
 # ─────────────────────────────────────────────────────────────────────
@@ -1018,10 +1084,50 @@ def _painel_principal():
 # ─────────────────────────────────────────────────────────────────────
 
 def _extrair_token_argv() -> str:
+    _log_launcher(f"[TOKEN] argv recebido={sys.argv!r}")
     for arg in sys.argv[1:]:
         if "token=" in arg:
-            return arg.split("token=")[-1].split("&")[0].strip()
+            token = arg.split("token=")[-1].split("&")[0].strip()
+            _log_launcher(f"[TOKEN] token extraido tamanho={len(token)}")
+            return token
+    _log_launcher("[TOKEN] nenhum token encontrado")
     return ""
+
+
+def _adquirir_lock_launcher() -> bool:
+    try:
+        _log_launcher(f"[LOCK] tentando adquirir lock={_ARQUIVO_LOCK}")
+        if os.path.exists(_ARQUIVO_LOCK):
+            idade = time.time() - os.path.getmtime(_ARQUIVO_LOCK)
+            try:
+                with open(_ARQUIVO_LOCK, "r", encoding="utf-8") as f:
+                    pid_lock = f.read().strip()
+            except Exception:
+                pid_lock = ""
+            _log_launcher(f"[LOCK] lock existente idade={idade:.1f}s pid_gravado={pid_lock!r}")
+            if idade > 60:
+                os.remove(_ARQUIVO_LOCK)
+                _log_launcher("[LOCK] lock antigo removido")
+        fd = os.open(_ARQUIVO_LOCK, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+        with os.fdopen(fd, "w", encoding="utf-8") as f:
+            f.write(str(os.getpid()))
+        _log_launcher("[LOCK] adquirido com sucesso")
+        return True
+    except FileExistsError:
+        _log_launcher("[LOCK] bloqueado por outra instancia")
+        return False
+    except Exception as e:
+        _log_launcher(f"[LOCK] erro ao adquirir lock, liberando execucao por seguranca: {e!r}")
+        return True
+
+
+def _liberar_lock_launcher():
+    try:
+        if os.path.exists(_ARQUIVO_LOCK):
+            os.remove(_ARQUIVO_LOCK)
+            _log_launcher("[LOCK] liberado")
+    except Exception as e:
+        _log_launcher(f"[LOCK] erro ao liberar: {e!r}")
 
 
 def _tela_bloqueio(mensagem: str = ""):
@@ -1182,51 +1288,103 @@ def _tela_primeiro_acesso():
 def main():
     global _FINGERPRINT, _EMAIL_SESSAO, _NOME_CLIENTE
 
+    _log_launcher("=" * 70)
+    _log_launcher("[MAIN] inicio do launcher")
+    _log_launcher(f"[MAIN] argv={sys.argv!r}")
+    _log_launcher(f"[MAIN] frozen={getattr(sys, 'frozen', False)} executable={sys.executable!r}")
+    _log_launcher(f"[MAIN] script_dir={_SCRIPT_DIR!r} cwd={os.getcwd()!r}")
+    _log_launcher(f"[MAIN] arquivo_log={_ARQUIVO_LOG_LAUNCHER!r}")
+
     _FINGERPRINT = _gerar_fingerprint()
+    _log_launcher(f"[MAIN] fingerprint={_FINGERPRINT}")
 
     # 0. Primeiro acesso via instalador
     if "--primeiro-acesso" in sys.argv:
+        _log_launcher("[MAIN] modo primeiro acesso")
         _tela_primeiro_acesso()
+        _log_launcher("[MAIN] fim primeiro acesso")
         return
 
-    # 1. Verifica token (rwa://abrir?token=XYZ)
+    # 1. Execucao direta via agente
+    _ARGS_MODULO = {"stm": "sao_luis", "pn": "padrao_nacional", "conf_sl": "conferencia_sao_luis", "conf_pn": "conferencia_pn"}
+    _arg = next((a for a in sys.argv[1:] if a in _ARGS_MODULO), None)
+    if _arg:
+        _log_launcher(f"[MAIN] modo execucao direta via agente arg={_arg}")
+        import importlib
+        _modulo_nome = {"stm": "Sao_Luis", "pn": "Padrao_nacional", "conf_sl": "conferencias_sao_luis", "conf_pn": "conferencias_pn"}
+        mod = importlib.import_module(_modulo_nome[_arg])
+        _log_launcher(f"[MAIN] modulo importado={_modulo_nome[_arg]}")
+        mod.main()
+        _log_launcher(f"[MAIN] fim execucao direta arg={_arg}")
+        return
+
+    # 2. Verifica token (rwa://abrir?token=XYZ)
     token = _extrair_token_argv()
     if not token:
+        _log_launcher("[MAIN] sem token; abrindo tela de bloqueio")
         _tela_bloqueio()
+        _log_launcher("[MAIN] fim por ausencia de token")
         return
 
-    # 2. Dispara validação em background e exibe splash simultaneamente
-    _resultado = {"ok": None, "email": "", "cliente": "", "erro": ""}
-
-    def _bg():
-        resp = _post("/auth/validar-token-launcher", {
-            "token":       token,
-            "fingerprint": _FINGERPRINT,
-        })
-        _resultado["ok"]      = resp.get("ok", False)
-        _resultado["email"]   = resp.get("email", "")
-        _resultado["cliente"] = resp.get("cliente", "")
-        _resultado["erro"]    = resp.get("erro", "Token inválido ou expirado.")
-
-    t = threading.Thread(target=_bg, daemon=True)
-    t.start()
-    _splash(mensagem="Validando credenciais de liberação...")
-    t.join(timeout=10)
-
-    # 3. Checa resultado da validação
-    if not _resultado["ok"]:
-        _tela_bloqueio(mensagem=_resultado["erro"])
+    _log_launcher("[MAIN] modo portal/protocolo detectado")
+    if not _adquirir_lock_launcher():
+        _log_launcher("[MAIN] encerrando: lock nao adquirido")
         return
 
-    _EMAIL_SESSAO = _resultado["email"]
-    _NOME_CLIENTE = _resultado["cliente"]
+    try:
+        # 2. Dispara validação em background e exibe splash simultaneamente
+        _resultado = {"ok": None, "email": "", "cliente": "", "erro": ""}
 
-    # 4. System tray
-    _iniciar_tray()
+        def _bg():
+            _log_launcher("[TOKEN] iniciando validacao no servidor")
+            resp = _post("/auth/validar-token-launcher", {
+                "token":       token,
+                "fingerprint": _FINGERPRINT,
+            })
+            _resultado["ok"]      = resp.get("ok", False)
+            _resultado["email"]   = resp.get("email", "")
+            _resultado["cliente"] = resp.get("cliente", "")
+            _resultado["erro"]    = resp.get("erro", "Token inválido ou expirado.")
+            _log_launcher(f"[TOKEN] resposta validacao ok={_resultado['ok']} email={_resultado['email']!r} cliente={_resultado['cliente']!r} erro={_resultado['erro']!r}")
 
-    # 5. Painel principal
-    _painel_principal()
+        t = threading.Thread(target=_bg, daemon=True)
+        t.start()
+        _log_launcher("[MAIN] iniciando validacao sem splash")
+        t.join(timeout=10)
+        _log_launcher(f"[TOKEN] thread validacao viva apos join={t.is_alive()}")
+
+        # 3. Checa resultado da validação
+        if not _resultado["ok"]:
+            _log_launcher(f"[MAIN] token recusado; abrindo bloqueio erro={_resultado['erro']!r}")
+            _tela_bloqueio(mensagem=_resultado["erro"])
+            return
+
+        _EMAIL_SESSAO = _resultado["email"]
+        _NOME_CLIENTE = _resultado["cliente"]
+        _log_launcher(f"[MAIN] token ok; email={_EMAIL_SESSAO!r} cliente={_NOME_CLIENTE!r}")
+
+        # 4. System tray
+        _log_launcher("[MAIN] iniciando system tray")
+        _iniciar_tray()
+        _log_launcher("[MAIN] system tray iniciado")
+
+        # 5. Painel principal
+        _log_launcher("[MAIN] chamando painel principal")
+        _painel_principal()
+        _log_launcher("[MAIN] painel principal encerrado")
+    finally:
+        _log_launcher("[MAIN] finally; liberando lock")
+        _liberar_lock_launcher()
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+        _log_launcher("[MAIN] encerrado sem exception")
+    except SystemExit as e:
+        _log_launcher(f"[MAIN] SystemExit code={getattr(e, 'code', None)!r}")
+        raise
+    except Exception:
+        _log_launcher("[ERRO_FATAL] exception nao tratada no launcher")
+        _log_launcher(traceback.format_exc())
+        raise

@@ -235,11 +235,11 @@ def _limpar_sinal():
 
 
 # Script de mapeamento módulo → arquivo
-_SCRIPTS = {
-    "sao_luis":             "Sao_Luis.PY",
-    "padrao_nacional":      "Padrao_nacional.py",
-    "conferencia_sao_luis": "conferencias_sao_luis.py",
-    "conferencia_pn":       "conferencias_pn.py",
+_MODULO_ARG = {
+    "sao_luis":              "stm",
+    "padrao_nacional":       "pn",
+    "conferencia_sao_luis":  "conf_sl",
+    "conferencia_pn":        "conf_pn",
 }
 
 # Processo ativo da automação
@@ -317,26 +317,26 @@ def _executar_tarefa(tarefa: dict):
     _limpar_sinal()
     _injetar_paths()
 
-    script = _SCRIPTS.get(modulo)
-    if not script:
+    arg = _MODULO_ARG.get(modulo)
+    if not arg:
         log.error(f"[EXEC] Módulo desconhecido: {modulo}")
         _chamar_status(tarefa_id, "erro", f"Módulo desconhecido: {modulo}")
         _tarefa_rodando = False
         return
 
-    script_path = os.path.join(_SCRIPT_DIR, script)
-    if not os.path.exists(script_path):
-        log.error(f"[EXEC] Script não encontrado: {script_path}")
-        _chamar_status(tarefa_id, "erro", f"Script não encontrado: {script}")
+    launcher_path = os.path.join(_SCRIPT_DIR, "RWA_LAUNCHER.exe")
+    if not os.path.exists(launcher_path):
+        log.error(f"[EXEC] RWA_LAUNCHER.exe não encontrado: {launcher_path}")
+        _chamar_status(tarefa_id, "erro", "RWA_LAUNCHER.exe não encontrado")
         _tarefa_rodando = False
         return
 
-    log.info(f"[EXEC] Iniciando subprocesso: {script}")
+    log.info(f"[EXEC] Iniciando subprocesso: RWA_LAUNCHER.exe {arg}")
 
     try:
         # Inicia automação como subprocesso separado
         proc = subprocess.Popen(
-            [sys.executable, script_path],
+            [launcher_path, arg],
             cwd=_SCRIPT_DIR,
             env=os.environ.copy(),
         )
@@ -447,18 +447,16 @@ def main():
     log.info(f"[FP] {_FINGERPRINT}")
 
     # 2. Carregar credenciais salvas pelo launcher
-    cred = _carregar_credenciais()
-    if not cred or not cred.get("email"):
-        log.error("[AGENTE] Sem credenciais. Execute o launcher primeiro.")
-        sys.exit(1)
+    # Aguarda credenciais serem salvas pelo launcher (loop até existir)
+    while True:
+        cred = _carregar_credenciais()
+        if cred and cred.get("email") and cred.get("senha"):
+            break
+        log.info("[AGENTE] Aguardando credenciais do launcher...")
+        time.sleep(5)
 
     email = cred["email"]
-    senha = cred.get("senha", "")
-
-    # Para testes: se não tiver senha salva, pede no terminal
-    if not senha:
-        import getpass as _gp
-        senha = _gp.getpass(f"[LOGIN] Senha para {email}: ")
+    senha = cred["senha"]
 
     # 3. Login no servidor
     if not _login_silencioso(email, senha):

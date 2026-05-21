@@ -1126,8 +1126,6 @@ function abrirRWA() {
     return;
   }
 
-  const popup = window.open('about:blank', '_blank');
-
   fetch('/auth/gerar-token-launcher', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -1136,17 +1134,12 @@ function abrirRWA() {
   .then(r => r.json())
   .then(d => {
     if (d.ok) {
-      popup.location.href = `rwa://abrir?token=${d.token}`;
-      setTimeout(() => {
-        try { popup.close(); } catch (e) {}
-      }, 1500);
+      window.location.href = `rwa://abrir?token=${d.token}`;
     } else {
-      try { popup.close(); } catch (e) {}
       toast(d.erro || 'Erro ao gerar token.', 'erro');
     }
   })
   .catch(() => {
-    try { popup.close(); } catch (e) {}
     toast('Erro de conexão com o servidor.', 'erro');
   });
 }
