@@ -831,9 +831,17 @@ tr:hover td { background: rgba(255,255,255,0.02); }
         <div class="scard-label">Vencimento</div>
         <div class="scard-valor" id="p-venc">—</div>
       </div>
-      <div class="scard">
-        <div class="scard-label">Última execução</div>
-        <div class="scard-valor" id="p-ultima" style="font-size:14px">—</div>
+      <div class="scard" style="display:flex;flex-direction:column;justify-content:space-between;gap:12px">
+        <div>
+          <div class="scard-label">Instalador</div>
+          <div class="scard-valor" style="font-size:14px">RWA_Setup.exe</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:2px;font-family:var(--mono)" id="dl-versao">Windows</div>
+        </div>
+        <a id="btn-download-instalador" href="#" target="_blank" rel="noopener"
+           style="display:inline-flex;align-items:center;gap:7px;background:var(--indigo);color:#fff;border:none;border-radius:8px;padding:8px 16px;font-size:12px;font-weight:600;font-family:var(--sans);cursor:pointer;text-decoration:none;width:fit-content;letter-spacing:.02em">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Baixar Instalador
+        </a>
       </div>
     </div>
 
@@ -1274,11 +1282,19 @@ async function carregarHistorico() {
       return;
     }
 
-    // Última execução no card de status
-    const ult = d.historico[0];
-    const ultFmt = fmtData(ult.quando);
-    document.getElementById('p-ultima').textContent =
-      `${NOMES[ult.modulo] || ult.modulo} — ${ultFmt.dia}`;
+    // Download instalador — busca última release no GitHub
+    (async () => {
+      try {
+        const r = await fetch('https://api.github.com/repos/williamrobertoangelo-bot/rwa-servidor/releases/latest');
+        if (!r.ok) return;
+        const rel = await r.json();
+        const asset = rel.assets && rel.assets.find(a => a.name.endsWith('.exe'));
+        if (asset) {
+          document.getElementById('btn-download-instalador').href = asset.browser_download_url;
+          document.getElementById('dl-versao').textContent = rel.tag_name + ' — Windows';
+        }
+      } catch(e) {}
+    })();
 
     // Detecta módulo em execução e atualiza botões
     const emExec = d.historico.find(h => h.status === 'em_execucao');

@@ -121,7 +121,49 @@ def _carregar_paths() -> dict:
     return {"senhas_sl": "", "senhas_pn": ""}
 
 
-def _injetar_paths():
+def _normalizar_cabecalho_email(valor):
+    texto = str(valor or "").strip().upper()
+    for origem, destino in [("Á", "A"), ("À", "A"), ("Â", "A"), ("Ã", "A"),
+                            ("É", "E"), ("Ê", "E"), ("Í", "I"),
+                            ("Ó", "O"), ("Ô", "O"), ("Õ", "O"),
+                            ("Ú", "U"), ("Ç", "C")]:
+        texto = texto.replace(origem, destino)
+    return texto
+
+
+def _ler_email_destino_planilha(caminho_planilha: str) -> str:
+    try:
+        if not caminho_planilha or not os.path.exists(caminho_planilha):
+            return ""
+
+        import openpyxl
+        wb = openpyxl.load_workbook(caminho_planilha, read_only=True, data_only=True)
+        ws = wb.active
+        cabecalhos = [_normalizar_cabecalho_email(c.value) for c in next(ws.iter_rows(min_row=1, max_row=1))]
+
+        idx_email = next((i for i, c in enumerate(cabecalhos) if c in ("EMAIL", "E-MAIL") or c.startswith("EMAIL")), None)
+        idx_receber = next((i for i, c in enumerate(cabecalhos) if "RECEBER" in c and "EMAIL" in c), None)
+
+        if idx_email is None:
+            idx_email = 9
+        if idx_receber is None:
+            idx_receber = 10
+
+        for row in ws.iter_rows(min_row=2, values_only=True):
+            if not row or len(row) <= max(idx_email, idx_receber):
+                continue
+
+            email = str(row[idx_email]).strip() if row[idx_email] else ""
+            receber = _normalizar_cabecalho_email(row[idx_receber]) if row[idx_receber] else ""
+
+            if email and "@" in email and receber == "SIM":
+                return email
+    except Exception as e:
+        log.warning(f"[EMAIL] Falha ao ler destinatário da planilha: {e}")
+    return ""
+
+
+def _injetar_paths(modulo: str = ""):
     """
     Injeta os caminhos das planilhas como variáveis de ambiente
     para que as automações possam ler ao iniciar.
@@ -131,6 +173,27 @@ def _injetar_paths():
         os.environ["RWA_SENHAS_SL"] = paths["senhas_sl"]
     if paths.get("senhas_pn"):
         os.environ["RWA_SENHAS_PN"] = paths["senhas_pn"]
+
+    os.environ.pop("RWA_EMAIL_DESTINO", None)
+    os.environ["RWA_EMAIL_CONTA"]     = "rwaautomacoes@gmail.com"
+    os.environ["RWA_EMAIL_SENHA_APP"] = "zdqjiqwpmchrbcry"
+    os.environ["RWA_EMAIL_AGENDADO"]  = "1"
+
+    caminho_planilha = ""
+    if modulo == "sao_luis":
+        caminho_planilha = paths.get("senhas_sl", "")
+    elif modulo == "padrao_nacional":
+        caminho_planilha = paths.get("senhas_pn", "")
+
+    if caminho_planilha:
+        destino = _ler_email_destino_planilha(caminho_planilha)
+        if destino:
+            os.environ["RWA_EMAIL_DESTINO"] = destino
+            log.info(f"[EMAIL] Destinatário operacional carregado para {modulo}: {destino}")
+        else:
+            log.info(f"[EMAIL] Nenhum destinatário habilitado para {modulo}.")
+    elif modulo in ("sao_luis", "padrao_nacional"):
+        log.info(f"[EMAIL] Planilha não configurada para {modulo}; email operacional não será enviado.")
 
 
 # ─────────────────────────────────────────────────────────────────────
@@ -315,7 +378,7 @@ def _executar_tarefa(tarefa: dict):
     log.info(f"[EXEC] Iniciando — id={tarefa_id} módulo={modulo}")
     _chamar_status(tarefa_id, "em_execucao")
     _limpar_sinal()
-    _injetar_paths()
+    _injetar_paths(modulo)
 
     arg = _MODULO_ARG.get(modulo)
     if not arg:

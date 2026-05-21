@@ -37,6 +37,9 @@ from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 
 
 import sys as _sys
+import smtplib as _smtp_h
+from email.mime.multipart import MIMEMultipart as _MMulti_h
+from email.mime.text import MIMEText as _MText_h
 _SCRIPT_DIR = os.path.dirname(os.path.abspath(_sys.executable if getattr(_sys, 'frozen', False) else __file__))
 
 # =====================================================================
@@ -1639,6 +1642,17 @@ def _encerrar_driver_sem_travar(driver, timeout=3):
 def login_com_certificado(driver, wait, tema, lang):
     print("Rota: CERTIFICADO DIGITAL")
     driver.maximize_window()
+
+    try:
+        driver.minimize_window()
+        time.sleep(0.5)
+        driver.maximize_window()
+
+        driver.switch_to.window(driver.current_window_handle)
+        driver.execute_script("window.focus();")
+        driver.execute_script("window.moveTo(0,0);")
+    except Exception:
+        pass
 
     if not tema or str(tema).strip().upper() == "X":
         raise CertificadoNaoLocalizadoException("TEMA_CERTIFICADO vazio ou X — campo nao preenchido na planilha.")
@@ -3776,9 +3790,6 @@ def _render_html_email_rwa(tag_texto, tag_bg, tag_fg, titulo, intro, secoes, cal
 
 def _enviar_email_rwa(conta, senha, destino, assunto, corpo_html, corpo_plain):
     """Envia email multipart/alternative (HTML + plain) via Gmail SMTP."""
-    import smtplib as _smtp_h
-    from email.mime.multipart import MIMEMultipart as _MMulti_h
-    from email.mime.text import MIMEText as _MText_h
     msg = _MMulti_h("alternative")
     msg["From"]    = conta
     msg["To"]      = destino
@@ -3868,9 +3879,6 @@ def _render_html_email_interrupcao(tag_texto, tag_bg, tag_fg, titulo, intro, sec
 
 def _enviar_email_interrupcao(conta, senha, destino, assunto, corpo_html, corpo_plain):
     """Envia email multipart/alternative (HTML + plain) via Gmail SMTP."""
-    import smtplib as _smtp_h
-    from email.mime.multipart import MIMEMultipart as _MMulti_h
-    from email.mime.text import MIMEText as _MText_h
     msg = _MMulti_h("alternative")
     msg["From"]    = conta
     msg["To"]      = destino

@@ -14,6 +14,9 @@ from urllib.parse import urljoin
 from datetime import datetime, date
 from dateutil.relativedelta import relativedelta
 import sys as _sys
+import smtplib as _smtp_h
+from email.mime.multipart import MIMEMultipart as _MMulti_h
+from email.mime.text import MIMEText as _MText_h
 
 import openpyxl
 import requests
@@ -293,6 +296,15 @@ def configurar_driver(pasta_download):
     driver.set_page_load_timeout(WAIT_INSTABILIDADE)
     driver.set_script_timeout(WAIT_INSTABILIDADE)
     driver.maximize_window()
+    try:
+        driver.minimize_window()
+        time.sleep(0.5)
+        driver.maximize_window()
+        driver.switch_to.window(driver.current_window_handle)
+        driver.execute_script("window.focus();")
+        driver.execute_script("window.moveTo(0,0);")
+    except Exception:
+        pass
     time.sleep(1)
     driver.get("about:blank")
     time.sleep(1)
@@ -5185,9 +5197,6 @@ def main():
 
     def _enviar_email_rwa(conta, senha, destino, assunto, corpo_html, corpo_plain):
         """Envia email multipart/alternative (HTML + plain) via Gmail SMTP."""
-        import smtplib as _smtp_h
-        from email.mime.multipart import MIMEMultipart as _MMulti_h
-        from email.mime.text import MIMEText as _MText_h
         msg = _MMulti_h("alternative")
         msg["From"]    = conta
         msg["To"]      = destino
@@ -5325,13 +5334,22 @@ def main():
         resumo_pdf_tomado = {"qtd_notas": "", "valor_total": "", "iss_proprio": "", "iss_retido": ""}
 
         try:
-            driver   = configurar_driver(pasta)
+            _driver_pronto = item.get("_driver_pronto")
+            if _driver_pronto:
+                # Driver ja autenticado — vindo do desbloqueio ACEO, pula configurar+login
+                driver = _driver_pronto
+                print("  [BLOQUEIO] Retomando com driver ja autenticado — pulando login.")
+                _t_login_ini = _t_login_fim = time.time()
+                login_ok = True
+            else:
+                driver   = configurar_driver(pasta)
 
             # ── FASE: LOGIN ──────────────────────────────────────────────────
-            _fase_atual  = "LOGIN"
-            _t_login_ini = time.time()
-            login_ok = fazer_login(driver, emp["login"], emp["senha"])
-            _t_login_fim = time.time()
+            if not _driver_pronto:
+                _fase_atual  = "LOGIN"
+                _t_login_ini = time.time()
+                login_ok = fazer_login(driver, emp["login"], emp["senha"])
+                _t_login_fim = time.time()
 
             if login_ok is not True:
                 # login_ok é a mensagem de erro exata do portal (string)
@@ -5437,16 +5455,17 @@ def main():
                 time.sleep(30)
             print("  [BLOQUEIO] Verificando login apos desbloqueio...")
             driver_teste = None
+            _retomar_com_driver = False
             try:
                 driver_teste = configurar_driver(pasta)
                 login_ok = fazer_login(driver_teste, emp["login"], emp["senha"])
-                try:
-                    driver_teste.quit()
-                except Exception:
-                    pass
-                driver_teste = None
 
                 if login_ok is not True:
+                    try:
+                        driver_teste.quit()
+                    except Exception:
+                        pass
+                    driver_teste = None
                     msg_erro_login      = login_ok if isinstance(login_ok, str) else "Login falhou apos desbloqueio ACEO007-016."
                     status_login        = "INCORRETO"
                     status_pdf_prestado = "Erro"
@@ -5458,13 +5477,19 @@ def main():
                     observacao          = msg_erro_login
                     print(f"  [BLOQUEIO] Login falhou apos espera: {msg_erro_login}")
                 else:
-                    # Login OK — reenfileira para processamento completo pelo fluxo normal
-                    if tentativa == 1:
-                        print("  [BLOQUEIO] Login OK. Reenfileirando para reprocessamento completo.")
-                        fila.append({"emp": emp, "tentativa": 2, "ordem_original": ordem_original})
-                        reprocessar_no_final = True
+                    if tentativa < 2:
+                        # Login OK — reutiliza driver ja autenticado, continua sem novo login
+                        print("  [BLOQUEIO] Login OK. Retomando processamento com browser atual.")
+                        driver = driver_teste
+                        driver_teste = None
+                        _retomar_com_driver = True
                     else:
                         # Tentativa 2+ com ACEO — esgotou tentativas automaticas
+                        try:
+                            driver_teste.quit()
+                        except Exception:
+                            pass
+                        driver_teste = None
                         observacao = "ACEO007-016 — bloqueio persistiu. Reprocessamento manual necessario."
                         print(f"  [BLOQUEIO] {observacao}")
 
@@ -5476,6 +5501,10 @@ def main():
                         pass
                 observacao = f"Falha ao verificar login apos ACEO007-016: {type(e_aceo).__name__}"
                 print(f"  [BLOQUEIO] Erro inesperado: {e_aceo}")
+
+            if _retomar_com_driver:
+                fila.insert(0, {"emp": emp, "tentativa": 2, "ordem_original": ordem_original, "_driver_pronto": driver})
+                reprocessar_no_final = True
 
         except PortalInstabilidadeException as e:
             _e_str = str(e)
@@ -6178,8 +6207,6 @@ if __name__ == "__main__":
                 )
                 
                 import smtplib as _smtp_h
-                from email.mime.multipart import MIMEMultipart as _MMulti_h
-                from email.mime.text import MIMEText as _MText_h
                 
                 _msg = _MMulti_h("alternative")
                 _msg["From"]    = _rwa_email_conta
