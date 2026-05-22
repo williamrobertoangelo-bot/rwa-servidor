@@ -70,11 +70,11 @@ body::before {
 #conf-tbody tr:last-child { border-bottom: none; }
 #conf-tbody tr:hover td { background: rgba(255,255,255,0.02); }
 #conf-tbody td { padding: 7px 12px; vertical-align: middle; }
-.spill-conf-ok   { background:rgba(34,197,94,.15);  color:#22c55e; font-size:11px; font-weight:600; padding:2px 9px; border-radius:999px; }
-.spill-conf-div  { background:rgba(239,68,68,.15);  color:#ef4444; font-size:11px; font-weight:600; padding:2px 9px; border-radius:999px; }
-.spill-conf-pend { background:rgba(245,158,11,.15); color:#f59e0b; font-size:11px; font-weight:600; padding:2px 9px; border-radius:999px; }
-.spill-conf-parc { background:rgba(245,158,11,.15); color:#f59e0b; font-size:11px; font-weight:600; padding:2px 9px; border-radius:999px; }
-.spill-conf-sm   { background:rgba(107,122,153,.15);color:#6b7a99; font-size:11px; font-weight:600; padding:2px 9px; border-radius:999px; }
+.spill-conf-ok   { background:var(--color-background-success,rgba(34,197,94,.12));  color:var(--color-text-success,#166534);  font-size:11px; font-weight:500; padding:2px 9px; border-radius:999px; }
+.spill-conf-div  { background:var(--color-background-danger,rgba(239,68,68,.12));   color:var(--color-text-danger,#991b1b);   font-size:11px; font-weight:500; padding:2px 9px; border-radius:999px; }
+.spill-conf-pend { background:var(--color-background-warning,rgba(245,158,11,.12)); color:var(--color-text-warning,#92400e);  font-size:11px; font-weight:500; padding:2px 9px; border-radius:999px; }
+.spill-conf-parc { background:var(--color-background-warning,rgba(245,158,11,.12)); color:var(--color-text-warning,#92400e);  font-size:11px; font-weight:500; padding:2px 9px; border-radius:999px; }
+.spill-conf-sm   { background:var(--color-background-secondary);                    color:var(--color-text-secondary);         font-size:11px; font-weight:500; padding:2px 9px; border-radius:999px; }
 
 /* ── LOGIN ──────────────────────────────────────────────────────── */
 
@@ -995,36 +995,36 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 
     <!-- Painel de Conferência -->
     <div id="painel-conferencia" style="display:none;margin-bottom:28px;">
-      <div class="hist-card" style="padding:0;">
-        <div class="hist-header" style="padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+      <div style="background:#fff;border:0.5px solid #e5e7eb;border-radius:12px;overflow:hidden;">
+        <div style="padding:14px 18px;border-bottom:0.5px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;background:#fff;">
           <div>
-            <span class="hist-header-title" id="conf-titulo">Conferência</span>
-            <span style="font-size:11px;color:var(--muted);display:block;margin-top:2px;" id="conf-gerado-em"></span>
+            <span style="font-size:14px;font-weight:600;color:#111;" id="conf-titulo">Conferência</span>
+            <span style="font-size:11px;color:#6b7280;display:block;margin-top:2px;" id="conf-gerado-em"></span>
           </div>
-          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-            <select id="conf-select-comp" onchange="trocarCompetencia()" style="background:var(--card2);border:1px solid var(--border);color:var(--text);font-family:var(--sans);font-size:12px;padding:5px 10px;border-radius:6px;cursor:pointer;"></select>
-            <button onclick="fecharConferencia()" style="font-size:12px;color:var(--muted);background:none;border:1px solid var(--border);padding:5px 14px;border-radius:6px;cursor:pointer;font-family:var(--sans);">Fechar</button>
-          </div>
-        </div>
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-bottom:1px solid var(--border);">
-          <div style="padding:14px 20px;border-right:1px solid var(--border);">
-            <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;">Total</div>
-            <div style="font-size:22px;font-weight:700;" id="conf-total">—</div>
-          </div>
-          <div style="padding:14px 20px;border-right:1px solid var(--border);">
-            <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;">Consistentes</div>
-            <div style="font-size:22px;font-weight:700;color:var(--green);" id="conf-ok">—</div>
-          </div>
-          <div style="padding:14px 20px;border-right:1px solid var(--border);">
-            <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;">Divergentes</div>
-            <div style="font-size:22px;font-weight:700;color:var(--red);" id="conf-div">—</div>
-          </div>
-          <div style="padding:14px 20px;">
-            <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;">Pendências / Parciais</div>
-            <div style="font-size:22px;font-weight:700;color:var(--yellow);" id="conf-pend">—</div>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+            <select id="conf-select-comp" onchange="trocarCompetencia()" style="background:#f9fafb;border:0.5px solid #d1d5db;color:#111;font-size:12px;padding:4px 10px;border-radius:6px;cursor:pointer;"></select>
+            <button onclick="fecharConferencia()" style="font-size:12px;color:#6b7280;background:none;border:0.5px solid #d1d5db;padding:4px 14px;border-radius:6px;cursor:pointer;">Fechar</button>
           </div>
         </div>
-        <div style="padding:12px 16px;border-bottom:1px solid var(--border);display:flex;gap:6px;flex-wrap:wrap;" id="conf-filtros">
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);border-bottom:0.5px solid #e5e7eb;background:#fff;">
+          <div style="padding:12px 16px;border-right:0.5px solid #e5e7eb;">
+            <div style="font-size:11px;color:#6b7280;margin-bottom:4px;">Total</div>
+            <div style="font-size:20px;font-weight:500;color:#111;" id="conf-total">—</div>
+          </div>
+          <div style="padding:12px 16px;border-right:0.5px solid #e5e7eb;">
+            <div style="font-size:11px;color:#6b7280;margin-bottom:4px;">Consistentes</div>
+            <div style="font-size:20px;font-weight:500;color:#166534;" id="conf-ok">—</div>
+          </div>
+          <div style="padding:12px 16px;border-right:0.5px solid #e5e7eb;">
+            <div style="font-size:11px;color:#6b7280;margin-bottom:4px;">Divergentes</div>
+            <div style="font-size:20px;font-weight:500;color:#991b1b;" id="conf-div">—</div>
+          </div>
+          <div style="padding:12px 16px;">
+            <div style="font-size:11px;color:#6b7280;margin-bottom:4px;">Pendências / Parciais</div>
+            <div style="font-size:20px;font-weight:500;color:#92400e;" id="conf-pend">—</div>
+          </div>
+        </div>
+        <div style="padding:10px 16px;border-bottom:0.5px solid #e5e7eb;display:flex;gap:6px;flex-wrap:wrap;background:#fff;">
           <button class="conf-fbtn active" onclick="filtrarConf('todos')">Todos</button>
           <button class="conf-fbtn" onclick="filtrarConf('OK')">Consistentes</button>
           <button class="conf-fbtn" onclick="filtrarConf('DIVERGENTE')">Divergentes</button>
@@ -1032,8 +1032,13 @@ tr:hover td { background: rgba(255,255,255,0.02); }
           <button class="conf-fbtn" onclick="filtrarConf('PARCIAL')">Parciais</button>
           <button class="conf-fbtn" onclick="filtrarConf('SEM_MOV')">Sem movimento</button>
         </div>
-        <div style="overflow-x:auto;">
-          <table style="width:100%;border-collapse:collapse;font-size:12px;">
+        <div style="overflow-x:auto;background:#fff;">
+          <table style="width:100%;border-collapse:collapse;font-size:12px;table-layout:fixed;">
+            <colgroup>
+              <col style="width:48px"><col style="width:200px"><col style="width:110px">
+              <col style="width:100px"><col style="width:100px"><col style="width:72px">
+              <col style="width:80px"><col>
+            </colgroup>
             <thead>
               <tr id="conf-thead"></tr>
             </thead>
@@ -1262,7 +1267,7 @@ async function carregarConferencia(modulo, competencia) {
       document.getElementById('conf-div').textContent   = '—';
       document.getElementById('conf-pend').textContent  = '—';
       document.getElementById('conf-thead').innerHTML   = '';
-      document.getElementById('conf-tbody').innerHTML   = '<tr><td colspan="9" style="padding:20px;text-align:center;color:var(--muted);font-size:13px;">Sem dados para exibir.</td></tr>';
+      document.getElementById('conf-tbody').innerHTML   = '<tr><td colspan="8" style="padding:20px;text-align:center;color:#9ca3af;font-size:13px;">Sem dados para exibir.</td></tr>';
       return;
     }
     _confDados = d;
@@ -1288,11 +1293,14 @@ function renderizarConferencia(dados) {
   document.getElementById('conf-pend').textContent  = (dados.total_pend || 0) + (dados.total_parc || 0);
 
   document.getElementById('conf-thead').innerHTML = `
-    <th>Cód.</th><th>Empresa</th><th>Regime</th>
-    <th style="text-align:right">Prefeit.</th>
-    <th style="text-align:right">Domínio</th>
-    <th style="text-align:right">Diferença</th>
-    <th>Status</th><th>Observação</th><th>Ação</th>
+    <th style="background:#f9fafb;color:#6b7280;font-size:11px;font-weight:500;padding:8px 12px;border-bottom:0.5px solid #e5e7eb;">Cód.</th>
+    <th style="background:#f9fafb;color:#6b7280;font-size:11px;font-weight:500;padding:8px 12px;border-bottom:0.5px solid #e5e7eb;">Empresa</th>
+    <th style="background:#f9fafb;color:#6b7280;font-size:11px;font-weight:500;padding:8px 12px;border-bottom:0.5px solid #e5e7eb;">Regime</th>
+    <th style="background:#f9fafb;color:#6b7280;font-size:11px;font-weight:500;padding:8px 12px;border-bottom:0.5px solid #e5e7eb;text-align:right">Prefeit.</th>
+    <th style="background:#f9fafb;color:#6b7280;font-size:11px;font-weight:500;padding:8px 12px;border-bottom:0.5px solid #e5e7eb;text-align:right">Domínio</th>
+    <th style="background:#f9fafb;color:#6b7280;font-size:11px;font-weight:500;padding:8px 12px;border-bottom:0.5px solid #e5e7eb;text-align:right">Dif.</th>
+    <th style="background:#f9fafb;color:#6b7280;font-size:11px;font-weight:500;padding:8px 12px;border-bottom:0.5px solid #e5e7eb;">Status</th>
+    <th style="background:#f9fafb;color:#6b7280;font-size:11px;font-weight:500;padding:8px 12px;border-bottom:0.5px solid #e5e7eb;">Observação</th>
   `;
 
   const fmt = v => v != null ? Number(v).toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2}) : '—';
@@ -1317,32 +1325,31 @@ function renderizarConferencia(dados) {
 
   if (filtrados.length === 0) {
     document.getElementById('conf-tbody').innerHTML =
-      '<tr><td colspan="9" style="padding:20px;text-align:center;color:var(--muted);font-size:13px;">Nenhum registro para este filtro.</td></tr>';
+      '<tr><td colspan="8" style="padding:20px;text-align:center;color:#9ca3af;font-size:13px;">Nenhum registro para este filtro.</td></tr>';
     return;
   }
 
   document.getElementById('conf-tbody').innerHTML = filtrados.map(r => {
     if (r._sem_mov) {
       return `<tr>
-        <td style="color:var(--muted)">${r.codigo || '—'}</td>
-        <td colspan="7" style="color:var(--muted);font-style:italic;font-size:11px;">${r.empresa || ''} — sem movimento</td>
-        <td><span class="spill-conf-sm">sem mov.</span></td>
+        <td style="color:#9ca3af;font-size:11px;padding:7px 12px;border-bottom:0.5px solid #f3f4f6;">${r.codigo || '—'}</td>
+        <td colspan="6" style="color:#9ca3af;font-style:italic;font-size:11px;padding:7px 12px;border-bottom:0.5px solid #f3f4f6;">${r.empresa || ''} — sem movimento</td>
+        <td style="padding:7px 12px;border-bottom:0.5px solid #f3f4f6;"><span class="spill-conf-sm">sem mov.</span></td>
       </tr>`;
     }
     const dif = r.diferenca != null ? r.diferenca : null;
-    const difCor = dif == null ? '' : Math.abs(dif) < 0.05 ? 'color:var(--green)' : 'color:var(--red)';
+    const difCor = dif == null ? '' : Math.abs(dif) < 0.05 ? 'color:#166534' : 'color:#991b1b';
     const obs = (r.observacoes || []).join(' | ') || (r.observacao || '');
-    const acao = r.acao || '';
+    const tdBase = 'padding:7px 12px;border-bottom:0.5px solid #f3f4f6;vertical-align:middle;';
     return `<tr>
-      <td style="color:var(--muted);font-size:11px;">${r.codigo || '—'}</td>
-      <td style="font-weight:600;font-size:12px;">${r.empresa || ''}</td>
-      <td style="color:var(--muted);font-size:11px;">${r.regime || '—'}</td>
-      <td style="text-align:right;font-family:var(--mono);font-size:11px;">${fmt(r.vl_serv ?? r.valor_prefeitura)}</td>
-      <td style="text-align:right;font-family:var(--mono);font-size:11px;">${fmt(r.dom_servicos ?? r.valor_dominio)}</td>
-      <td style="text-align:right;font-family:var(--mono);font-size:11px;${difCor}">${dif != null && Math.abs(dif) >= 0.05 ? fmt(dif) : '—'}</td>
-      <td>${badgeConf(r.status)}</td>
-      <td style="font-size:11px;color:var(--muted);font-style:italic;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${obs}">${obs || '—'}</td>
-      <td style="font-size:11px;color:var(--muted);max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${acao}">${acao || '—'}</td>
+      <td style="${tdBase}color:#9ca3af;font-size:11px;">${r.codigo || '—'}</td>
+      <td style="${tdBase}font-weight:500;font-size:12px;color:#111;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${r.empresa || ''}</td>
+      <td style="${tdBase}color:#6b7280;font-size:11px;">${r.regime || '—'}</td>
+      <td style="${tdBase}text-align:right;font-family:monospace;font-size:11px;color:#374151;">${fmt(r.vl_serv ?? r.valor_prefeitura)}</td>
+      <td style="${tdBase}text-align:right;font-family:monospace;font-size:11px;color:#374151;">${fmt(r.dom_servicos ?? r.valor_dominio)}</td>
+      <td style="${tdBase}text-align:right;font-family:monospace;font-size:11px;${difCor}">${dif != null && Math.abs(dif) >= 0.05 ? fmt(dif) : '—'}</td>
+      <td style="${tdBase}">${badgeConf(r.status)}</td>
+      <td style="${tdBase}font-size:11px;color:#6b7280;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${obs}">${obs || '—'}</td>
     </tr>`;
   }).join('');
 }
