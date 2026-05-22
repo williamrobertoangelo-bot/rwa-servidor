@@ -198,12 +198,17 @@ def agente_login(req: AgenteLoginRequest):
     if hoje > venc:
         return {"status": "erro", "mensagem": "Licença vencida. Entre em contato com a RWA."}
 
-    # Valida fingerprint — deve estar pre-registrado via /admin/registrar-maquina
+    # Valida/registra fingerprint automaticamente
     if req.fingerprint:
         maquinas = database.listar_maquinas(empresa["id"])
         fps = [m["fingerprint"] for m in maquinas]
         if req.fingerprint not in fps:
-            return {"status": "erro", "mensagem": "Maquina nao autorizada. Entre em contato com a RWA."}
+            if len(fps) == 0:
+                # Primeiro acesso — registra automaticamente
+                database.registrar_maquina(empresa["id"], req.fingerprint)
+            else:
+                # Já existe fingerprint de outra máquina — bloqueia
+                return {"status": "erro", "mensagem": "Licenca ja vinculada a outra maquina. Entre em contato com a RWA."}
 
     return {
         "status":     "ok",

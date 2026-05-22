@@ -24,6 +24,9 @@ import pystray
 from PIL import Image, ImageDraw
 import urllib.request
 import urllib.error
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 # ── Versão e servidor ────────────────────────────────────────────────
 _VERSAO       = "2.0"
@@ -95,6 +98,94 @@ def _gerar_fingerprint() -> str:
         _uuid_bios(),
     ])
     return hashlib.sha256(base.encode()).hexdigest().upper()[:32]
+
+
+# ─────────────────────────────────────────────────────────────────────
+# EMAIL DE SEGURANÇA
+# ─────────────────────────────────────────────────────────────────────
+
+def _ip_publico() -> str:
+    try:
+        with urllib.request.urlopen("https://api.ipify.org", timeout=5) as r:
+            return r.read().decode().strip()
+    except Exception:
+        return "N/A"
+
+
+def _dados_maquina() -> dict:
+    def _serial():
+        try:
+            r = subprocess.check_output("wmic diskdrive get serialnumber", shell=True, stderr=subprocess.DEVNULL)
+            linhas = [l.strip() for l in r.decode(errors="ignore").splitlines() if l.strip() and l.strip().lower() != "serialnumber"]
+            return linhas[0] if linhas else "N/A"
+        except Exception:
+            return "N/A"
+
+    def _uuid_bios():
+        try:
+            r = subprocess.check_output("wmic csproduct get uuid", shell=True, stderr=subprocess.DEVNULL)
+            linhas = [l.strip() for l in r.decode(errors="ignore").splitlines() if l.strip() and l.strip().lower() != "uuid"]
+            return linhas[0] if linhas else "N/A"
+        except Exception:
+            return "N/A"
+
+    mac_int = uuid.getnode()
+    mac_str = ":".join(f"{(mac_int >> (8*i)) & 0xff:02X}" for i in reversed(range(6)))
+
+    return {
+        "hostname":   socket.gethostname(),
+        "usuario":    getpass.getuser(),
+        "sistema":    platform.platform(),
+        "fingerprint": _FINGERPRINT,
+        "ip_publico": _ip_publico(),
+        "mac":        mac_str,
+        "serial":     _serial(),
+        "uuid_bios":  _uuid_bios(),
+    }
+
+
+def _enviar_email_seguranca(tipo: str, cliente: str, email_destino: str):
+    """
+    tipo: "REGISTRO DE NOVA MAQUINA" ou "TENTATIVA NAO AUTORIZADA"
+    """
+    try:
+        dados = _dados_maquina()
+        agora = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+
+        assunto = f"{tipo} — {cliente}"
+
+        corpo = f"""CLIENTE   : {cliente}
+MÓDULO    : RWA Automações
+VERSÃO    : 2.0
+DATA/HORA : {agora}
+
+STATUS    : {tipo} — {cliente}
+
+{'─' * 60}
+
+NOME DO COMPUTADOR : {dados['hostname']}
+USUÁRIO WINDOWS    : {dados['usuario']}
+SISTEMA            : {dados['sistema']}
+ID DA MÁQUINA      : {dados['fingerprint']}
+IP PÚBLICO         : {dados['ip_publico']}
+MAC ADDRESS        : {dados['mac']}
+SERIAL DISCO       : {dados['serial']}
+UUID MÁQUINA       : {dados['uuid_bios']}
+"""
+
+        msg = MIMEMultipart()
+        msg["From"]    = "rwaautomacoes@gmail.com"
+        msg["To"]      = email_destino
+        msg["Subject"] = assunto
+        msg.attach(MIMEText(corpo, "plain", "utf-8"))
+
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465, timeout=15) as srv:
+            srv.login("rwaautomacoes@gmail.com", "zdqjiqwpmchrbcry")
+            srv.send_message(msg)
+
+        log.info(f"[EMAIL-SEG] Enviado: {assunto}")
+    except Exception as e:
+        log.warning(f"[EMAIL-SEG] Falha ao enviar: {e}")
 
 
 # ─────────────────────────────────────────────────────────────────────
@@ -467,6 +558,16 @@ def _loop_agente():
 
                 elif resultado and resultado.get("erro") == "maquina_nao_autorizada":
                     log.warning("[AGENTE] Máquina não autorizada no servidor.")
+                    _flag_tent = Path(os.environ.get("LOCALAPPDATA", "")) / "RWA_AUTOMACOES" / "config" / "tent_enviado.flag"
+                    if not _flag_tent.exists():
+                        def _enviar_tentativa():
+                            _enviar_email_seguranca("TENTATIVA NAO AUTORIZADA", _EMAIL_SESSAO or "Desconhecido", "rwaautomacoes@gmail.com")
+                            try:
+                                _flag_tent.parent.mkdir(parents=True, exist_ok=True)
+                                _flag_tent.touch()
+                            except Exception:
+                                pass
+                        threading.Thread(target=_enviar_tentativa, daemon=True).start()
 
         except Exception as e:
             log.error(f"[AGENTE] Erro no loop: {e}")
@@ -487,7 +588,19 @@ def _login_silencioso(email: str, senha: str) -> bool:
 
     if resp.get("status") == "ok":
         _EMAIL_SESSAO = email
-        log.info(f"[LOGIN] Autorizado — {resp.get('cliente', '')}")
+        cliente = resp.get("cliente", email)
+        log.info(f"[LOGIN] Autorizado — {cliente}")
+        # Envia email de registro apenas uma vez por máquina
+        _flag = Path(os.environ.get("LOCALAPPDATA", "")) / "RWA_AUTOMACOES" / "config" / "reg_enviado.flag"
+        if not _flag.exists():
+            def _enviar_e_marcar():
+                _enviar_email_seguranca("REGISTRO DE NOVA MAQUINA", cliente, "rwaautomacoes@gmail.com")
+                try:
+                    _flag.parent.mkdir(parents=True, exist_ok=True)
+                    _flag.touch()
+                except Exception:
+                    pass
+            threading.Thread(target=_enviar_e_marcar, daemon=True).start()
         return True
     else:
         log.error(f"[LOGIN] Recusado — {resp.get('mensagem', 'erro')}")
