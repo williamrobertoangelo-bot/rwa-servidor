@@ -70,11 +70,11 @@ body::before {
 #conf-tbody tr:last-child { border-bottom: none; }
 #conf-tbody tr:hover td { background: rgba(255,255,255,0.02); }
 #conf-tbody td { padding: 7px 12px; vertical-align: middle; }
-.spill-conf-ok   { background:var(--color-background-success,rgba(34,197,94,.12));  color:var(--color-text-success,#166534);  font-size:11px; font-weight:500; padding:2px 9px; border-radius:999px; }
-.spill-conf-div  { background:var(--color-background-danger,rgba(239,68,68,.12));   color:var(--color-text-danger,#991b1b);   font-size:11px; font-weight:500; padding:2px 9px; border-radius:999px; }
-.spill-conf-pend { background:var(--color-background-warning,rgba(245,158,11,.12)); color:var(--color-text-warning,#92400e);  font-size:11px; font-weight:500; padding:2px 9px; border-radius:999px; }
-.spill-conf-parc { background:var(--color-background-warning,rgba(245,158,11,.12)); color:var(--color-text-warning,#92400e);  font-size:11px; font-weight:500; padding:2px 9px; border-radius:999px; }
-.spill-conf-sm   { background:var(--color-background-secondary);                    color:var(--color-text-secondary);         font-size:11px; font-weight:500; padding:2px 9px; border-radius:999px; }
+.spill-conf-ok   { display:inline-block;min-width:82px;text-align:center;background:#dcfce7;color:#166534; font-size:11px;font-weight:500;padding:3px 9px;border-radius:999px; }
+.spill-conf-div  { display:inline-block;min-width:82px;text-align:center;background:#fee2e2;color:#991b1b; font-size:11px;font-weight:500;padding:3px 9px;border-radius:999px; }
+.spill-conf-pend { display:inline-block;min-width:82px;text-align:center;background:#fef3c7;color:#92400e; font-size:11px;font-weight:500;padding:3px 9px;border-radius:999px; }
+.spill-conf-parc { display:inline-block;min-width:82px;text-align:center;background:#fef3c7;color:#92400e; font-size:11px;font-weight:500;padding:3px 9px;border-radius:999px; }
+.spill-conf-sm   { display:inline-block;min-width:82px;text-align:center;background:#e5e7eb;color:#6b7280; font-size:11px;font-weight:500;padding:3px 9px;border-radius:999px; }
 
 /* ── LOGIN ──────────────────────────────────────────────────────── */
 
@@ -996,7 +996,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
     <!-- Painel de Conferência -->
     <div id="painel-conferencia" style="display:none;margin-bottom:28px;">
       <div style="background:#f8f9fb;border:0.5px solid #d1d5db;border-radius:12px;overflow:hidden;">
-        <div style="padding:14px 18px;border-bottom:0.5px solid #e2e5ea;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;background:#f8f9fb;">
+        <div style="padding:14px 24px;border-bottom:0.5px solid #e2e5ea;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;background:#f8f9fb;">
           <div>
             <span style="font-size:14px;font-weight:500;color:#1a1f2e;" id="conf-titulo">Conferência</span>
             <span style="font-size:11px;color:#6b7280;display:block;margin-top:2px;" id="conf-gerado-em"></span>
@@ -1024,7 +1024,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
             <div style="font-size:20px;font-weight:500;color:#92400e;" id="conf-pend">—</div>
           </div>
         </div>
-        <div style="padding:10px 16px;border-bottom:0.5px solid #e2e5ea;display:flex;gap:6px;flex-wrap:wrap;background:#f8f9fb;">
+        <div style="padding:10px 24px;border-bottom:0.5px solid #e2e5ea;display:flex;gap:6px;flex-wrap:wrap;background:#f8f9fb;">
           <button class="conf-fbtn active" onclick="filtrarConf('todos')">Todos</button>
           <button class="conf-fbtn" onclick="filtrarConf('OK')">Consistentes</button>
           <button class="conf-fbtn" onclick="filtrarConf('DIVERGENTE')">Divergentes</button>
@@ -1286,42 +1286,59 @@ function preencherSelectComp(competencias, atual) {
 }
 
 function renderizarConferencia(dados) {
+  const isPn = _confModulo === 'conferencia_pn';
+
   document.getElementById('conf-gerado-em').textContent = `Gerado em: ${dados.gerado_em || ''}`;
   document.getElementById('conf-total').textContent = dados.total || 0;
   document.getElementById('conf-ok').textContent    = dados.total_ok || 0;
   document.getElementById('conf-div').textContent   = dados.total_div || 0;
   document.getElementById('conf-pend').textContent  = (dados.total_pend || 0) + (dados.total_parc || 0);
 
+  const colVal = isPn ? 'Portal Nacional' : 'Prefeitura';
+  const thS = 'background:#eef0f5;color:#6b7280;font-size:11px;font-weight:500;padding:9px 14px;border-bottom:0.5px solid #e2e5ea;white-space:nowrap;';
   document.getElementById('conf-thead').innerHTML = `
-    <th style="background:#eef0f5;color:#6b7280;font-size:11px;font-weight:500;padding:8px 12px;border-bottom:0.5px solid #e2e5ea;">Cód.</th>
-    <th style="background:#eef0f5;color:#6b7280;font-size:11px;font-weight:500;padding:8px 12px;border-bottom:0.5px solid #e2e5ea;">Empresa</th>
-    <th style="background:#eef0f5;color:#6b7280;font-size:11px;font-weight:500;padding:8px 12px;border-bottom:0.5px solid #e2e5ea;">Regime</th>
-    <th style="background:#eef0f5;color:#6b7280;font-size:11px;font-weight:500;padding:8px 12px;border-bottom:0.5px solid #e2e5ea;text-align:right">Prefeit.</th>
-    <th style="background:#eef0f5;color:#6b7280;font-size:11px;font-weight:500;padding:8px 12px;border-bottom:0.5px solid #e2e5ea;text-align:right">Domínio</th>
-    <th style="background:#eef0f5;color:#6b7280;font-size:11px;font-weight:500;padding:8px 12px;border-bottom:0.5px solid #e2e5ea;text-align:right">Dif.</th>
-    <th style="background:#eef0f5;color:#6b7280;font-size:11px;font-weight:500;padding:8px 12px;border-bottom:0.5px solid #e2e5ea;">Status</th>
-    <th style="background:#eef0f5;color:#6b7280;font-size:11px;font-weight:500;padding:8px 12px;border-bottom:0.5px solid #e2e5ea;">Observação</th>
+    <th style="${thS}">Cód.</th>
+    <th style="${thS}">Empresa</th>
+    <th style="${thS}">Regime</th>
+    <th style="${thS}text-align:right">${colVal}</th>
+    <th style="${thS}text-align:right">Domínio</th>
+    <th style="${thS}text-align:right">Dif.</th>
+    <th style="${thS}text-align:center">Status</th>
+    <th style="${thS}">Observação</th>
   `;
 
   const fmt = v => v != null ? Number(v).toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2}) : '—';
 
   const badgeConf = status => {
-    if (status === 'OK' || status === 'CONSISTENTE')
+    const s = (status || '').toUpperCase();
+    if (s === 'OK' || s === 'CONSISTENTE')
       return `<span class="spill-conf-ok">✓ ok</span>`;
-    if (status === 'DIVERGENTE')
+    if (s === 'DIVERGENTE')
       return `<span class="spill-conf-div">✕ divergente</span>`;
-    if (status === 'PARCIAL')
+    if (s === 'PARCIAL' || s === 'CONSISTENTE PARCIAL')
       return `<span class="spill-conf-parc">⚠ parcial</span>`;
+    if (s === 'NAO_ANALISADA')
+      return `<span class="spill-conf-sm">n/a</span>`;
     return `<span class="spill-conf-pend">⚠ pendência</span>`;
   };
 
-  const resultados   = dados.resultados   || [];
-  const sem_mov      = (dados.sem_movimento || []).map(r => ({...r, _sem_mov: true}));
-  const todos        = [...resultados, ...sem_mov];
+  const getNome = r => r.empresa || r.empresa_concl || r.empresa_ger || '';
+  const getValPref = r => isPn ? (r.valor_det ?? r.valor_serv) : (r.vl_serv ?? r.valor_prefeitura);
+  const getValDom  = r => isPn ? (r.valor_serv ?? r.dom_servicos) : (r.dom_servicos ?? r.valor_dominio);
+  const getDif     = r => {
+    if (r.diferenca != null) return r.diferenca;
+    const p = getValPref(r); const d = getValDom(r);
+    if (p != null && d != null) return parseFloat((p - d).toFixed(2));
+    return null;
+  };
+
+  const resultados = dados.resultados   || [];
+  const sem_mov    = (dados.sem_movimento || []).map(r => ({...r, _sem_mov: true}));
+  const todos      = [...resultados, ...sem_mov];
 
   const filtrados = _confFiltro === 'todos'   ? todos
     : _confFiltro === 'SEM_MOV'               ? sem_mov
-    : resultados.filter(r => r.status === _confFiltro);
+    : resultados.filter(r => (r.status || '').toUpperCase() === _confFiltro);
 
   if (filtrados.length === 0) {
     document.getElementById('conf-tbody').innerHTML =
@@ -1329,29 +1346,29 @@ function renderizarConferencia(dados) {
     return;
   }
 
-  document.getElementById('conf-tbody').innerHTML = filtrados.map(r => {
+  document.getElementById('conf-tbody').innerHTML = filtrados.map((r, idx) => {
     if (r._sem_mov) {
+      const bg = idx % 2 === 0 ? '#f8f9fb' : '#f2f4f7';
+      const smNome = getNome(r);
       return `<tr>
-        <td style="color:#9ca3af;font-size:11px;padding:7px 12px;border-bottom:0.5px solid #eaecf0;background:#f2f4f7;">${r.codigo || '—'}</td>
-        <td colspan="6" style="color:#9ca3af;font-style:italic;font-size:11px;padding:7px 12px;border-bottom:0.5px solid #eaecf0;background:#f2f4f7;">${r.empresa || ''} — sem movimento</td>
-        <td style="padding:7px 12px;border-bottom:0.5px solid #eaecf0;background:#f2f4f7;"><span class="spill-conf-sm">sem mov.</span></td>
+        <td style="color:#9ca3af;font-size:11px;padding:8px 14px;border-bottom:0.5px solid #eaecf0;background:${bg};">${r.codigo || '—'}</td>
+        <td colspan="6" style="color:#9ca3af;font-style:italic;font-size:11px;padding:8px 14px;border-bottom:0.5px solid #eaecf0;background:${bg};">${smNome}${smNome ? ' — ' : ''}sem movimento</td>
+        <td style="padding:8px 14px;border-bottom:0.5px solid #eaecf0;background:${bg};"><span class="spill-conf-sm">sem mov.</span></td>
       </tr>`;
     }
-    const dif = r.diferenca != null ? r.diferenca : null;
+    const dif = getDif(r);
     const difCor = dif == null ? '' : Math.abs(dif) < 0.05 ? 'color:#166534' : 'color:#991b1b';
     const obs = (r.observacoes || []).join(' | ') || (r.observacao || '');
-    const tdBase = 'padding:7px 12px;border-bottom:0.5px solid #eaecf0;vertical-align:middle;background:#f8f9fb;';
-    const tdAlt  = 'padding:7px 12px;border-bottom:0.5px solid #eaecf0;vertical-align:middle;background:#f2f4f7;';
-    const idx = filtrados.indexOf(r);
-    const td = idx % 2 === 0 ? tdBase : tdAlt;
+    const bg = idx % 2 === 0 ? '#f8f9fb' : '#f2f4f7';
+    const td = `padding:8px 14px;border-bottom:0.5px solid #eaecf0;vertical-align:middle;background:${bg};`;
     return `<tr>
       <td style="${td}color:#9ca3af;font-size:11px;">${r.codigo || '—'}</td>
-      <td style="${td}font-weight:500;font-size:12px;color:#1a1f2e;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${r.empresa || ''}</td>
+      <td style="${td}font-weight:500;font-size:12px;color:#1a1f2e;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${getNome(r)}</td>
       <td style="${td}color:#6b7280;font-size:11px;">${r.regime || '—'}</td>
-      <td style="${td}text-align:right;font-family:monospace;font-size:11px;color:#374151;">${fmt(r.vl_serv ?? r.valor_prefeitura)}</td>
-      <td style="${td}text-align:right;font-family:monospace;font-size:11px;color:#374151;">${fmt(r.dom_servicos ?? r.valor_dominio)}</td>
+      <td style="${td}text-align:right;font-family:monospace;font-size:11px;color:#374151;">${fmt(getValPref(r))}</td>
+      <td style="${td}text-align:right;font-family:monospace;font-size:11px;color:#374151;">${fmt(getValDom(r))}</td>
       <td style="${td}text-align:right;font-family:monospace;font-size:11px;${difCor}">${dif != null && Math.abs(dif) >= 0.05 ? fmt(dif) : '—'}</td>
-      <td style="${td}">${badgeConf(r.status)}</td>
+      <td style="${td}text-align:center;">${badgeConf(r.status)}</td>
       <td style="${td}font-size:11px;color:#6b7280;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${obs}">${obs || '—'}</td>
     </tr>`;
   }).join('');
