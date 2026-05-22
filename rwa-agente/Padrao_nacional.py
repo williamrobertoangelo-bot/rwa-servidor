@@ -60,7 +60,7 @@ URL_LOGIN = "https://www.nfse.gov.br/EmissorNacional/Login"
 RELATORIO_NOME = f"Relatorio_Gerencial_Padrao_Nacional_{COMPETENCIA}.xlsx"
 CONCLUSAO_NOME = f"CONCLUSAO_PADRAO_NACIONAL_{COMPETENCIA}.txt"
 DIAGNOSTICO_NOME = f"DIAGNOSTICO_PADRAO_NACIONAL_{COMPETENCIA}.txt"
-PASTA_DIAG_TECNICO = os.path.join(PASTA_BASE, "DIAGNOSTICO TECNICO")
+PASTA_DIAG_TECNICO = os.path.join(os.environ.get("LOCALAPPDATA", PASTA_BASE), "RWA_AUTOMACOES", "DIAGNOSTICO TECNICO")
 _log_diag_pn = []  # Registro de erros para resumo do diagnóstico
 
 # OCR certificado

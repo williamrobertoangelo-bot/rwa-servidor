@@ -230,3 +230,91 @@ def buscar_historico(empresa_id, limite=10):
             """, (empresa_id, limite))
             rows = cur.fetchall()
     return [dict(r) for r in rows]
+
+
+# ── CONFERÊNCIAS ────────────────────────────────────────────────────
+
+def criar_tabela_conferencias():
+    with _conn() as con:
+        with con.cursor() as cur:
+            cur.execute("""
+                CREATE TABLE IF NOT EXISTS conferencias (
+                    id            SERIAL PRIMARY KEY,
+                    empresa_id    INTEGER NOT NULL,
+                    modulo        TEXT    NOT NULL,
+                    competencia   TEXT    NOT NULL,
+                    gerado_em     TEXT    NOT NULL DEFAULT ((NOW() AT TIME ZONE 'America/Sao_Paulo')::TEXT),
+                    total         INTEGER NOT NULL DEFAULT 0,
+                    total_ok      INTEGER NOT NULL DEFAULT 0,
+                    total_div     INTEGER NOT NULL DEFAULT 0,
+                    total_pend    INTEGER NOT NULL DEFAULT 0,
+                    total_parc    INTEGER NOT NULL DEFAULT 0,
+                    total_sem_mov INTEGER NOT NULL DEFAULT 0,
+                    resultados    TEXT    NOT NULL DEFAULT '[]',
+                    sem_movimento TEXT    NOT NULL DEFAULT '[]',
+                    FOREIGN KEY (empresa_id) REFERENCES empresas(id)
+                );
+            """)
+        con.commit()
+
+
+def salvar_conferencia(empresa_id, modulo, competencia, resultados, sem_movimento):
+    import json
+    total     = len(resultados)
+    total_ok  = sum(1 for r in resultados if r.get("status") == "OK")
+    total_div = sum(1 for r in resultados if r.get("status") == "DIVERGENTE")
+    total_pend= sum(1 for r in resultados if r.get("status") == "PENDENCIA")
+    total_parc= sum(1 for r in resultados if r.get("status") == "PARCIAL")
+    total_sm  = len(sem_movimento)
+    with _conn() as con:
+        with con.cursor() as cur:
+            cur.execute("""
+                INSERT INTO conferencias
+                    (empresa_id, modulo, competencia, total, total_ok, total_div,
+                     total_pend, total_parc, total_sem_mov, resultados, sem_movimento)
+                VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+            """, (
+                empresa_id, modulo, competencia,
+                total, total_ok, total_div, total_pend, total_parc, total_sm,
+                json.dumps(resultados, ensure_ascii=False),
+                json.dumps(sem_movimento, ensure_ascii=False),
+            ))
+        con.commit()
+
+
+def buscar_conferencia(empresa_id, modulo, competencia=None):
+    import json
+    with _conn() as con:
+        with con.cursor() as cur:
+            if competencia:
+                cur.execute("""
+                    SELECT * FROM conferencias
+                    WHERE empresa_id=%s AND modulo=%s AND competencia=%s
+                    ORDER BY gerado_em DESC LIMIT 1
+                """, (empresa_id, modulo, competencia))
+            else:
+                cur.execute("""
+                    SELECT * FROM conferencias
+                    WHERE empresa_id=%s AND modulo=%s
+                    ORDER BY gerado_em DESC LIMIT 1
+                """, (empresa_id, modulo))
+            row = cur.fetchone()
+    if not row:
+        return None
+    r = dict(row)
+    r["resultados"]    = json.loads(r["resultados"])
+    r["sem_movimento"] = json.loads(r["sem_movimento"])
+    return r
+
+
+def listar_competencias_conferencia(empresa_id, modulo):
+    with _conn() as con:
+        with con.cursor() as cur:
+            cur.execute("""
+                SELECT DISTINCT competencia, gerado_em
+                FROM conferencias
+                WHERE empresa_id=%s AND modulo=%s
+                ORDER BY competencia DESC
+            """, (empresa_id, modulo))
+            rows = cur.fetchall()
+    return [dict(r) for r in rows]

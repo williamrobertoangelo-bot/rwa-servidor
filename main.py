@@ -23,6 +23,8 @@ if Path("static").exists():
     app.mount("/static", StaticFiles(directory="static"), name="static")
 
 database.inicializar_banco()
+database.criar_tabela_tarefas()
+database.criar_tabela_conferencias()
 
 _tokens_launcher: dict = {}
 
@@ -296,6 +298,49 @@ def auth_validar_token_launcher(req: ValidarTokenLauncherRequest):
         return {"ok": False, "erro": "Máquina não autorizada."}
     dado["usado"] = True
     return {"ok": True, "email": dado["email"], "cliente": dado["cliente"]}
+
+
+
+# ── Conferência ─────────────────────────────────────────────────────
+
+class ConferenciaRequest(BaseModel):
+    email:        str
+    fingerprint:  str
+    modulo:       str
+    competencia:  str
+    resultados:   list
+    sem_movimento: list
+
+
+@app.post("/agente/conferencia")
+def agente_conferencia(req: ConferenciaRequest):
+    empresa = database.buscar_empresa(req.email)
+    if not empresa:
+        return {"ok": False, "erro": "Empresa não encontrada."}
+
+    maquinas = database.listar_maquinas(empresa["id"])
+    fps = [m["fingerprint"] for m in maquinas]
+    if req.fingerprint not in fps:
+        return {"ok": False, "erro": "Máquina não autorizada."}
+
+    database.salvar_conferencia(
+        empresa["id"], req.modulo, req.competencia,
+        req.resultados, req.sem_movimento
+    )
+    return {"ok": True}
+
+
+@app.get("/portal/conferencia")
+def portal_conferencia(email: str, modulo: str, competencia: str = None):
+    try:
+        empresa = database.buscar_empresa(email)
+        if not empresa:
+            return {"ok": False, "erro": "Empresa não encontrada."}
+        dados = database.buscar_conferencia(empresa["id"], modulo, competencia)
+        competencias = database.listar_competencias_conferencia(empresa["id"], modulo)
+        return {"ok": True, "dados": dados, "competencias": competencias}
+    except Exception as e:
+        return {"ok": False, "erro": str(e)}
 
 
 # ── SPA Fallback (deve ser a última rota) ──────────────────────────

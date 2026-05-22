@@ -56,7 +56,7 @@ if getattr(_sys, 'frozen', False):
 else:
     PASTA_COMANDO = os.path.dirname(os.path.abspath(__file__))
 PASTA_BASE    = PASTA_COMANDO  # Relatorios (CONCLUSAO, GERENCIAL) salvos na pasta do script
-PASTA_DIAG_TECNICO = os.path.join(PASTA_BASE, "DIAGNOSTICO TECNICO")
+PASTA_DIAG_TECNICO = os.path.join(os.environ.get("LOCALAPPDATA", PASTA_BASE), "RWA_AUTOMACOES", "DIAGNOSTICO TECNICO")
 _rwa_paths_sl = {}
 try:
     import json as _json_sl

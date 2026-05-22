@@ -79,10 +79,10 @@ C_SEP     = "#2a2a3e"
 
 # ── Módulos ──────────────────────────────────────────────────────────
 _MODULOS = [
-    ("sao_luis",             "STM — São Luís",              "PDF + XML prestado/tomado, talão e guias ISS."),
-    ("padrao_nacional",      "NFS-e — Padrão Nacional",     "Certificado A1/A3. Gerencial e detalhamento."),
-    ("conferencia_sao_luis", "Conferência STM São Luís",    "Cruza STM × Domínio (Serviços + Simples)."),
-    ("conferencia_pn",       "Conferência Padrão Nacional", "Valida 5 pontos: cliente, qtd, período, CNPJ, valor."),
+    ("sao_luis",             "STM — São Luís",              "XML, Relatório, Talão, Guia e consultas automáticas."),
+    ("padrao_nacional",      "NFS-e — Padrão Nacional",     "XML, Relatório Gerencial e detalhamento."),
+    ("conferencia_sao_luis", "Conferência STM São Luís",    "Conferência inteligente e validação de relatórios."),
+    ("conferencia_pn",       "Conferência Padrão Nacional", "Conferência inteligente e validação de relatórios."),
 ]
 
 # ── Estado global ────────────────────────────────────────────────────
@@ -627,6 +627,15 @@ def _tela_agendamento():
     entry_data.bind("<FocusIn>",  _data_focus_in)
     entry_data.bind("<FocusOut>", _data_focus_out)
 
+    def _mascara_data(e):
+        v = ''.join(c for c in entry_data.get() if c.isdigit())
+        if len(v) > 2: v = v[:2] + '/' + v[2:]
+        if len(v) > 5: v = v[:5] + '/' + v[5:9]
+        entry_data.delete(0, "end")
+        entry_data.insert(0, v)
+        entry_data.config(fg=C_TEXT)
+    entry_data.bind("<KeyRelease>", _mascara_data)
+
     # Coluna Hora
     col_h = tk.Frame(dt_row, bg=C_BG)
     col_h.pack(side="left")
@@ -651,6 +660,14 @@ def _tela_agendamento():
             entry_hora.config(fg=C_TEXT3)
     entry_hora.bind("<FocusIn>",  _hora_focus_in)
     entry_hora.bind("<FocusOut>", _hora_focus_out)
+
+    def _mascara_hora(e):
+        v = ''.join(c for c in entry_hora.get() if c.isdigit())
+        if len(v) > 2: v = v[:2] + ':' + v[2:4]
+        entry_hora.delete(0, "end")
+        entry_hora.insert(0, v)
+        entry_hora.config(fg=C_TEXT)
+    entry_hora.bind("<KeyRelease>", _mascara_hora)
 
     # Erro
     lbl_erro = tk.Label(win, text="", font=("Arial", 9),
@@ -991,8 +1008,9 @@ def _painel_principal():
                 nome = nomes_mod.get(ult["modulo"], ult["modulo"])
                 when = ult.get("quando", "")[:16].replace("T", " ")
                 st   = ult.get("status", "")
-                cor  = (C_GREEN  if st == "concluido" else
-                        C_RED    if st == "erro"      else C_YELLOW)
+                cor  = (C_GREEN  if st in ("concluido", "em_execucao") else
+                        C_RED    if st == "erro"      else
+                        C_YELLOW if st == "cancelado" else C_TEXT2)
                 lbl_ultima.config(
                     text=f"{nome}  —  {when}  —  {st.upper()}",
                     fg=cor)
