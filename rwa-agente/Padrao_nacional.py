@@ -1641,13 +1641,8 @@ def _encerrar_driver_sem_travar(driver, timeout=3):
 
 def login_com_certificado(driver, wait, tema, lang):
     print("Rota: CERTIFICADO DIGITAL")
-    driver.maximize_window()
-
     try:
-        driver.minimize_window()
-        time.sleep(0.5)
         driver.maximize_window()
-
         driver.switch_to.window(driver.current_window_handle)
         driver.execute_script("window.focus();")
         driver.execute_script("window.moveTo(0,0);")
@@ -1693,6 +1688,13 @@ def login_com_certificado(driver, wait, tema, lang):
     t_click = threading.Thread(target=executar_clique_certificado, daemon=True)
     t_click.start()
 
+    # Aviso OCR — notifica a janela de progresso para exibir alerta ao usuário
+    try:
+        if hasattr(sys.stdout, "aviso_ocr"):
+            sys.stdout.aviso_ocr(True)
+    except Exception:
+        pass
+
     print("Aguardando seleção do certificado...")
     inicio = time.time()
     timeout_total = 60
@@ -1701,6 +1703,13 @@ def login_com_certificado(driver, wait, tema, lang):
         if resultado_cert.get("ok") is not None:
             break
         time.sleep(0.2)
+
+    # Libera aviso OCR
+    try:
+        if hasattr(sys.stdout, "aviso_ocr"):
+            sys.stdout.aviso_ocr(False)
+    except Exception:
+        pass
 
     if resultado_cert.get("ok") is False:
         if resultado_cert.get("tipo_erro") == "INTERFERENCIA_OCR":
@@ -2868,7 +2877,6 @@ def criar_driver(pasta_download):
     options.add_experimental_option("prefs", prefs)
 
     driver = webdriver.Chrome(options=options)
-    driver.maximize_window()
     return driver
 
 
@@ -3501,6 +3509,9 @@ class RWAProgressWindow:
     def flush(self):
         pass
 
+    def aviso_ocr(self, ativo):
+        self._queue.put(("OCR_AVISO",) if ativo else ("OCR_LIBERADO",))
+
     def finalizar(self):
         self._queue.put(("FIM",))
         self._fechado.wait()
@@ -3541,6 +3552,10 @@ class RWAProgressWindow:
         _card.pack(fill="x", padx=30, pady=(14, 0))
         _tk_mod.Label(_card, text="EMPRESA ATUAL", font=("Arial", 7, "bold"),
                       bg="#1a1a2e", fg="#333366", anchor="w").pack(anchor="w", padx=14, pady=(10, 2))
+        self._lbl_ocr_aviso = _tk_mod.Label(_card, text="",
+                                             font=("Arial", 9, "bold"),
+                                             bg="#1a1a2e", fg="#13131f", anchor="w")
+        self._lbl_ocr_aviso.pack(anchor="w", padx=14, pady=(0, 4))
         self._lbl_emp = _tk_mod.Label(_card, text="Iniciando...",
                                        font=("Arial", 11, "bold"),
                                        bg="#1a1a2e", fg="#aaaadd", anchor="w")
@@ -3679,6 +3694,16 @@ class RWAProgressWindow:
                     # Barra vira âmbar durante o reprocessamento
                     self._canvas.itemconfig(self._barra,       fill="#f59e0b")
                     self._canvas.itemconfig(self._barra_shine, fill="#fbbf24")
+
+                elif item[0] == "OCR_AVISO":
+                    self._lbl_ocr_aviso.configure(
+                        text="⚠  Leitura do certificado em andamento — não mova o mouse até liberar",
+                        fg="#f59e0b"
+                    )
+
+                elif item[0] == "OCR_LIBERADO":
+                    self._lbl_ocr_aviso.configure(text="✓  Liberado", fg="#22c55e")
+                    self._root.after(2000, lambda: self._lbl_ocr_aviso.configure(text="", fg="#13131f"))
 
                 elif item[0] == "FIM":
                     self._canvas.coords(self._barra,       0, 0, 598, 10)

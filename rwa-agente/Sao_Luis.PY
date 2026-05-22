@@ -295,16 +295,6 @@ def configurar_driver(pasta_download):
     driver._selecionar_empresa_stm = False
     driver.set_page_load_timeout(WAIT_INSTABILIDADE)
     driver.set_script_timeout(WAIT_INSTABILIDADE)
-    driver.maximize_window()
-    try:
-        driver.minimize_window()
-        time.sleep(0.5)
-        driver.maximize_window()
-        driver.switch_to.window(driver.current_window_handle)
-        driver.execute_script("window.focus();")
-        driver.execute_script("window.moveTo(0,0);")
-    except Exception:
-        pass
     time.sleep(1)
     driver.get("about:blank")
     time.sleep(1)
