@@ -49,6 +49,33 @@ body::before {
   z-index: 0;
 }
 
+
+.conf-fbtn {
+  font-size: 12px; padding: 4px 12px; border-radius: 999px;
+  border: 1px solid var(--border); background: transparent;
+  color: var(--muted); cursor: pointer; font-family: var(--sans);
+  transition: all .15s;
+}
+.conf-fbtn.active {
+  background: var(--card2); border-color: var(--border2);
+  color: var(--text); font-weight: 600;
+}
+#conf-thead th {
+  background: var(--card2); color: var(--muted);
+  font-size: 10px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: .06em; padding: 8px 12px; text-align: left;
+  border-bottom: 1px solid var(--border); white-space: nowrap;
+}
+#conf-tbody tr { border-bottom: 1px solid var(--border); }
+#conf-tbody tr:last-child { border-bottom: none; }
+#conf-tbody tr:hover td { background: rgba(255,255,255,0.02); }
+#conf-tbody td { padding: 7px 12px; vertical-align: middle; }
+.spill-conf-ok   { background:rgba(34,197,94,.15);  color:#22c55e; font-size:11px; font-weight:600; padding:2px 9px; border-radius:999px; }
+.spill-conf-div  { background:rgba(239,68,68,.15);  color:#ef4444; font-size:11px; font-weight:600; padding:2px 9px; border-radius:999px; }
+.spill-conf-pend { background:rgba(245,158,11,.15); color:#f59e0b; font-size:11px; font-weight:600; padding:2px 9px; border-radius:999px; }
+.spill-conf-parc { background:rgba(245,158,11,.15); color:#f59e0b; font-size:11px; font-weight:600; padding:2px 9px; border-radius:999px; }
+.spill-conf-sm   { background:rgba(107,122,153,.15);color:#6b7a99; font-size:11px; font-weight:600; padding:2px 9px; border-radius:999px; }
+
 /* ── LOGIN ──────────────────────────────────────────────────────── */
 
 #tela-login {
@@ -868,7 +895,51 @@ tr:hover td { background: rgba(255,255,255,0.02); }
       </button>
     </div>
 
-    <!-- Módulos -->
+    <!-- Conferências -->
+    <div class="sec-titulo">Conferências</div>
+    <div class="modulos-grid">
+
+      <div class="modulo-card">
+        <div class="mod-header">
+          <div>
+            <div class="mod-nome">Conferência — São Luís</div>
+            <div class="mod-desc">Domínio x Automações — validação de relatórios.</div>
+          </div>
+          <span class="mod-tag">conferencia_sl</span>
+        </div>
+        <div class="mod-icon-row" style="margin:8px 0 4px;opacity:0.35">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4f46e5" stroke-width="1.8" stroke-linecap="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        </div>
+        <div class="mod-acoes">
+          <button class="btn-exec-mod" onclick="abrirConferencia('conferencia_sao_luis')">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            Ver Resultado
+          </button>
+        </div>
+      </div>
+
+      <div class="modulo-card">
+        <div class="mod-header">
+          <div>
+            <div class="mod-nome">Conferência — Padrão Nacional</div>
+            <div class="mod-desc">Domínio x Automações — validação de relatórios.</div>
+          </div>
+          <span class="mod-tag">conferencia_pn</span>
+        </div>
+        <div class="mod-icon-row" style="margin:8px 0 4px;opacity:0.35">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4f46e5" stroke-width="1.8" stroke-linecap="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        </div>
+        <div class="mod-acoes">
+          <button class="btn-exec-mod" onclick="abrirConferencia('conferencia_pn')">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            Ver Resultado
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Automações -->
     <div class="sec-titulo">Automações disponíveis</div>
     <div class="modulos-grid">
 
@@ -920,54 +991,56 @@ tr:hover td { background: rgba(255,255,255,0.02); }
         <div class="mod-feedback" id="fb-padrao_nacional"></div>
       </div>
 
-      <div class="modulo-card">
-        <div class="mod-header">
-          <div>
-            <div class="mod-nome">Conferência — São Luís</div>
-            <div class="mod-desc">Conferência inteligente e validação de relatórios.</div>
-          </div>
-          <span class="mod-tag">conferencia_sl</span>
-        </div>
-        <div class="mod-icon-row" style="margin:8px 0 4px;opacity:0.35">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4f46e5" stroke-width="1.8" stroke-linecap="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-        </div>
-        <div class="mod-acoes">
-          <button class="btn-exec-mod" onclick="executar('conferencia_sao_luis', this)">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-            Executar agora
-          </button>
-          <button class="btn-ag-mod" onclick="abrirModal('conferencia_sao_luis')">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            Agendar
-          </button>
-        </div>
-        <div class="mod-feedback" id="fb-conferencia_sao_luis"></div>
-      </div>
+    </div>
 
-      <div class="modulo-card">
-        <div class="mod-header">
+    <!-- Painel de Conferência -->
+    <div id="painel-conferencia" style="display:none;margin-bottom:28px;">
+      <div class="hist-card" style="padding:0;">
+        <div class="hist-header" style="padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
           <div>
-            <div class="mod-nome">Conferência — Padrão Nacional</div>
-            <div class="mod-desc">Conferência inteligente e validação de relatórios.</div>
+            <span class="hist-header-title" id="conf-titulo">Conferência</span>
+            <span style="font-size:11px;color:var(--muted);display:block;margin-top:2px;" id="conf-gerado-em"></span>
           </div>
-          <span class="mod-tag">conferencia_pn</span>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+            <select id="conf-select-comp" onchange="trocarCompetencia()" style="background:var(--card2);border:1px solid var(--border);color:var(--text);font-family:var(--sans);font-size:12px;padding:5px 10px;border-radius:6px;cursor:pointer;"></select>
+            <button onclick="fecharConferencia()" style="font-size:12px;color:var(--muted);background:none;border:1px solid var(--border);padding:5px 14px;border-radius:6px;cursor:pointer;font-family:var(--sans);">Fechar</button>
+          </div>
         </div>
-        <div class="mod-icon-row" style="margin:8px 0 4px;opacity:0.35">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4f46e5" stroke-width="1.8" stroke-linecap="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-bottom:1px solid var(--border);">
+          <div style="padding:14px 20px;border-right:1px solid var(--border);">
+            <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;">Total</div>
+            <div style="font-size:22px;font-weight:700;" id="conf-total">—</div>
+          </div>
+          <div style="padding:14px 20px;border-right:1px solid var(--border);">
+            <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;">Consistentes</div>
+            <div style="font-size:22px;font-weight:700;color:var(--green);" id="conf-ok">—</div>
+          </div>
+          <div style="padding:14px 20px;border-right:1px solid var(--border);">
+            <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;">Divergentes</div>
+            <div style="font-size:22px;font-weight:700;color:var(--red);" id="conf-div">—</div>
+          </div>
+          <div style="padding:14px 20px;">
+            <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;">Pendências / Parciais</div>
+            <div style="font-size:22px;font-weight:700;color:var(--yellow);" id="conf-pend">—</div>
+          </div>
         </div>
-        <div class="mod-acoes">
-          <button class="btn-exec-mod" onclick="executar('conferencia_pn', this)">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-            Executar agora
-          </button>
-          <button class="btn-ag-mod" onclick="abrirModal('conferencia_pn')">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            Agendar
-          </button>
+        <div style="padding:12px 16px;border-bottom:1px solid var(--border);display:flex;gap:6px;flex-wrap:wrap;" id="conf-filtros">
+          <button class="conf-fbtn active" onclick="filtrarConf('todos')">Todos</button>
+          <button class="conf-fbtn" onclick="filtrarConf('OK')">Consistentes</button>
+          <button class="conf-fbtn" onclick="filtrarConf('DIVERGENTE')">Divergentes</button>
+          <button class="conf-fbtn" onclick="filtrarConf('PENDENCIA')">Pendências</button>
+          <button class="conf-fbtn" onclick="filtrarConf('PARCIAL')">Parciais</button>
+          <button class="conf-fbtn" onclick="filtrarConf('SEM_MOV')">Sem movimento</button>
         </div>
-        <div class="mod-feedback" id="fb-conferencia_pn"></div>
+        <div style="overflow-x:auto;">
+          <table style="width:100%;border-collapse:collapse;font-size:12px;">
+            <thead>
+              <tr id="conf-thead"></tr>
+            </thead>
+            <tbody id="conf-tbody"></tbody>
+          </table>
+        </div>
       </div>
-
     </div>
 
     <!-- Histórico -->
@@ -1139,6 +1212,146 @@ function sair() {
   _sessao = null;
   localStorage.removeItem('rwa_sessao');
   location.href = '/';
+}
+
+
+// ── Conferência ────────────────────────────────────────────────────
+
+let _confModulo = null;
+let _confDados  = null;
+let _confFiltro = 'todos';
+
+const CONF_NOMES = {
+  'conferencia_sao_luis': 'Conferência — São Luís',
+  'conferencia_pn':       'Conferência — Padrão Nacional',
+};
+
+async function abrirConferencia(modulo) {
+  _confModulo = modulo;
+  _confFiltro = 'todos';
+  document.querySelectorAll('.conf-fbtn').forEach(b => b.classList.remove('active'));
+  document.querySelector('.conf-fbtn').classList.add('active');
+  document.getElementById('conf-titulo').textContent = CONF_NOMES[modulo] || modulo;
+  document.getElementById('conf-gerado-em').textContent = 'Carregando...';
+  document.getElementById('painel-conferencia').style.display = 'block';
+  document.getElementById('painel-conferencia').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  await carregarConferencia(modulo, null);
+}
+
+function fecharConferencia() {
+  document.getElementById('painel-conferencia').style.display = 'none';
+  _confModulo = null;
+  _confDados  = null;
+}
+
+async function trocarCompetencia() {
+  const comp = document.getElementById('conf-select-comp').value;
+  await carregarConferencia(_confModulo, comp);
+}
+
+async function carregarConferencia(modulo, competencia) {
+  try {
+    let url = `/portal/conferencia?email=${encodeURIComponent(_sessao.email)}&modulo=${modulo}`;
+    if (competencia) url += `&competencia=${encodeURIComponent(competencia)}`;
+    const r = await fetch(url);
+    const d = await r.json();
+    if (!d.ok || !d.dados) {
+      document.getElementById('conf-gerado-em').textContent = 'Nenhum resultado disponível ainda. Execute a conferência pelo Launcher.';
+      document.getElementById('conf-total').textContent = '—';
+      document.getElementById('conf-ok').textContent    = '—';
+      document.getElementById('conf-div').textContent   = '—';
+      document.getElementById('conf-pend').textContent  = '—';
+      document.getElementById('conf-thead').innerHTML   = '';
+      document.getElementById('conf-tbody').innerHTML   = '<tr><td colspan="9" style="padding:20px;text-align:center;color:var(--muted);font-size:13px;">Sem dados para exibir.</td></tr>';
+      return;
+    }
+    _confDados = d;
+    preencherSelectComp(d.competencias, d.dados.competencia);
+    renderizarConferencia(d.dados);
+  } catch(e) {
+    document.getElementById('conf-gerado-em').textContent = 'Erro ao carregar dados.';
+  }
+}
+
+function preencherSelectComp(competencias, atual) {
+  const sel = document.getElementById('conf-select-comp');
+  sel.innerHTML = competencias.map(c =>
+    `<option value="${c.competencia}" ${c.competencia === atual ? 'selected' : ''}>${c.competencia}</option>`
+  ).join('');
+}
+
+function renderizarConferencia(dados) {
+  document.getElementById('conf-gerado-em').textContent = `Gerado em: ${dados.gerado_em || ''}`;
+  document.getElementById('conf-total').textContent = dados.total || 0;
+  document.getElementById('conf-ok').textContent    = dados.total_ok || 0;
+  document.getElementById('conf-div').textContent   = dados.total_div || 0;
+  document.getElementById('conf-pend').textContent  = (dados.total_pend || 0) + (dados.total_parc || 0);
+
+  document.getElementById('conf-thead').innerHTML = `
+    <th>Cód.</th><th>Empresa</th><th>Regime</th>
+    <th style="text-align:right">Prefeit.</th>
+    <th style="text-align:right">Domínio</th>
+    <th style="text-align:right">Diferença</th>
+    <th>Status</th><th>Observação</th><th>Ação</th>
+  `;
+
+  const fmt = v => v != null ? Number(v).toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2}) : '—';
+
+  const badgeConf = status => {
+    if (status === 'OK' || status === 'CONSISTENTE')
+      return `<span class="spill-conf-ok">✓ ok</span>`;
+    if (status === 'DIVERGENTE')
+      return `<span class="spill-conf-div">✕ divergente</span>`;
+    if (status === 'PARCIAL')
+      return `<span class="spill-conf-parc">⚠ parcial</span>`;
+    return `<span class="spill-conf-pend">⚠ pendência</span>`;
+  };
+
+  const resultados   = dados.resultados   || [];
+  const sem_mov      = (dados.sem_movimento || []).map(r => ({...r, _sem_mov: true}));
+  const todos        = [...resultados, ...sem_mov];
+
+  const filtrados = _confFiltro === 'todos'   ? todos
+    : _confFiltro === 'SEM_MOV'               ? sem_mov
+    : resultados.filter(r => r.status === _confFiltro);
+
+  if (filtrados.length === 0) {
+    document.getElementById('conf-tbody').innerHTML =
+      '<tr><td colspan="9" style="padding:20px;text-align:center;color:var(--muted);font-size:13px;">Nenhum registro para este filtro.</td></tr>';
+    return;
+  }
+
+  document.getElementById('conf-tbody').innerHTML = filtrados.map(r => {
+    if (r._sem_mov) {
+      return `<tr>
+        <td style="color:var(--muted)">${r.codigo || '—'}</td>
+        <td colspan="7" style="color:var(--muted);font-style:italic;font-size:11px;">${r.empresa || ''} — sem movimento</td>
+        <td><span class="spill-conf-sm">sem mov.</span></td>
+      </tr>`;
+    }
+    const dif = r.diferenca != null ? r.diferenca : null;
+    const difCor = dif == null ? '' : Math.abs(dif) < 0.05 ? 'color:var(--green)' : 'color:var(--red)';
+    const obs = (r.observacoes || []).join(' | ') || (r.observacao || '');
+    const acao = r.acao || '';
+    return `<tr>
+      <td style="color:var(--muted);font-size:11px;">${r.codigo || '—'}</td>
+      <td style="font-weight:600;font-size:12px;">${r.empresa || ''}</td>
+      <td style="color:var(--muted);font-size:11px;">${r.regime || '—'}</td>
+      <td style="text-align:right;font-family:var(--mono);font-size:11px;">${fmt(r.vl_serv ?? r.valor_prefeitura)}</td>
+      <td style="text-align:right;font-family:var(--mono);font-size:11px;">${fmt(r.dom_servicos ?? r.valor_dominio)}</td>
+      <td style="text-align:right;font-family:var(--mono);font-size:11px;${difCor}">${dif != null && Math.abs(dif) >= 0.05 ? fmt(dif) : '—'}</td>
+      <td>${badgeConf(r.status)}</td>
+      <td style="font-size:11px;color:var(--muted);font-style:italic;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${obs}">${obs || '—'}</td>
+      <td style="font-size:11px;color:var(--muted);max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${acao}">${acao || '—'}</td>
+    </tr>`;
+  }).join('');
+}
+
+function filtrarConf(filtro) {
+  _confFiltro = filtro;
+  document.querySelectorAll('.conf-fbtn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  if (_confDados && _confDados.dados) renderizarConferencia(_confDados.dados);
 }
 
 // ── Abrir RWA ──────────────────────────────────────────────────────

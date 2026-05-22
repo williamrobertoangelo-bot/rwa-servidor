@@ -1509,6 +1509,42 @@ def _main_corpo():
 
     gerar_xlsx(resultados_analise, resultados_sem_mov, resultados_ignoradas, competencia)
 
+    # ── Envio ao servidor RWA ────────────────────────────────────────────
+    try:
+        import json as _json_envio
+        import urllib.request as _urllib_envio
+        import urllib.error   as _urllib_err
+
+        _cred_path = Path(os.environ.get("LOCALAPPDATA", "")) / "RWA_AUTOMACOES" / "config" / "credenciais.json"
+        _cred = _json_envio.loads(_cred_path.read_text("utf-8")) if _cred_path.exists() else {}
+        _paths_path = Path(os.environ.get("LOCALAPPDATA", "")) / "RWA_AUTOMACOES" / "config" / "paths.json"
+        _paths = _json_envio.loads(_paths_path.read_text("utf-8")) if _paths_path.exists() else {}
+
+        _payload = _json_envio.dumps({
+            "email":        _cred.get("email", ""),
+            "fingerprint":  _paths.get("fingerprint", ""),
+            "modulo":       "conferencia_pn",
+            "competencia":  competencia or "",
+            "resultados":   resultados_analise,
+            "sem_movimento": resultados_sem_mov,
+        }, ensure_ascii=False).encode("utf-8")
+
+        _req = _urllib_envio.Request(
+            "https://web-production-31152.up.railway.app/agente/conferencia",
+            data=_payload,
+            headers={"Content-Type": "application/json"},
+            method="POST"
+        )
+        with _urllib_envio.urlopen(_req, timeout=15) as _resp:
+            _r = _json_envio.loads(_resp.read().decode())
+            if _r.get("ok"):
+                log("Resultado enviado ao portal com sucesso.")
+            else:
+                log(f"Aviso: servidor recusou o envio — {_r.get('erro','')}")
+    except Exception as _e_envio:
+        log(f"Aviso: nao foi possivel enviar resultado ao portal — {_e_envio}")
+    # ────────────────────────────────────────────────────────────────────
+
     # ── Resumo final ────────────────────────────────────────────────────────
     consistentes = sum(1 for r in resultados_analise if r["status"] == "CONSISTENTE")
     divergentes  = sum(1 for r in resultados_analise if r["status"] == "DIVERGENTE")
