@@ -57,8 +57,8 @@ body::before {
   transition: all .15s;
 }
 .conf-fbtn.active {
-  background: var(--card2); border-color: var(--border2);
-  color: var(--text); font-weight: 600;
+  background: #1a1f2e; border-color: #1a1f2e;
+  color: #fff; font-weight: 500;
 }
 #conf-thead th {
   background: var(--card2); color: var(--muted);
@@ -995,27 +995,27 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 
     <!-- Painel de Conferência -->
     <div id="painel-conferencia" style="display:none;margin-bottom:28px;">
-      <div style="background:#fff;border:0.5px solid #e5e7eb;border-radius:12px;overflow:hidden;">
-        <div style="padding:14px 18px;border-bottom:0.5px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;background:#fff;">
+      <div style="background:#f8f9fb;border:0.5px solid #d1d5db;border-radius:12px;overflow:hidden;">
+        <div style="padding:14px 18px;border-bottom:0.5px solid #e2e5ea;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;background:#f8f9fb;">
           <div>
-            <span style="font-size:14px;font-weight:600;color:#111;" id="conf-titulo">Conferência</span>
+            <span style="font-size:14px;font-weight:500;color:#1a1f2e;" id="conf-titulo">Conferência</span>
             <span style="font-size:11px;color:#6b7280;display:block;margin-top:2px;" id="conf-gerado-em"></span>
           </div>
           <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-            <select id="conf-select-comp" onchange="trocarCompetencia()" style="background:#f9fafb;border:0.5px solid #d1d5db;color:#111;font-size:12px;padding:4px 10px;border-radius:6px;cursor:pointer;"></select>
-            <button onclick="fecharConferencia()" style="font-size:12px;color:#6b7280;background:none;border:0.5px solid #d1d5db;padding:4px 14px;border-radius:6px;cursor:pointer;">Fechar</button>
+            <select id="conf-select-comp" onchange="trocarCompetencia()" style="background:#eef0f5;border:0.5px solid #c4c9d4;color:#1a1f2e;font-size:12px;padding:4px 10px;border-radius:6px;cursor:pointer;"></select>
+            <button onclick="fecharConferencia()" style="font-size:12px;color:#6b7280;background:none;border:0.5px solid #c4c9d4;padding:4px 14px;border-radius:6px;cursor:pointer;">Fechar</button>
           </div>
         </div>
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);border-bottom:0.5px solid #e5e7eb;background:#fff;">
-          <div style="padding:12px 16px;border-right:0.5px solid #e5e7eb;">
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);border-bottom:0.5px solid #e2e5ea;background:#f8f9fb;">
+          <div style="padding:12px 16px;border-right:0.5px solid #e2e5ea;">
             <div style="font-size:11px;color:#6b7280;margin-bottom:4px;">Total</div>
-            <div style="font-size:20px;font-weight:500;color:#111;" id="conf-total">—</div>
+            <div style="font-size:20px;font-weight:500;color:#1a1f2e;" id="conf-total">—</div>
           </div>
-          <div style="padding:12px 16px;border-right:0.5px solid #e5e7eb;">
+          <div style="padding:12px 16px;border-right:0.5px solid #e2e5ea;">
             <div style="font-size:11px;color:#6b7280;margin-bottom:4px;">Consistentes</div>
             <div style="font-size:20px;font-weight:500;color:#166534;" id="conf-ok">—</div>
           </div>
-          <div style="padding:12px 16px;border-right:0.5px solid #e5e7eb;">
+          <div style="padding:12px 16px;border-right:0.5px solid #e2e5ea;">
             <div style="font-size:11px;color:#6b7280;margin-bottom:4px;">Divergentes</div>
             <div style="font-size:20px;font-weight:500;color:#991b1b;" id="conf-div">—</div>
           </div>
@@ -1024,7 +1024,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
             <div style="font-size:20px;font-weight:500;color:#92400e;" id="conf-pend">—</div>
           </div>
         </div>
-        <div style="padding:10px 16px;border-bottom:0.5px solid #e5e7eb;display:flex;gap:6px;flex-wrap:wrap;background:#fff;">
+        <div style="padding:10px 16px;border-bottom:0.5px solid #e2e5ea;display:flex;gap:6px;flex-wrap:wrap;background:#f8f9fb;">
           <button class="conf-fbtn active" onclick="filtrarConf('todos')">Todos</button>
           <button class="conf-fbtn" onclick="filtrarConf('OK')">Consistentes</button>
           <button class="conf-fbtn" onclick="filtrarConf('DIVERGENTE')">Divergentes</button>
@@ -1032,11 +1032,11 @@ tr:hover td { background: rgba(255,255,255,0.02); }
           <button class="conf-fbtn" onclick="filtrarConf('PARCIAL')">Parciais</button>
           <button class="conf-fbtn" onclick="filtrarConf('SEM_MOV')">Sem movimento</button>
         </div>
-        <div style="overflow-x:auto;background:#fff;">
+        <div style="overflow-x:auto;background:#f8f9fb;">
           <table style="width:100%;border-collapse:collapse;font-size:12px;table-layout:fixed;">
             <colgroup>
-              <col style="width:48px"><col style="width:200px"><col style="width:110px">
-              <col style="width:100px"><col style="width:100px"><col style="width:72px">
+              <col style="width:48px"><col style="width:190px"><col style="width:110px">
+              <col style="width:95px"><col style="width:95px"><col style="width:68px">
               <col style="width:80px"><col>
             </colgroup>
             <thead>
@@ -1293,14 +1293,14 @@ function renderizarConferencia(dados) {
   document.getElementById('conf-pend').textContent  = (dados.total_pend || 0) + (dados.total_parc || 0);
 
   document.getElementById('conf-thead').innerHTML = `
-    <th style="background:#f9fafb;color:#6b7280;font-size:11px;font-weight:500;padding:8px 12px;border-bottom:0.5px solid #e5e7eb;">Cód.</th>
-    <th style="background:#f9fafb;color:#6b7280;font-size:11px;font-weight:500;padding:8px 12px;border-bottom:0.5px solid #e5e7eb;">Empresa</th>
-    <th style="background:#f9fafb;color:#6b7280;font-size:11px;font-weight:500;padding:8px 12px;border-bottom:0.5px solid #e5e7eb;">Regime</th>
-    <th style="background:#f9fafb;color:#6b7280;font-size:11px;font-weight:500;padding:8px 12px;border-bottom:0.5px solid #e5e7eb;text-align:right">Prefeit.</th>
-    <th style="background:#f9fafb;color:#6b7280;font-size:11px;font-weight:500;padding:8px 12px;border-bottom:0.5px solid #e5e7eb;text-align:right">Domínio</th>
-    <th style="background:#f9fafb;color:#6b7280;font-size:11px;font-weight:500;padding:8px 12px;border-bottom:0.5px solid #e5e7eb;text-align:right">Dif.</th>
-    <th style="background:#f9fafb;color:#6b7280;font-size:11px;font-weight:500;padding:8px 12px;border-bottom:0.5px solid #e5e7eb;">Status</th>
-    <th style="background:#f9fafb;color:#6b7280;font-size:11px;font-weight:500;padding:8px 12px;border-bottom:0.5px solid #e5e7eb;">Observação</th>
+    <th style="background:#eef0f5;color:#6b7280;font-size:11px;font-weight:500;padding:8px 12px;border-bottom:0.5px solid #e2e5ea;">Cód.</th>
+    <th style="background:#eef0f5;color:#6b7280;font-size:11px;font-weight:500;padding:8px 12px;border-bottom:0.5px solid #e2e5ea;">Empresa</th>
+    <th style="background:#eef0f5;color:#6b7280;font-size:11px;font-weight:500;padding:8px 12px;border-bottom:0.5px solid #e2e5ea;">Regime</th>
+    <th style="background:#eef0f5;color:#6b7280;font-size:11px;font-weight:500;padding:8px 12px;border-bottom:0.5px solid #e2e5ea;text-align:right">Prefeit.</th>
+    <th style="background:#eef0f5;color:#6b7280;font-size:11px;font-weight:500;padding:8px 12px;border-bottom:0.5px solid #e2e5ea;text-align:right">Domínio</th>
+    <th style="background:#eef0f5;color:#6b7280;font-size:11px;font-weight:500;padding:8px 12px;border-bottom:0.5px solid #e2e5ea;text-align:right">Dif.</th>
+    <th style="background:#eef0f5;color:#6b7280;font-size:11px;font-weight:500;padding:8px 12px;border-bottom:0.5px solid #e2e5ea;">Status</th>
+    <th style="background:#eef0f5;color:#6b7280;font-size:11px;font-weight:500;padding:8px 12px;border-bottom:0.5px solid #e2e5ea;">Observação</th>
   `;
 
   const fmt = v => v != null ? Number(v).toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2}) : '—';
@@ -1332,24 +1332,27 @@ function renderizarConferencia(dados) {
   document.getElementById('conf-tbody').innerHTML = filtrados.map(r => {
     if (r._sem_mov) {
       return `<tr>
-        <td style="color:#9ca3af;font-size:11px;padding:7px 12px;border-bottom:0.5px solid #f3f4f6;">${r.codigo || '—'}</td>
-        <td colspan="6" style="color:#9ca3af;font-style:italic;font-size:11px;padding:7px 12px;border-bottom:0.5px solid #f3f4f6;">${r.empresa || ''} — sem movimento</td>
-        <td style="padding:7px 12px;border-bottom:0.5px solid #f3f4f6;"><span class="spill-conf-sm">sem mov.</span></td>
+        <td style="color:#9ca3af;font-size:11px;padding:7px 12px;border-bottom:0.5px solid #eaecf0;background:#f2f4f7;">${r.codigo || '—'}</td>
+        <td colspan="6" style="color:#9ca3af;font-style:italic;font-size:11px;padding:7px 12px;border-bottom:0.5px solid #eaecf0;background:#f2f4f7;">${r.empresa || ''} — sem movimento</td>
+        <td style="padding:7px 12px;border-bottom:0.5px solid #eaecf0;background:#f2f4f7;"><span class="spill-conf-sm">sem mov.</span></td>
       </tr>`;
     }
     const dif = r.diferenca != null ? r.diferenca : null;
     const difCor = dif == null ? '' : Math.abs(dif) < 0.05 ? 'color:#166534' : 'color:#991b1b';
     const obs = (r.observacoes || []).join(' | ') || (r.observacao || '');
-    const tdBase = 'padding:7px 12px;border-bottom:0.5px solid #f3f4f6;vertical-align:middle;';
+    const tdBase = 'padding:7px 12px;border-bottom:0.5px solid #eaecf0;vertical-align:middle;background:#f8f9fb;';
+    const tdAlt  = 'padding:7px 12px;border-bottom:0.5px solid #eaecf0;vertical-align:middle;background:#f2f4f7;';
+    const idx = filtrados.indexOf(r);
+    const td = idx % 2 === 0 ? tdBase : tdAlt;
     return `<tr>
-      <td style="${tdBase}color:#9ca3af;font-size:11px;">${r.codigo || '—'}</td>
-      <td style="${tdBase}font-weight:500;font-size:12px;color:#111;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${r.empresa || ''}</td>
-      <td style="${tdBase}color:#6b7280;font-size:11px;">${r.regime || '—'}</td>
-      <td style="${tdBase}text-align:right;font-family:monospace;font-size:11px;color:#374151;">${fmt(r.vl_serv ?? r.valor_prefeitura)}</td>
-      <td style="${tdBase}text-align:right;font-family:monospace;font-size:11px;color:#374151;">${fmt(r.dom_servicos ?? r.valor_dominio)}</td>
-      <td style="${tdBase}text-align:right;font-family:monospace;font-size:11px;${difCor}">${dif != null && Math.abs(dif) >= 0.05 ? fmt(dif) : '—'}</td>
-      <td style="${tdBase}">${badgeConf(r.status)}</td>
-      <td style="${tdBase}font-size:11px;color:#6b7280;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${obs}">${obs || '—'}</td>
+      <td style="${td}color:#9ca3af;font-size:11px;">${r.codigo || '—'}</td>
+      <td style="${td}font-weight:500;font-size:12px;color:#1a1f2e;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${r.empresa || ''}</td>
+      <td style="${td}color:#6b7280;font-size:11px;">${r.regime || '—'}</td>
+      <td style="${td}text-align:right;font-family:monospace;font-size:11px;color:#374151;">${fmt(r.vl_serv ?? r.valor_prefeitura)}</td>
+      <td style="${td}text-align:right;font-family:monospace;font-size:11px;color:#374151;">${fmt(r.dom_servicos ?? r.valor_dominio)}</td>
+      <td style="${td}text-align:right;font-family:monospace;font-size:11px;${difCor}">${dif != null && Math.abs(dif) >= 0.05 ? fmt(dif) : '—'}</td>
+      <td style="${td}">${badgeConf(r.status)}</td>
+      <td style="${td}font-size:11px;color:#6b7280;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${obs}">${obs || '—'}</td>
     </tr>`;
   }).join('');
 }
