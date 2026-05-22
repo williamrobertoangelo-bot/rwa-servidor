@@ -289,7 +289,7 @@ body::before {
 .pmain {
   flex: 1;
   padding: 28px 32px;
-  max-width: 1100px;
+  max-width: 1300px;
   margin: 0 auto;
   width: 100%;
 }
@@ -996,7 +996,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
     <!-- Painel de Conferência -->
     <div id="painel-conferencia" style="display:none;margin-bottom:28px;">
       <div style="background:#f8f9fb;border:0.5px solid #d1d5db;border-radius:12px;overflow:hidden;">
-        <div style="padding:14px 24px;border-bottom:0.5px solid #e2e5ea;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;background:#f8f9fb;">
+        <div style="padding:14px 28px;border-bottom:0.5px solid #e2e5ea;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;background:#f8f9fb;">
           <div>
             <span style="font-size:14px;font-weight:500;color:#1a1f2e;" id="conf-titulo">Conferência</span>
             <span style="font-size:11px;color:#6b7280;display:block;margin-top:2px;" id="conf-gerado-em"></span>
@@ -1024,7 +1024,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
             <div style="font-size:20px;font-weight:500;color:#92400e;" id="conf-pend">—</div>
           </div>
         </div>
-        <div style="padding:10px 24px;border-bottom:0.5px solid #e2e5ea;display:flex;gap:6px;flex-wrap:wrap;background:#f8f9fb;">
+        <div style="padding:10px 28px;border-bottom:0.5px solid #e2e5ea;display:flex;gap:6px;flex-wrap:wrap;background:#f8f9fb;">
           <button class="conf-fbtn active" onclick="filtrarConf('todos')">Todos</button>
           <button class="conf-fbtn" onclick="filtrarConf('OK')">Consistentes</button>
           <button class="conf-fbtn" onclick="filtrarConf('DIVERGENTE')">Divergentes</button>
@@ -1035,9 +1035,9 @@ tr:hover td { background: rgba(255,255,255,0.02); }
         <div style="overflow-x:auto;background:#f8f9fb;">
           <table style="width:100%;border-collapse:collapse;font-size:12px;table-layout:fixed;">
             <colgroup>
-              <col style="width:48px"><col style="width:190px"><col style="width:110px">
-              <col style="width:95px"><col style="width:95px"><col style="width:68px">
-              <col style="width:80px"><col>
+              <col style="width:52px"><col style="width:200px"><col style="width:115px">
+              <col style="width:110px"><col style="width:110px"><col style="width:72px">
+              <col style="width:90px"><col>
             </colgroup>
             <thead>
               <tr id="conf-thead"></tr>
@@ -1300,7 +1300,7 @@ function renderizarConferencia(dados) {
     <th style="${thS}">Cód.</th>
     <th style="${thS}">Empresa</th>
     <th style="${thS}">Regime</th>
-    <th style="${thS}text-align:right">${colVal}</th>
+    <th style="${thS}text-align:right;white-space:nowrap">${colVal}</th>
     <th style="${thS}text-align:right">Domínio</th>
     <th style="${thS}text-align:right">Dif.</th>
     <th style="${thS}text-align:center">Status</th>
@@ -1336,9 +1336,15 @@ function renderizarConferencia(dados) {
   const sem_mov    = (dados.sem_movimento || []).map(r => ({...r, _sem_mov: true}));
   const todos      = [...resultados, ...sem_mov];
 
+  const _statusMatch = (r, f) => {
+    const s = (r.status || '').toUpperCase();
+    if (f === 'OK') return s === 'OK' || s === 'CONSISTENTE';
+    if (f === 'PARCIAL') return s === 'PARCIAL' || s === 'CONSISTENTE PARCIAL';
+    return s === f;
+  };
   const filtrados = _confFiltro === 'todos'   ? todos
     : _confFiltro === 'SEM_MOV'               ? sem_mov
-    : resultados.filter(r => (r.status || '').toUpperCase() === _confFiltro);
+    : resultados.filter(r => _statusMatch(r, _confFiltro));
 
   if (filtrados.length === 0) {
     document.getElementById('conf-tbody').innerHTML =
@@ -1369,7 +1375,7 @@ function renderizarConferencia(dados) {
       <td style="${td}text-align:right;font-family:monospace;font-size:11px;color:#374151;">${fmt(getValDom(r))}</td>
       <td style="${td}text-align:right;font-family:monospace;font-size:11px;${difCor}">${dif != null && Math.abs(dif) >= 0.05 ? fmt(dif) : '—'}</td>
       <td style="${td}text-align:center;">${badgeConf(r.status)}</td>
-      <td style="${td}font-size:11px;color:#6b7280;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${obs}">${obs || '—'}</td>
+      <td style="${td}font-size:11px;color:#6b7280;min-width:200px;max-width:340px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${obs}">${obs || '—'}</td>
     </tr>`;
   }).join('');
 }
