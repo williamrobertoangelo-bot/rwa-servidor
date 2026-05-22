@@ -1064,13 +1064,9 @@ def _main_corpo():
 
         _cred_path = Path(os.environ.get("LOCALAPPDATA", "")) / "RWA_AUTOMACOES" / "config" / "credenciais.json"
         _cred = _json_envio.loads(_cred_path.read_text("utf-8")) if _cred_path.exists() else {}
-        _paths_path = Path(os.environ.get("LOCALAPPDATA", "")) / "RWA_AUTOMACOES" / "config" / "paths.json"
-        _paths = _json_envio.loads(_paths_path.read_text("utf-8")) if _paths_path.exists() else {}
-
         _competencia_envio = _competencia_log or ""
         _payload = _json_envio.dumps({
             "email":        _cred.get("email", ""),
-            "fingerprint":  _paths.get("fingerprint", ""),
             "modulo":       "conferencia_sao_luis",
             "competencia":  _competencia_envio,
             "resultados":   resultados,

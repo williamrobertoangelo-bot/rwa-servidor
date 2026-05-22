@@ -304,11 +304,10 @@ def auth_validar_token_launcher(req: ValidarTokenLauncherRequest):
 # ── Conferência ─────────────────────────────────────────────────────
 
 class ConferenciaRequest(BaseModel):
-    email:        str
-    fingerprint:  str
-    modulo:       str
-    competencia:  str
-    resultados:   list
+    email:         str
+    modulo:        str
+    competencia:   str
+    resultados:    list
     sem_movimento: list
 
 
@@ -317,11 +316,6 @@ def agente_conferencia(req: ConferenciaRequest):
     empresa = database.buscar_empresa(req.email)
     if not empresa:
         return {"ok": False, "erro": "Empresa não encontrada."}
-
-    maquinas = database.listar_maquinas(empresa["id"])
-    fps = [m["fingerprint"] for m in maquinas]
-    if req.fingerprint not in fps:
-        return {"ok": False, "erro": "Máquina não autorizada."}
 
     database.salvar_conferencia(
         empresa["id"], req.modulo, req.competencia,
