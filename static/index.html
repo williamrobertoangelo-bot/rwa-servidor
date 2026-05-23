@@ -823,6 +823,51 @@ tr:hover td { background: rgba(255,255,255,0.02); }
   </div>
 </div>
 
+<!-- ══ TELA PRIMEIRO ACESSO ══════════════════════════════════════════ -->
+<div id="tela-primeiro-acesso" style="display:none;position:relative;z-index:1;min-height:100vh;align-items:center;justify-content:center;padding:20px;">
+  <div class="login-card">
+    <div class="logo-bloco">
+      <svg width="72" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-bottom:10px">
+        <circle cx="36" cy="36" r="35" fill="#1e1e2e" stroke="rgba(99,102,241,0.4)" stroke-width="1.5"/>
+        <rect x="20" y="26" width="32" height="5" rx="2.5" fill="#4f46e5"/>
+        <rect x="20" y="34" width="32" height="5" rx="2.5" fill="rgba(99,102,241,0.6)"/>
+        <rect x="20" y="42" width="32" height="5" rx="2.5" fill="rgba(99,102,241,0.35)"/>
+      </svg>
+      <div class="logo-rwa">RW<span>A</span></div>
+      <span class="logo-nome">Tecnologia Operacional</span>
+      <span class="logo-tag">Estabilidade. Resultado. Conformidade.</span>
+    </div>
+
+    <div style="font-size:10px;font-family:var(--mono);color:var(--indigo3);text-transform:uppercase;letter-spacing:.12em;text-align:center;margin-bottom:20px;padding:6px 14px;background:rgba(79,70,229,.08);border:1px solid rgba(79,70,229,.2);border-radius:20px;">Primeiro acesso — Crie sua senha</div>
+
+    <label class="form-label">Nova senha</label>
+    <div class="input-wrap">
+      <svg class="iico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e8edf5" stroke-width="1.8" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+      <input type="password" id="pa-senha" placeholder="Crie uma senha">
+    </div>
+
+    <label class="form-label">Confirmar senha</label>
+    <div class="input-wrap">
+      <svg class="iico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e8edf5" stroke-width="1.8" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+      <input type="password" id="pa-confirmar" placeholder="Repita a senha">
+    </div>
+
+    <button class="btn-login" onclick="ativarAcesso()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+      Ativar acesso
+    </button>
+
+    <div id="pa-erro" class="msg-erro-login"></div>
+
+    <div style="text-align:center;margin-top:16px;font-size:12px;color:var(--muted);">Já tem senha? <a href="#" onclick="mostrarLogin()" style="color:var(--indigo3);text-decoration:none;">Fazer login</a></div>
+
+    <div class="login-footer">
+      Ambiente seguro e criptografado<br>
+      RWA Soluções © 2026 — Todos os direitos reservados
+    </div>
+  </div>
+</div>
+
 <!-- ══ TELA PAINEL ══════════════════════════════════════════════════ -->
 <div id="tela-painel">
 
@@ -1679,6 +1724,64 @@ if (s) {
     _sessao = JSON.parse(s);
     abrirPainel(_sessao);
   } catch { localStorage.removeItem('rwa_sessao'); }
+}
+
+// ── Primeiro acesso via URL ─────────────────────────────────────────
+let _paEmail = '';
+
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  const emailParam = params.get('email');
+  if (emailParam && !s) {
+    _paEmail = emailParam;
+    document.getElementById('tela-login').style.display = 'none';
+    document.getElementById('tela-primeiro-acesso').style.display = 'flex';
+  }
+})();
+
+function mostrarLogin() {
+  document.getElementById('tela-primeiro-acesso').style.display = 'none';
+  document.getElementById('tela-login').style.display = 'flex';
+}
+
+async function ativarAcesso() {
+  const senha     = document.getElementById('pa-senha').value.trim();
+  const confirmar = document.getElementById('pa-confirmar').value.trim();
+  const erro      = document.getElementById('pa-erro');
+  erro.style.display = 'none';
+
+  if (!senha) {
+    erro.textContent = 'Digite uma senha.';
+    erro.style.display = 'block';
+    return;
+  }
+  if (senha !== confirmar) {
+    erro.textContent = 'As senhas não coincidem.';
+    erro.style.display = 'block';
+    return;
+  }
+
+  try {
+    const r = await fetch('/auth/primeiro-acesso', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: _paEmail, senha })
+    });
+    const d = await r.json();
+    if (d.status === 'ok') {
+      _sessao = { cliente: d.cliente, vencimento: d.vencimento, email: d.email, documento: d.documento || '', telefone: d.telefone || '' };
+      localStorage.setItem('rwa_sessao', JSON.stringify(_sessao));
+      document.getElementById('tela-primeiro-acesso').style.display = 'none';
+      history.replaceState({}, '', '/');
+      abrirPainel(_sessao);
+    } else {
+      erro.textContent = d.mensagem || 'Erro ao ativar acesso.';
+      erro.style.display = 'block';
+    }
+  } catch {
+    erro.textContent = 'Erro de conexão com o servidor.';
+    erro.style.display = 'block';
+  }
 }
 </script>
 </body>
