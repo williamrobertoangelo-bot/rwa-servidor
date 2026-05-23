@@ -772,6 +772,94 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 </head>
 <body>
 
+<body>
+
+<!-- ══ TELA ADMIN ═══════════════════════════════════════════════════ -->
+<div id="tela-admin" style="display:none;position:fixed;inset:0;z-index:999;background:var(--bg);align-items:center;justify-content:center;padding:20px;">
+  <div class="login-card" style="max-width:500px;">
+
+    <!-- Login admin -->
+    <div id="admin-login-bloco">
+      <div class="logo-bloco">
+        <svg width="52" height="52" viewBox="0 0 72 72" fill="none" style="margin-bottom:10px;display:block;margin-left:auto;margin-right:auto">
+          <circle cx="36" cy="36" r="35" fill="#1e1e2e" stroke="rgba(99,102,241,0.4)" stroke-width="1.5"/>
+          <rect x="20" y="26" width="32" height="5" rx="2.5" fill="#4f46e5"/>
+          <rect x="20" y="34" width="32" height="5" rx="2.5" fill="rgba(99,102,241,0.6)"/>
+          <rect x="20" y="42" width="32" height="5" rx="2.5" fill="rgba(99,102,241,0.35)"/>
+        </svg>
+        <div class="logo-rwa">RW<span>A</span></div>
+        <span class="logo-nome">Tecnologia Operacional</span>
+        <span class="logo-tag" style="margin-bottom:24px">Painel Administrativo</span>
+      </div>
+      <label class="form-label">E-mail admin</label>
+      <div class="input-wrap">
+        <svg class="iico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e8edf5" stroke-width="1.8" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <input type="email" id="adm-email" placeholder="Email de admin">
+      </div>
+      <label class="form-label">Senha</label>
+      <div class="input-wrap">
+        <svg class="iico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e8edf5" stroke-width="1.8" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+        <input type="password" id="adm-senha" placeholder="Senha de admin">
+      </div>
+      <button class="btn-login" onclick="adminLogin()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+        Entrar
+      </button>
+      <div id="adm-login-erro" class="msg-erro-login"></div>
+    </div>
+
+    <!-- Formulário cadastro cliente -->
+    <div id="admin-form-bloco" style="display:none">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+        <div>
+          <div class="logo-rwa" style="font-size:22px;letter-spacing:3px;text-align:left">RW<span>A</span></div>
+          <div style="font-size:10px;font-family:var(--mono);color:var(--indigo3);text-transform:uppercase;letter-spacing:.15em">Painel Administrativo</div>
+        </div>
+        <button onclick="adminSair()" style="font-size:12px;color:var(--muted);background:none;border:1px solid var(--border);padding:5px 14px;border-radius:6px;cursor:pointer;font-family:var(--sans)">Sair</button>
+      </div>
+
+      <div style="font-size:10px;font-family:var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:.12em;margin-bottom:14px;border-top:1px solid var(--border);padding-top:16px;">Cadastrar novo cliente</div>
+
+      <label class="form-label">Nome</label>
+      <div class="input-wrap" style="margin-bottom:12px">
+        <input type="text" id="adm-nome" placeholder="Nome do escritório ou responsável" style="width:100%;padding:12px 14px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:var(--sans);font-size:13px;outline:none;">
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div>
+          <label class="form-label">CNPJ/CPF</label>
+          <div class="input-wrap" style="margin-bottom:12px">
+            <input type="text" id="adm-doc" placeholder="00.000.000/0001-00" style="width:100%;padding:12px 14px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:var(--sans);font-size:13px;outline:none;">
+          </div>
+        </div>
+        <div>
+          <label class="form-label">Telefone</label>
+          <div class="input-wrap" style="margin-bottom:12px">
+            <input type="text" id="adm-tel" placeholder="(00) 00000-0000" style="width:100%;padding:12px 14px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:var(--sans);font-size:13px;outline:none;">
+          </div>
+        </div>
+      </div>
+
+      <label class="form-label">E-mail do cliente</label>
+      <div class="input-wrap" style="margin-bottom:12px">
+        <input type="email" id="adm-client-email" placeholder="email@cliente.com.br" style="width:100%;padding:12px 14px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:var(--sans);font-size:13px;outline:none;">
+      </div>
+
+      <label class="form-label">Vencimento da licença</label>
+      <div class="input-wrap" style="margin-bottom:4px">
+        <input type="date" id="adm-venc" style="width:100%;padding:12px 14px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:var(--sans);font-size:13px;outline:none;">
+      </div>
+
+      <button class="btn-login" style="margin-top:16px" onclick="adminCadastrar()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Cadastrar e enviar email
+      </button>
+      <div id="adm-form-msg" class="msg-erro-login" style="margin-top:12px"></div>
+    </div>
+
+  </div>
+</div>
+
 <!-- ══ TELA LOGIN ══════════════════════════════════════════════════ -->
 <div id="tela-login">
   <div class="login-card">
@@ -1726,7 +1814,89 @@ if (s) {
   } catch { localStorage.removeItem('rwa_sessao'); }
 }
 
-// ── Primeiro acesso via URL ─────────────────────────────────────────
+// ── Admin ───────────────────────────────────────────────────────────
+(function() {
+  if (window.location.pathname === '/admin') {
+    document.getElementById('tela-login').style.display = 'none';
+    document.getElementById('tela-admin').style.display = 'flex';
+  }
+})();
+
+async function adminLogin() {
+  const email = document.getElementById('adm-email').value.trim();
+  const senha = document.getElementById('adm-senha').value.trim();
+  const erro  = document.getElementById('adm-login-erro');
+  erro.style.display = 'none';
+  try {
+    const r = await fetch('/admin/login', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({email, senha})
+    });
+    const d = await r.json();
+    if (d.ok) {
+      document.getElementById('admin-login-bloco').style.display = 'none';
+      document.getElementById('admin-form-bloco').style.display = 'block';
+    } else {
+      erro.textContent = d.erro || 'Credenciais inválidas.';
+      erro.style.display = 'block';
+    }
+  } catch {
+    erro.textContent = 'Erro de conexão.';
+    erro.style.display = 'block';
+  }
+}
+
+function adminSair() {
+  document.getElementById('admin-form-bloco').style.display = 'none';
+  document.getElementById('admin-login-bloco').style.display = 'block';
+  document.getElementById('adm-email').value = '';
+  document.getElementById('adm-senha').value = '';
+}
+
+async function adminCadastrar() {
+  const nome  = document.getElementById('adm-nome').value.trim();
+  const doc   = document.getElementById('adm-doc').value.trim();
+  const tel   = document.getElementById('adm-tel').value.trim();
+  const email = document.getElementById('adm-client-email').value.trim();
+  const venc  = document.getElementById('adm-venc').value.trim();
+  const msg   = document.getElementById('adm-form-msg');
+  msg.style.display = 'none';
+
+  if (!nome || !email || !venc) {
+    msg.textContent = 'Nome, e-mail e vencimento são obrigatórios.';
+    msg.className = 'msg-erro-login';
+    msg.style.display = 'block';
+    return;
+  }
+
+  try {
+    const r = await fetch('/admin/cadastrar-empresa', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({nome, documento: doc, telefone: tel, email, vencimento: venc})
+    });
+    const d = await r.json();
+    if (d.ok) {
+      msg.textContent = '✓ Cliente cadastrado e email enviado.';
+      msg.className = 'msg-erro-login';
+      msg.style.cssText = 'display:block;background:rgba(34,197,94,0.1);border-color:rgba(34,197,94,0.3);color:#22c55e;margin-top:12px;';
+      document.getElementById('adm-nome').value = '';
+      document.getElementById('adm-doc').value = '';
+      document.getElementById('adm-tel').value = '';
+      document.getElementById('adm-client-email').value = '';
+      document.getElementById('adm-venc').value = '';
+    } else {
+      msg.textContent = d.erro || 'Erro ao cadastrar.';
+      msg.className = 'msg-erro-login';
+      msg.style.display = 'block';
+    }
+  } catch {
+    msg.textContent = 'Erro de conexão.';
+    msg.className = 'msg-erro-login';
+    msg.style.display = 'block';
+  }
+}
 let _paEmail = '';
 
 (function() {

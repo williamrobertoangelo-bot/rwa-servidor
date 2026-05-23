@@ -368,6 +368,22 @@ class CadastrarEmpresaRequest(BaseModel):
     vencimento: str
 
 
+_ADMIN_EMAIL = "rwaautomacoes@gmail.com"
+_ADMIN_SENHA = "Rwa001130@"
+
+
+class AdminLoginRequest(BaseModel):
+    email: str
+    senha: str
+
+
+@app.post("/admin/login")
+def admin_login(req: AdminLoginRequest):
+    if req.email != _ADMIN_EMAIL or req.senha != _ADMIN_SENHA:
+        return {"ok": False, "erro": "Credenciais inválidas."}
+    return {"ok": True}
+
+
 @app.post("/admin/cadastrar-empresa")
 def admin_cadastrar_empresa(req: CadastrarEmpresaRequest):
     import secrets
