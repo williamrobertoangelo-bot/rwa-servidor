@@ -391,14 +391,18 @@ def admin_cadastrar_empresa(req: CadastrarEmpresaRequest):
     try:
         database.cadastrar_empresa(req.nome, req.email, None, req.vencimento, chave, req.documento, req.telefone)
     except Exception as e:
-        return {"ok": False, "erro": str(e)}
+        err = str(e)
+        if "unique" in err.lower() or "already exists" in err.lower() or "duplicate" in err.lower():
+            return {"ok": False, "erro": "Este e-mail já está cadastrado no sistema."}
+        return {"ok": False, "erro": "Erro ao cadastrar. Verifique os dados e tente novamente."}
     empresa = database.buscar_empresa_sem_senha(req.email)
     if empresa:
         try:
+            print(f"[EMAIL] Disparando email para {req.email}")
             _enviar_email_cadastro_senha(empresa)
         except Exception as e:
             print(f"[EMAIL] Erro ao enviar cadastro senha: {e}")
-    return {"ok": True, "mensagem": f"Empresa {req.nome} cadastrada e email enviado."}
+    return {"ok": True, "mensagem": f"Cliente {req.nome} cadastrado e email enviado."}
 
 
 @app.post("/portal/executar")
