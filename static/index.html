@@ -850,11 +850,12 @@ tr:hover td { background: rgba(255,255,255,0.02); }
         <input type="date" id="adm-venc" style="width:100%;padding:12px 14px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:var(--sans);font-size:13px;outline:none;">
       </div>
 
-      <button class="btn-login" style="margin-top:16px" onclick="adminCadastrar()">
+      <div id="adm-form-msg" class="msg-erro-login" style="margin-top:12px;margin-bottom:4px"></div>
+
+      <button class="btn-login" style="margin-top:8px" onclick="adminCadastrar()">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         Cadastrar e enviar email
       </button>
-      <div id="adm-form-msg" class="msg-erro-login" style="margin-top:12px"></div>
     </div>
 
   </div>
@@ -1880,7 +1881,8 @@ async function adminCadastrar() {
     if (d.ok) {
       msg.textContent = '✓ Cliente cadastrado e email enviado.';
       msg.className = 'msg-erro-login';
-      msg.style.cssText = 'display:block;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);color:#22c55e;margin-top:12px;padding:10px 14px;border-radius:8px;font-size:13px;';
+      msg.style.cssText = 'display:block;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);color:#22c55e;margin-top:12px;margin-bottom:4px;padding:10px 14px;border-radius:8px;font-size:13px;';
+      msg.scrollIntoView({behavior:'smooth', block:'center'});
       document.getElementById('adm-nome').value = '';
       document.getElementById('adm-doc').value = '';
       document.getElementById('adm-tel').value = '';

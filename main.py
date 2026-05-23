@@ -99,7 +99,7 @@ def _enviar_email_cadastro_senha(empresa: dict):
     try:
         import urllib.request, json as _json
         payload = _json.dumps({
-            "from": "RWA Soluções <onboarding@resend.dev>",
+            "from": "RWA Soluções <noreply@rwasolucoes.com.br>",
             "to": [email],
             "subject": "RWA Soluções — Cadastro de senha",
             "html": html,
