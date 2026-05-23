@@ -38,15 +38,15 @@ def main():
         if op == "1":
             print("\n── CADASTRAR EMPRESA ──")
             nome       = input("Nome da empresa         : ").strip()
+            documento  = input("CNPJ/CPF                : ").strip()
             email      = input("Email de acesso         : ").strip()
-            senha      = input("Senha                   : ").strip()
+            telefone   = input("Telefone                : ").strip()
             vencimento = input("Vencimento (YYYY-MM-DD) : ").strip()
             chave      = gerar_chave_aes()
-            senha_hash = auth.hash_senha(senha)
             print(f"\n  Chave AES gerada: {chave}")
             ok = input("  Confirmar? (s/n): ").strip().lower()
             if ok == "s":
-                database.cadastrar_empresa(nome, email, senha_hash, vencimento, chave)
+                database.cadastrar_empresa(nome, email, None, vencimento, chave, documento, telefone)
                 print("  ✓ Empresa cadastrada.")
 
         elif op == "2":

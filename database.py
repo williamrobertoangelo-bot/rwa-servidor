@@ -21,11 +21,13 @@ def inicializar_banco():
                     id          SERIAL PRIMARY KEY,
                     nome        TEXT    NOT NULL,
                     email       TEXT    NOT NULL UNIQUE,
-                    senha_hash  TEXT    NOT NULL,
+                    senha_hash  TEXT,
                     vencimento  TEXT    NOT NULL,
                     chave_aes   TEXT    NOT NULL,
                     ativa       INTEGER NOT NULL DEFAULT 1,
-                    criado_em   TEXT    NOT NULL DEFAULT ((NOW() AT TIME ZONE 'America/Sao_Paulo')::TEXT)
+                    criado_em   TEXT    NOT NULL DEFAULT ((NOW() AT TIME ZONE 'America/Sao_Paulo')::TEXT),
+                    documento   TEXT    DEFAULT '',
+                    telefone    TEXT    DEFAULT ''
                 );
                 CREATE TABLE IF NOT EXISTS maquinas (
                     id          SERIAL PRIMARY KEY,
@@ -47,12 +49,12 @@ def inicializar_banco():
         con.commit()
 
 
-def cadastrar_empresa(nome, email, senha_hash, vencimento, chave_aes):
+def cadastrar_empresa(nome, email, senha_hash, vencimento, chave_aes, documento="", telefone=""):
     with _conn() as con:
         with con.cursor() as cur:
             cur.execute(
-                "INSERT INTO empresas (nome, email, senha_hash, vencimento, chave_aes) VALUES (%s,%s,%s,%s,%s)",
-                (nome, email, senha_hash, vencimento, chave_aes)
+                "INSERT INTO empresas (nome, email, senha_hash, vencimento, chave_aes, documento, telefone) VALUES (%s,%s,%s,%s,%s,%s,%s)",
+                (nome, email, senha_hash, vencimento, chave_aes, documento, telefone)
             )
         con.commit()
 

@@ -26,6 +26,9 @@ import pystray
 from PIL import Image, ImageDraw
 import urllib.request
 import urllib.error
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("blue")
@@ -92,6 +95,71 @@ _EMAIL_SESSAO  = ""
 _NOME_CLIENTE  = ""
 _FINGERPRINT   = ""
 _loop_ativo    = False
+
+
+# ─────────────────────────────────────────────────────────────────────
+# EMAIL DE SEGURANÇA
+# ─────────────────────────────────────────────────────────────────────
+
+def _enviar_email_tentativa(email_cliente: str):
+    """Dispara email de tentativa não autorizada."""
+    def _serial():
+        try:
+            r = subprocess.check_output("wmic diskdrive get serialnumber", shell=True, stderr=subprocess.DEVNULL)
+            ls = [l.strip() for l in r.decode(errors="ignore").splitlines()
+                  if l.strip() and "SerialNumber" not in l]
+            return ls[0] if ls else "N/A"
+        except Exception:
+            return "N/A"
+
+    def _uuid_bios():
+        try:
+            r = subprocess.check_output("wmic csproduct get uuid", shell=True, stderr=subprocess.DEVNULL)
+            ls = [l.strip() for l in r.decode(errors="ignore").splitlines()
+                  if l.strip() and "UUID" not in l]
+            return ls[0] if ls else "N/A"
+        except Exception:
+            return "N/A"
+
+    def _ip_publico():
+        try:
+            with urllib.request.urlopen("https://api.ipify.org", timeout=5) as r:
+                return r.read().decode().strip()
+        except Exception:
+            return "N/A"
+
+    mac_int = uuid.getnode()
+    mac_str = ":".join(f"{(mac_int >> (8*i)) & 0xff:02X}" for i in reversed(range(6)))
+
+    corpo = f"""
+TENTATIVA NAO AUTORIZADA — RWA Tecnologia Operacional
+======================================================
+
+EMAIL TENTADO   : {email_cliente}
+DATA/HORA       : {datetime.now().strftime("%d/%m/%Y %H:%M:%S")}
+
+DADOS DA MÁQUINA:
+NOME            : {socket.gethostname()}
+USUÁRIO         : {getpass.getuser()}
+SISTEMA         : {platform.platform()}
+IP PÚBLICO      : {_ip_publico()}
+MAC ADDRESS     : {mac_str}
+SERIAL DISCO    : {_serial()}
+UUID BIOS       : {_uuid_bios()}
+FINGERPRINT     : {_FINGERPRINT}
+"""
+    try:
+        msg = MIMEMultipart()
+        msg["Subject"] = f"TENTATIVA NAO AUTORIZADA — {email_cliente}"
+        msg["From"]    = "rwaautomacoes@gmail.com"
+        msg["To"]      = "rwaautomacoes@gmail.com"
+        msg.attach(MIMEText(corpo, "plain", "utf-8"))
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as srv:
+            srv.login("rwaautomacoes@gmail.com", "zdqjiqwpmchrbcry")
+            srv.sendmail("rwaautomacoes@gmail.com", "rwaautomacoes@gmail.com", msg.as_string())
+    except Exception:
+        pass
+
 
 
 # ─────────────────────────────────────────────────────────────────────
@@ -260,7 +328,14 @@ def _rodape(win, texto="RWA Tecnologia Operacional"):
 def _logo_bloco(parent, bg=C_BG, size_rwa=30, size_sub=10, size_tag=9):
     frame = tk.Frame(parent, bg=bg)
     frame.pack(pady=(20, 4))
-    # RWA com A em índigo
+    # Circulo com 3 barras
+    canvas = tk.Canvas(frame, width=56, height=56, bg=bg, highlightthickness=0)
+    canvas.pack(pady=(0, 6))
+    canvas.create_oval(2, 2, 54, 54, fill="#1e1e2e", outline="#4f46e5", width=1)
+    canvas.create_rectangle(14, 19, 42, 24, fill="#4f46e5", outline="")
+    canvas.create_rectangle(14, 27, 42, 32, fill="#6366f1", outline="")
+    canvas.create_rectangle(14, 35, 42, 40, fill="#3730a3", outline="")
+    # RWA com A em indigo
     linha = tk.Frame(frame, bg=bg)
     linha.pack()
     tk.Label(linha, text="RW", font=("Arial", size_rwa, "bold"),
@@ -336,7 +411,7 @@ def _tela_login(email_salvo: str = ""):
     win.resizable(False, False)
     win.attributes("-topmost", True)
     win.configure(bg=C_BG)
-    _centralizar(win, 400, 440)
+    _centralizar(win, 400, 500)
 
     _barra_topo(win)
     _logo_bloco(win, size_rwa=30, size_sub=10, size_tag=9)
@@ -1154,10 +1229,7 @@ def _tela_bloqueio(mensagem: str = ""):
     win.resizable(False, False)
     win.attributes("-topmost", True)
     win.configure(bg=C_BG)
-    _centralizar(win, 400, 260)
-    _barra_topo(win)
-    _logo_bloco(win, size_rwa=24, size_sub=9, size_tag=8)
-    tk.Frame(win, bg=C_SEP, height=1).pack(fill="x", padx=36, pady=(12, 0))
+    _centralizar(win, 400, 320)
     tk.Label(win,
              text=mensagem or "Este programa deve ser aberto pelo portal.",
              font=("Arial", 10), bg=C_BG, fg=C_TEXT2,
@@ -1194,7 +1266,7 @@ def _tela_primeiro_acesso():
     win.resizable(False, False)
     win.attributes("-topmost", True)
     win.configure(bg=C_BG)
-    _centralizar(win, 400, 380)
+    _centralizar(win, 400, 480)
     _barra_topo(win)
     _logo_bloco(win, size_rwa=24, size_sub=9, size_tag=8)
     tk.Frame(win, bg=C_SEP, height=1).pack(fill="x", padx=36, pady=(12, 0))
@@ -1238,7 +1310,11 @@ def _tela_primeiro_acesso():
         })
 
         if resp.get("status") != "ok":
-            lbl_status.config(text=resp.get("mensagem", "Credenciais inválidas."), fg=C_RED)
+            mensagem = resp.get("mensagem", "Credenciais inválidas.")
+            if "vinculada" in mensagem.lower():
+                mensagem = "Licença não autorizada a esta máquina.\nEntre em contato com RWA Tecnologia."
+                threading.Thread(target=_enviar_email_tentativa, args=(email.lower(),), daemon=True).start()
+            lbl_status.config(text=mensagem, fg=C_RED)
             return
 
         # Salva credenciais
@@ -1273,7 +1349,7 @@ def _tela_primeiro_acesso():
         fim.resizable(False, False)
         fim.attributes("-topmost", True)
         fim.configure(bg=C_BG)
-        _centralizar(fim, 400, 260)
+        _centralizar(fim, 400, 360)
         _barra_topo(fim)
         _logo_bloco(fim, size_rwa=24, size_sub=9, size_tag=8)
         tk.Frame(fim, bg=C_SEP, height=1).pack(fill="x", padx=36, pady=(12, 0))
