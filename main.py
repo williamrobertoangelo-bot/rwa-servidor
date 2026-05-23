@@ -113,6 +113,8 @@ def login(req: LoginRequest):
         "cliente":    empresa["nome"],
         "vencimento": empresa["vencimento"],
         "email":      req.email,
+        "documento":  empresa.get("documento", ""),
+        "telefone":   empresa.get("telefone", ""),
     }
 
 
