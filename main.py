@@ -112,6 +112,9 @@ def _enviar_email_cadastro_senha(empresa: dict):
         )
         with urllib.request.urlopen(req) as resp:
             print(f"[EMAIL] Enviado via Resend para {email} — status {resp.status}")
+    except urllib.error.HTTPError as e:
+        corpo = e.read().decode("utf-8")
+        print(f"[EMAIL] Erro Resend {e.code}: {corpo}")
     except Exception as e:
         print(f"[EMAIL] Erro Resend: {e}")
 
