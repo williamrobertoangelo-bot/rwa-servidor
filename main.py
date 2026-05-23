@@ -29,9 +29,9 @@ def _formatar_documento(doc: str) -> str:
 
 
 def _enviar_email_cadastro_senha(empresa: dict):
-    conta  = os.environ.get("RWA_EMAIL_CONTA", "").strip()
-    senha  = os.environ.get("RWA_EMAIL_SENHA_APP", "").strip()
-    if not conta or not senha:
+    api_key = os.environ.get("RESEND_API_KEY", "").strip()
+    if not api_key:
+        print("[EMAIL] RESEND_API_KEY não configurada.")
         return
 
     nome      = empresa.get("nome", "—")
@@ -47,6 +47,73 @@ def _enviar_email_cadastro_senha(empresa: dict):
 
     from urllib.parse import quote
     link = f"https://rwasolucoes.com.br/primeiro-acesso?email={quote(email)}"
+
+    html = f"""<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta charset="utf-8"/></head>
+<body style="margin:0;padding:0;background-color:#f4f4f4;">
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#f4f4f4;padding:20px 0;">
+<tr><td align="center">
+<table width="480" cellpadding="0" cellspacing="0" border="0" style="max-width:480px;background-color:#ffffff;border:1px solid #e0e0e0;border-radius:6px;overflow:hidden;">
+<tr><td style="background-color:#0F1B2D;padding:20px 18px;">
+  <div style="margin-bottom:14px;">
+    <table cellpadding="0" cellspacing="0" border="0"><tr>
+      <td style="background:#1e1e2e;border:1px solid rgba(99,102,241,0.4);border-radius:50%;width:38px;height:38px;text-align:center;vertical-align:middle;">
+        <span style="font-size:18px;font-weight:900;color:#4f46e5;letter-spacing:2px;">&#8801;</span>
+      </td>
+    </tr></table>
+  </div>
+  <div style="font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#7FB3E0;letter-spacing:1.5px;font-weight:bold;margin-bottom:8px;">RWA SOLUÇÕES</div>
+  <div style="display:inline-block;background:#1a3a6b;color:#7FB3E0;font-family:Arial,Helvetica,sans-serif;font-size:10px;padding:3px 8px;border-radius:3px;font-weight:bold;letter-spacing:0.5px;margin-bottom:10px;">CADASTRO DE SENHA</div>
+  <div style="font-family:Arial,Helvetica,sans-serif;font-size:17px;color:#FFFFFF;font-weight:bold;line-height:1.3;margin-top:4px;">Cadastro de senha</div>
+  <div style="font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#B5D4F4;margin-top:2px;">Ative seu acesso à plataforma RWA</div>
+</td></tr>
+<tr><td style="padding:18px;">
+  <div style="font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#1a1a1a;line-height:1.6;margin-bottom:4px;">Olá, <strong>{nome}</strong>. Sua licença foi aprovada. Para ativação, realize o cadastro de sua senha.</div>
+  <div style="font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#6B6B6B;margin-bottom:16px;">(Senha simples ou com caracteres especiais.)</div>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
+    <tr><td style="padding:14px 0 4px 0;font-family:Arial,Helvetica,sans-serif;font-size:10px;color:#6B6B6B;letter-spacing:1px;text-transform:uppercase;font-weight:bold;">Dados do registro</td></tr>
+    <tr><td style="padding:0;">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
+        <tr><td style="padding:8px 0;border-bottom:1px solid #EFEFEF;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#6B6B6B;width:55%;">Titular</td><td style="padding:8px 0;border-bottom:1px solid #EFEFEF;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#1a1a1a;text-align:right;font-weight:bold;">{nome}</td></tr>
+        <tr><td style="padding:8px 0;border-bottom:1px solid #EFEFEF;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#6B6B6B;">CNPJ/CPF</td><td style="padding:8px 0;border-bottom:1px solid #EFEFEF;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#1a1a1a;text-align:right;font-weight:bold;">{documento}</td></tr>
+        <tr><td style="padding:8px 0;border-bottom:1px solid #EFEFEF;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#6B6B6B;">E-mail</td><td style="padding:8px 0;border-bottom:1px solid #EFEFEF;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#1a1a1a;text-align:right;font-weight:bold;">{email}</td></tr>
+        <tr><td style="padding:8px 0;border-bottom:1px solid #EFEFEF;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#6B6B6B;">Telefone</td><td style="padding:8px 0;border-bottom:1px solid #EFEFEF;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#1a1a1a;text-align:right;font-weight:bold;">{telefone}</td></tr>
+        <tr><td style="padding:8px 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#6B6B6B;">Válida até</td><td style="padding:8px 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#1a1a1a;text-align:right;font-weight:bold;">{venc_fmt}</td></tr>
+      </table>
+    </td></tr>
+  </table>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:20px;border-collapse:collapse;">
+    <tr><td align="center"><a href="{link}" style="display:inline-block;background:#4f46e5;color:#fff;font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:bold;padding:13px 32px;border-radius:8px;text-decoration:none;letter-spacing:0.02em;">Cadastrar minha senha &#8594;</a></td></tr>
+  </table>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:14px;border-collapse:collapse;">
+    <tr><td style="background-color:#E6EEFF;border-left:3px solid #4f46e5;padding:10px 12px;font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#1a1a1a;line-height:1.5;">Este link é pessoal e intransferível. Após cadastrar sua senha, acesse sempre por <strong>rwasolucoes.com.br</strong></td></tr>
+  </table>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:16px;border-top:1px solid #EFEFEF;">
+    <tr><td style="padding-top:10px;font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#888;"><span style="color:#0F1B2D;font-weight:bold;">RWA Soluções</span><br/><span style="font-size:11px;">Automação fiscal para escritórios contábeis</span></td></tr>
+  </table>
+</td></tr>
+</table>
+</td></tr></table>
+</body></html>"""
+
+    try:
+        import urllib.request, json as _json
+        payload = _json.dumps({
+            "from": "RWA Soluções <onboarding@resend.dev>",
+            "to": [email],
+            "subject": "RWA Soluções — Cadastro de senha",
+            "html": html,
+        }).encode("utf-8")
+        req = urllib.request.Request(
+            "https://api.resend.com/emails",
+            data=payload,
+            headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
+            method="POST"
+        )
+        with urllib.request.urlopen(req) as resp:
+            print(f"[EMAIL] Enviado via Resend para {email} — status {resp.status}")
+    except Exception as e:
+        print(f"[EMAIL] Erro Resend: {e}")
 
     html = f"""<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html><head><meta charset="utf-8"/></head>
