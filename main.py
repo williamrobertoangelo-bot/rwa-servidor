@@ -14,6 +14,119 @@ import auth
 import os
 import uuid
 import time
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+
+
+def _formatar_documento(doc: str) -> str:
+    d = ''.join(c for c in (doc or '') if c.isdigit())
+    if len(d) == 11:
+        return f"{d[:3]}.{d[3:6]}.{d[6:9]}-{d[9:]}"
+    if len(d) == 14:
+        return f"{d[:2]}.{d[2:5]}.{d[5:8]}/{d[8:12]}-{d[12:]}"
+    return doc or '—'
+
+
+def _enviar_email_boas_vindas(empresa: dict):
+    conta  = os.environ.get("RWA_EMAIL_CONTA", "").strip()
+    senha  = os.environ.get("RWA_EMAIL_SENHA_APP", "").strip()
+    if not conta or not senha:
+        return
+
+    nome      = empresa.get("nome", "—")
+    email     = empresa.get("email", "—")
+    documento = _formatar_documento(empresa.get("documento", ""))
+    telefone  = empresa.get("telefone", "") or "—"
+    venc_raw  = empresa.get("vencimento", "")
+    try:
+        y, m, d  = venc_raw.split("-")
+        venc_fmt = f"{d}/{m}/{y}"
+    except Exception:
+        venc_fmt = venc_raw
+
+    html = f"""<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta charset="utf-8"/></head>
+<body style="margin:0;padding:0;background-color:#f4f4f4;">
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#f4f4f4;padding:20px 0;">
+<tr><td align="center">
+<table width="480" cellpadding="0" cellspacing="0" border="0" style="max-width:480px;background-color:#ffffff;border:1px solid #e0e0e0;border-radius:6px;overflow:hidden;">
+<tr><td style="background-color:#0F1B2D;padding:20px 18px;">
+  <div style="font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#7FB3E0;letter-spacing:1.5px;font-weight:bold;margin-bottom:8px;">RWA SOLUÇÕES</div>
+  <div style="display:inline-block;background-color:#1F6B43;color:#fff;font-family:Arial,Helvetica,sans-serif;font-size:10px;padding:3px 8px;border-radius:3px;font-weight:bold;letter-spacing:0.5px;margin-bottom:10px;">NOVO ACESSO</div>
+  <div style="font-family:Arial,Helvetica,sans-serif;font-size:17px;color:#FFFFFF;font-weight:bold;line-height:1.3;margin-top:4px;">Bem-vindo à plataforma RWA</div>
+  <div style="font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#B5D4F4;margin-top:2px;">Sua conta foi ativada com sucesso</div>
+</td></tr>
+<tr><td style="padding:18px;">
+  <div style="font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#1F6B43;line-height:1.5;margin-bottom:12px;font-weight:bold;">✓ Acesso liberado. Sua licença está ativa e pronta para uso.</div>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
+    <tr><td style="padding:14px 0 4px 0;font-family:Arial,Helvetica,sans-serif;font-size:10px;color:#6B6B6B;letter-spacing:1px;text-transform:uppercase;font-weight:bold;">Dados do registro</td></tr>
+    <tr><td style="padding:0;">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
+        <tr>
+          <td style="padding:8px 0;border-bottom:1px solid #EFEFEF;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#6B6B6B;width:55%;">Titular</td>
+          <td style="padding:8px 0;border-bottom:1px solid #EFEFEF;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#1a1a1a;text-align:right;font-weight:bold;">{nome}</td>
+        </tr>
+        <tr>
+          <td style="padding:8px 0;border-bottom:1px solid #EFEFEF;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#6B6B6B;">CNPJ/CPF</td>
+          <td style="padding:8px 0;border-bottom:1px solid #EFEFEF;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#1a1a1a;text-align:right;font-weight:bold;">{documento}</td>
+        </tr>
+        <tr>
+          <td style="padding:8px 0;border-bottom:1px solid #EFEFEF;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#6B6B6B;">E-mail</td>
+          <td style="padding:8px 0;border-bottom:1px solid #EFEFEF;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#1a1a1a;text-align:right;font-weight:bold;">{email}</td>
+        </tr>
+        <tr>
+          <td style="padding:8px 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#6B6B6B;">Telefone</td>
+          <td style="padding:8px 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#1a1a1a;text-align:right;font-weight:bold;">{telefone}</td>
+        </tr>
+      </table>
+    </td></tr>
+    <tr><td style="padding:14px 0 4px 0;font-family:Arial,Helvetica,sans-serif;font-size:10px;color:#6B6B6B;letter-spacing:1px;text-transform:uppercase;font-weight:bold;">Licença</td></tr>
+    <tr><td style="padding:0;">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
+        <tr>
+          <td style="padding:8px 0;border-bottom:1px solid #EFEFEF;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#6B6B6B;">Status</td>
+          <td style="padding:8px 0;border-bottom:1px solid #EFEFEF;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#1F6B43;text-align:right;font-weight:bold;">ATIVA</td>
+        </tr>
+        <tr>
+          <td style="padding:8px 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#6B6B6B;">Válida até</td>
+          <td style="padding:8px 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#1a1a1a;text-align:right;font-weight:bold;">{venc_fmt}</td>
+        </tr>
+      </table>
+    </td></tr>
+  </table>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:14px;border-collapse:collapse;">
+    <tr><td style="background-color:#EAF3DE;border-left:3px solid #3B6D11;padding:10px 12px;font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#27500A;line-height:1.5;">
+      Acesse o portal em <strong>rwasolucoes.com.br</strong> e baixe o instalador para começar a usar as automações.
+    </td></tr>
+  </table>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:16px;border-top:1px solid #EFEFEF;">
+    <tr><td style="padding-top:10px;font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#888;">
+      <span style="color:#0F1B2D;font-weight:bold;">RWA Soluções</span><br/>
+      <span style="font-size:11px;">Automação fiscal para escritórios contábeis</span>
+    </td></tr>
+  </table>
+</td></tr>
+</table>
+</td></tr></table>
+</body></html>"""
+
+    plain = f"Bem-vindo, {nome}!\n\nSua licença está ativa.\nCNPJ/CPF: {documento}\nE-mail: {email}\nVálida até: {venc_fmt}\n\nAcesse: rwasolucoes.com.br\n\nRWA Soluções"
+
+    try:
+        msg = MIMEMultipart("alternative")
+        msg["Subject"] = "RWA Soluções — Acesso liberado"
+        msg["From"]    = conta
+        msg["To"]      = email
+        msg.attach(MIMEText(plain, "plain"))
+        msg.attach(MIMEText(html, "html"))
+        srv = smtplib.SMTP("smtp.gmail.com", 587)
+        srv.starttls()
+        srv.login(conta, senha)
+        srv.sendmail(conta, email, msg.as_string())
+        srv.quit()
+    except Exception as e:
+        print(f"[EMAIL] Erro ao enviar boas-vindas: {e}")
 
 app = FastAPI(title="RWA Tecnologia Operacional")
 
@@ -129,6 +242,11 @@ def primeiro_acesso(req: PrimeiroAcessoRequest):
 
     senha_hash = auth.hash_senha(req.senha)
     database.definir_senha(req.email, senha_hash)
+
+    try:
+        _enviar_email_boas_vindas(empresa)
+    except Exception as e:
+        print(f"[EMAIL] Falha boas-vindas: {e}")
 
     return {
         "status":     "ok",
