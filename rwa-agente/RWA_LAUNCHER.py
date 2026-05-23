@@ -101,7 +101,7 @@ _loop_ativo    = False
 # EMAIL DE SEGURANÇA
 # ─────────────────────────────────────────────────────────────────────
 
-def _enviar_email_tentativa(email_cliente: str):
+def _enviar_email_tentativa(email_cliente: str, nome: str = "", documento: str = "", telefone: str = ""):
     """Dispara email de tentativa não autorizada."""
     def _serial():
         try:
@@ -135,12 +135,23 @@ def _enviar_email_tentativa(email_cliente: str):
 TENTATIVA NAO AUTORIZADA — RWA Tecnologia Operacional
 ======================================================
 
-EMAIL TENTADO   : {email_cliente}
 DATA/HORA       : {datetime.now().strftime("%d/%m/%Y %H:%M:%S")}
 
-DADOS DA MÁQUINA:
-NOME            : {socket.gethostname()}
-USUÁRIO         : {getpass.getuser()}
+────────────────────────────────────────────────────────────
+DADOS DO CLIENTE
+────────────────────────────────────────────────────────────
+
+NOME            : {nome or 'N/A'}
+CNPJ/CPF        : {documento or 'N/A'}
+E-MAIL          : {email_cliente}
+TELEFONE        : {telefone or 'N/A'}
+
+────────────────────────────────────────────────────────────
+DADOS DA MÁQUINA
+────────────────────────────────────────────────────────────
+
+NOME COMPUTADOR : {socket.gethostname()}
+USUÁRIO WINDOWS : {getpass.getuser()}
 SISTEMA         : {platform.platform()}
 IP PÚBLICO      : {_ip_publico()}
 MAC ADDRESS     : {mac_str}
@@ -1313,7 +1324,10 @@ def _tela_primeiro_acesso():
             mensagem = resp.get("mensagem", "Credenciais inválidas.")
             if "vinculada" in mensagem.lower():
                 mensagem = "Licença não autorizada a esta máquina.\nEntre em contato com RWA Tecnologia."
-                threading.Thread(target=_enviar_email_tentativa, args=(email.lower(),), daemon=True).start()
+                nome      = resp.get("nome", "")
+                documento = resp.get("documento", "")
+                telefone  = resp.get("telefone", "")
+                threading.Thread(target=_enviar_email_tentativa, args=(email.lower(), nome, documento, telefone), daemon=True).start()
             lbl_status.config(text=mensagem, fg=C_RED)
             return
 

@@ -329,7 +329,13 @@ def agente_login(req: AgenteLoginRequest):
             if len(fps) == 0:
                 database.registrar_maquina(empresa["id"], req.fingerprint)
             else:
-                return {"status": "erro", "mensagem": "Licenca ja vinculada a outra maquina. Entre em contato com a RWA."}
+                return {
+                    "status":    "erro",
+                    "mensagem":  "Licenca ja vinculada a outra maquina. Entre em contato com a RWA.",
+                    "nome":      empresa.get("nome", ""),
+                    "documento": empresa.get("documento", ""),
+                    "telefone":  empresa.get("telefone", ""),
+                }
 
     return {
         "status":     "ok",
