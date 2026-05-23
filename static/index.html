@@ -1211,6 +1211,20 @@ function abrirPainel(d) {
 
   carregarHistorico();
   setInterval(carregarHistorico, 15000);
+
+  // Atualiza link do instalador via GitHub Releases
+  (async () => {
+    try {
+      const r = await fetch('https://api.github.com/repos/williamrobertoangelo-bot/rwa-servidor/releases/latest');
+      if (!r.ok) return;
+      const rel = await r.json();
+      const asset = rel.assets && rel.assets.find(a => a.name.endsWith('.exe'));
+      if (asset) {
+        document.getElementById('btn-download-instalador').href = asset.browser_download_url;
+        document.getElementById('dl-versao').textContent = rel.tag_name + ' — Windows';
+      }
+    } catch(e) {}
+  })();
 }
 
 function sair() {
@@ -1542,19 +1556,6 @@ async function carregarHistorico() {
       tbody.innerHTML = '<tr><td colspan="4" class="hist-vazio">Nenhuma execução registrada ainda.</td></tr>';
       return;
     }
-
-    (async () => {
-      try {
-        const r = await fetch('https://api.github.com/repos/williamrobertoangelo-bot/rwa-servidor/releases/latest');
-        if (!r.ok) return;
-        const rel = await r.json();
-        const asset = rel.assets && rel.assets.find(a => a.name.endsWith('.exe'));
-        if (asset) {
-          document.getElementById('btn-download-instalador').href = asset.browser_download_url;
-          document.getElementById('dl-versao').textContent = rel.tag_name + ' — Windows';
-        }
-      } catch(e) {}
-    })();
 
     // Detecta módulo em execução e atualiza botões
     const emExec = d.historico.find(h => h.status === 'em_execucao');

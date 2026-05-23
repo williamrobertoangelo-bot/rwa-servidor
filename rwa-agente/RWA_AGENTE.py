@@ -74,28 +74,35 @@ _tray_icon      = None
 # ─────────────────────────────────────────────────────────────────────
 
 def _gerar_fingerprint() -> str:
-    """Mesmo algoritmo do fp.py — garante fingerprint idêntico."""
-    def _serial():
+    def _disco():
         try:
-            r = subprocess.check_output("wmic diskdrive get serialnumber", shell=True, stderr=subprocess.DEVNULL)
-            return r.decode(errors="ignore").split()[-1]
+            r = subprocess.check_output(
+                "wmic diskdrive get serialnumber",
+                shell=True, stderr=subprocess.DEVNULL)
+            ls = [l.strip() for l in r.decode(errors="ignore").splitlines()
+                  if l.strip() and "SerialNumber" not in l]
+            return ls[0] if ls else "N/A"
         except Exception:
-            return ""
+            return "N/A"
 
-    def _uuid_bios():
+    def _bios():
         try:
-            r = subprocess.check_output("wmic csproduct get uuid", shell=True, stderr=subprocess.DEVNULL)
-            return r.decode(errors="ignore").split()[-1]
+            r = subprocess.check_output(
+                "wmic csproduct get uuid",
+                shell=True, stderr=subprocess.DEVNULL)
+            ls = [l.strip() for l in r.decode(errors="ignore").splitlines()
+                  if l.strip() and "UUID" not in l]
+            return ls[0] if ls else "N/A"
         except Exception:
-            return ""
+            return "N/A"
 
     base = "|".join([
         socket.gethostname(),
         getpass.getuser(),
         platform.platform(),
         str(uuid.getnode()),
-        _serial(),
-        _uuid_bios(),
+        _disco(),
+        _bios(),
     ])
     return hashlib.sha256(base.encode()).hexdigest().upper()[:32]
 
